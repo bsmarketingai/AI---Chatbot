@@ -1,0 +1,50 @@
+/* Tokeny – NÁVRH nového asistenta bscom (6. 10. 2026).
+   Názvy podle knihovny BSSHOP. Změny proti současnému stavu jsou označené „změna“. */
+.site {
+  /* Značka a akce */
+  --c-primary: #0073cc;          /* změna: z #0091ff kvůli kontrastu (4,86 : 1 s bílou) */
+  --c-primary-hover: #005ea8;
+  --c-primary-active: #004a85;
+  --c-on-primary: #ffffff;
+  --c-primary-soft: #e6f1fb;     /* podklad vybraných čipů a štítků */
+  --c-on-primary-soft: #004a85;
+  --c-link: #005ea8;
+
+  /* Plochy */
+  --c-bg: #ffffff;
+  --c-surface: #ffffff;
+  --c-surface-2: #f4f7fa;        /* změna: světlejší pozadí chatu */
+  --c-header: #ffffff;
+  --c-img: #eef2f6;
+  --c-overlay: rgba(16, 24, 32, .35);
+
+  /* Text */
+  --c-ink: #1f2933;
+  --c-ink-2: #3a4652;
+  --c-muted: #5b6b7a;            /* 5,48 : 1 na bílé */
+  --c-on-ink: #ffffff;
+
+  /* Linky a pole */
+  --c-line: #dbe3ea;
+  --c-line-2: #7f96ab;           /* rámeček pole, 3,06 : 1 */
+  --c-field: #ffffff;
+
+  /* Stavy */
+  --c-ok: #1a7f37;               /* Skladem */
+  --c-ok-soft: #e8f5ec;
+  --c-warn: #8a4b00;
+  --c-warn-soft: #fff1dc;
+  --c-err: #b42318;
+  --c-err-soft: #fdecea;
+  --c-focus: #ffb000;
+  --c-badge-sale: #e8252d;
+
+  /* Typografie a tvar */
+  --font-body: "Open Sans", Arial, sans-serif;   /* změna: chat už ne v Arialu */
+  --r-s: 8px;
+  --r-m: 12px;
+  --r-l: 16px;
+  --r-pill: 999px;
+  --shadow-pop: 0 12px 40px rgba(16, 24, 32, .18), 0 2px 6px rgba(16, 24, 32, .08);
+  --shadow-card: 0 1px 2px rgba(16, 24, 32, .06);
+}

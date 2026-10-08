@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Proklikávací prototyp nového nákupního AI asistenta pro bscom.cz – návrh BSSHOP.">
+<meta name="robots" content="noindex">
+<title>Asistent bscom · prototyp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;700&family=Open+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/proto.css">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<div class="pb" role="toolbar" aria-label="Ovládání prototypu">
+  <h1>Asistent bscom · prototyp</h1>
+  <div class="grp"><span class="lbl">Šířka</span>
+    <div class="seg" id="widths">
+      <button type="button" data-w="fit" aria-pressed="true">Okno</button>
+      <button type="button" data-w="d" aria-pressed="false">Desktop</button>
+      <button type="button" data-w="t" aria-pressed="false">Tablet</button>
+      <button type="button" data-w="m" aria-pressed="false">Mobil</button>
+    </div>
+  </div>
+  <div class="grp"><label class="lbl" for="state">Stav</label>
+    <select id="state">
+      <option value="closed">Zavřeno – web se vstupy</option>
+      <option value="welcome">Uvítání s dlaždicemi</option>
+      <option value="clarify">Upřesňující otázka</option>
+      <option value="progress">Průběh odpovědi</option>
+      <option value="answer">Odpověď s produkty</option>
+      <option value="compare">Porovnání</option>
+      <option value="watch">Hlídání ceny</option>
+      <option value="empty">Nic nenalezeno</option>
+      <option value="error">Chyba</option>
+      <option value="handoff">Předání člověku</option>
+      <option value="login">Objednávka – přihlášení</option>
+      <option value="order">Objednávka – detail</option>
+      <option value="history">Historie konverzací</option>
+    </select>
+  </div>
+  <div class="grp"><span class="lbl">Odpovědi</span>
+    <div class="seg" id="variant">
+      <button type="button" data-v="plain" aria-pressed="true">Bez bubliny</button>
+      <button type="button" data-v="bubbles" aria-pressed="false">V bublinách</button>
+    </div>
+  </div>
+  <button type="button" class="btn" id="reset">Od začátku</button>
+  <span class="hint">Zkuste: hledání v hlavičce, dlaždice, „Porovnat“, nová konverzace a historie</span>
+</div>
+
+<div class="stage" id="stage">
+  <div>
+    <div class="frame-label" id="frame-label"></div>
+    <div class="scaler" id="scaler"><div class="site" id="site"></div></div>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/components.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

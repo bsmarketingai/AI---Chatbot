@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Asistent bscom – prototyp</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./prototyp.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="site">
+
+  <!-- ===== Drátěný web ===== -->
+  <div class="scroll">
+    <div class="wf-top"><span>bscom.cz</span><span>|</span><span>bsshop.cz</span><span>|</span><span>LOXONE</span></div>
+    <header class="wf-head">
+      <div class="wf-logo"><i>bs</i>bscom</div>
+      <div class="wf-search">
+        <label class="sr-only" for="wf-q">Hledat zboží</label>
+        <input id="wf-q" autocomplete="off" placeholder="Co hledáte? Zkuste třeba: notebook do školy" value="{{wq}}" onChange="{{onWq}}" onKeyDown="{{onWqKey}}">
+        <svg class="i" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg>
+        <sc-if value="{{sugOpen}}" hint-placeholder-val="{{false}}">
+          <div class="wf-suggest">
+            <button type="button" class="ask" onClick="{{askSug}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg><span>Zeptat se asistenta: „{{wq}}“</span></button>
+            <button type="button" class="wire" tabindex="-1"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg><span>[návrhy produktů z našeptávače]</span></button>
+            <button type="button" class="wire" tabindex="-1"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg><span>[návrhy kategorií]</span></button>
+          </div>
+        </sc-if>
+      </div>
+      <button type="button" class="wf-ai" onClick="{{openPanel}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg><span>AI asistent</span></button>
+      <div class="wf-icons">
+        <svg class="i" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Můj účet"><path d="{{I.user.d}}" fill="{{I.user.f}}" stroke="{{I.user.s}}"></path></svg>
+        <span class="{{cartCls}}"><svg class="i" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Košík"><path d="{{I.cart.d}}" fill="{{I.cart.f}}" stroke="{{I.cart.s}}"></path></svg><b>{{cart}}</b></span>
+        <span class="wf-menu"><svg class="i" width="26" height="26" viewBox="0 0 24 24" role="img" aria-label="Menu"><path d="{{I.menu.d}}" fill="{{I.menu.f}}" stroke="{{I.menu.s}}"></path></svg></span>
+      </div>
+    </header>
+    <nav class="wf-nav" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></nav>
+    <main class="wf-main">
+      <div class="wf-hero"><div class="wf-box" data-label="[hlavní banner]"></div><div class="wf-box" data-label="[vedlejší banner]"></div></div>
+      <section class="entry" aria-label="Nákupní asistent">
+        <span class="entry__ico"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg></span>
+        <div><h2>Nevíte, co vybrat? Zeptejte se.</h2><p>Nákupní asistent najde a porovná zboží podle toho, k čemu ho potřebujete.</p></div>
+        <div class="chips">
+          <button type="button" class="chip" onClick="{{askNotebook}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.laptop.d}}" fill="{{I.laptop.f}}" stroke="{{I.laptop.s}}"></path></svg>Notebook do školy</button>
+          <button type="button" class="chip" onClick="{{askLego}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.gift.d}}" fill="{{I.gift.f}}" stroke="{{I.gift.s}}"></path></svg>Dárek pro dítě do 2 000 Kč</button>
+          <button type="button" class="chip" onClick="{{askPower}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.battery.d}}" fill="{{I.battery.f}}" stroke="{{I.battery.s}}"></path></svg>Powerbanka 20 000 mAh</button>
+        </div>
+      </section>
+      <div class="wf-h" aria-hidden="true"></div>
+      <div class="wf-grid" aria-hidden="true">
+        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+      </div>
+      <div class="wf-hero" aria-hidden="true"><div class="wf-box" data-label="[články]" style="min-height: 140px"></div><div class="wf-box" data-label="[značky]" style="min-height: 140px"></div></div>
+    </main>
+    <div class="wf-foot" aria-hidden="true"></div>
+  </div>
+
+  <!-- ===== Plovoucí spouštěč ===== -->
+  <sc-if value="{{closed}}" hint-placeholder-val="{{true}}">
+    <button type="button" class="launcher" onClick="{{openPanel}}" aria-label="Otevřít nákupního asistenta"><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg><span>Nákupní asistent</span></button>
+  </sc-if>
+
+  <!-- ===== Panel asistenta ===== -->
+  <sc-if value="{{open}}" hint-placeholder-val="{{false}}">
+  <section class="{{panelCls}}" role="dialog" aria-modal="false" aria-labelledby="ap-t" onKeyDown="{{onPanelKey}}">
+    <header class="ap-head">
+      <span class="av" style="width: 32px; height: 32px"><svg class="i" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg></span>
+      <div class="ap-title"><b id="ap-t">Nákupní asistent<span class="ai-tag">AI</span></b><small>Odpověď obvykle do 10 s</small></div>
+      <button type="button" class="ibtn hist-btn" aria-pressed="{{histPressed}}" onClick="{{toggleHistory}}" aria-label="Historie konverzací" title="Historie konverzací"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.history.d}}" fill="{{I.history.f}}" stroke="{{I.history.s}}"></path></svg></button>
+      <button type="button" class="ibtn" onClick="{{newChat}}" aria-label="Nová konverzace" title="Nová konverzace"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.newchat.d}}" fill="{{I.newchat.f}}" stroke="{{I.newchat.s}}"></path></svg></button>
+      <button type="button" class="ibtn wide-btn" onClick="{{toggleWide}}" aria-label="{{wideLabel}}" title="{{wideLabel}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{wideIcon.d}}" fill="{{wideIcon.f}}" stroke="{{wideIcon.s}}"></path></svg></button>
+      <button type="button" class="ibtn" onClick="{{closePanel}}" aria-label="Zavřít asistenta" title="Zavřít"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.close.d}}" fill="{{I.close.f}}" stroke="{{I.close.s}}"></path></svg></button>
+    </header>
+
+    <div class="ap-log" ref="{{setLog}}" aria-live="polite">
+
+      <!-- Historie konverzací -->
+      <sc-if value="{{isHistory}}" hint-placeholder-val="{{false}}">
+        <div class="hist">
+          <div class="hist-top">
+            <sc-if value="{{hist.canBack}}" hint-placeholder-val="{{false}}"><button type="button" class="btn-s" onClick="{{hist.back}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.back.d}}" fill="{{I.back.f}}" stroke="{{I.back.s}}"></path></svg>Zpět</button></sc-if>
+            <h2>Historie konverzací</h2>
+            <button type="button" class="btn-p" style="height: 34px; font-size: 13px" onClick="{{newChat}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.newchat.d}}" fill="{{I.newchat.f}}" stroke="{{I.newchat.s}}"></path></svg>Nová</button>
+          </div>
+          <sc-if value="{{hist.hasAny}}" hint-placeholder-val="{{true}}">
+            <div class="field"><label class="sr-only" for="hist-q">Hledat v historii</label><span class="in"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg><input id="hist-q" placeholder="Hledat v konverzacích" value="{{hq}}" onChange="{{onHq}}"></span></div>
+          </sc-if>
+          <sc-if value="{{hist.emptyAll}}" hint-placeholder-val="{{false}}">
+            <div class="hist-empty"><svg class="i" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.history.d}}" fill="{{I.history.f}}" stroke="{{I.history.s}}"></path></svg><b>Zatím tu nejsou žádné konverzace</b><span>Když začnete novou konverzaci, předchozí se uloží sem a můžete se k ní vrátit.</span></div>
+          </sc-if>
+          <sc-if value="{{hist.noMatch}}" hint-placeholder-val="{{false}}">
+            <div class="hist-empty"><b>Nic nenalezeno</b><span>Zkuste jiné slovo.</span></div>
+          </sc-if>
+          <sc-for list="{{hist.groups}}" as="g" hint-placeholder-count="2">
+            <div class="sec-label">{{g.label}}</div>
+            <div class="hist-list">
+              <sc-for list="{{g.items}}" as="it" hint-placeholder-count="2">
+                <div class="{{it.cls}}">
+                  <button type="button" class="hist-open" onClick="{{it.open}}"><span class="hi-ic"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.icon.d}}" fill="{{it.icon.f}}" stroke="{{it.icon.s}}"></path></svg></span><span class="hi-tx"><b>{{it.title}}</b><small>{{it.sub}}</small></span></button>
+                  <button type="button" class="ibtn" onClick="{{it.del}}" aria-label="{{it.delLabel}}" title="Smazat"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.trash.d}}" fill="{{it.trash.f}}" stroke="{{it.trash.s}}"></path></svg></button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+          <p class="hist-note"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.lock.d}}" fill="{{I.lock.f}}" stroke="{{I.lock.s}}"></path></svg>Historie se ukládá v tomto prohlížeči. Po přihlášení ji uvidíte i na dalších zařízeních.</p>
+        </div>
+      </sc-if>
+
+      <!-- Porovnání -->
+      <sc-if value="{{isCompare}}" hint-placeholder-val="{{false}}">
+        <div class="compare">
+          <button type="button" class="btn-s back" onClick="{{cmp.back}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.back.d}}" fill="{{I.back.f}}" stroke="{{I.back.s}}"></path></svg>Zpět do konverzace</button>
+          <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg></span><div class="body"><div class="txt"><p><b>Porovnání {{cmp.n}} notebooků.</b> Zvýrazněné jsou rozdíly, zeleně nejlepší hodnota.</p></div></div></div>
+          <div class="tblw">
+            <div class="ctbl" role="table" aria-label="Porovnání notebooků">
+              <div class="{{cmp.rowCls}}" role="row">
+                <div class="cc cl" role="columnheader"><span class="sr-only">Parametr</span></div>
+                <sc-for list="{{cmp.heads}}" as="h" hint-placeholder-count="2">
+                  <div class="cc" role="columnheader">{{h.name}}<span class="pr">{{h.priceStr}}</span>
+                    <button type="button" class="btn-p" style="height: 32px; font-size: 13px; margin-top: 6px" onClick="{{h.cart}}"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="{{h.icon.d}}" fill="{{h.icon.f}}" stroke="{{h.icon.s}}"></path></svg>{{h.cartLabel}}</button>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-for list="{{cmp.rows}}" as="r" hint-placeholder-count="9">
+                <div class="{{r.rowCls}}" role="row">
+                  <div class="cc cl" role="rowheader">{{r.label}}</div>
+                  <sc-for list="{{r.cells}}" as="x" hint-placeholder-count="2"><div class="{{x.cls}}" role="cell">{{x.v}}</div></sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="legend"><span><i style="background: var(--c-ok-soft)"></i>nejlepší hodnota</span><span><i style="background: #fffbea"></i>liší se</span></div>
+        </div>
+      </sc-if>
+
+      <!-- Konverzace -->
+      <sc-if value="{{isChat}}" hint-placeholder-val="{{true}}">
+        <sc-for list="{{entries}}" as="e" hint-placeholder-count="1">
+          <div class="entry-w">
+
+            <!-- Uvítání s dlaždicemi -->
+            <sc-if value="{{e.isWelcome}}" hint-placeholder-val="{{true}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="welcome txt"><h2>Dobrý den, s čím vám pomohu?</h2><p>Jsem nákupní asistent bscom. Zeptejte se vlastními slovy.</p></div>
+                <ul class="can">
+                  <li><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.check.d}}" fill="{{e.I.check.f}}" stroke="{{e.I.check.s}}"></path></svg>Najdu a porovnám zboží podle vašich potřeb</li>
+                  <li><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.check.d}}" fill="{{e.I.check.f}}" stroke="{{e.I.check.s}}"></path></svg>Poradím, na co se při výběru zaměřit</li>
+                  <li><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.check.d}}" fill="{{e.I.check.f}}" stroke="{{e.I.check.s}}"></path></svg>Zjistím stav objednávky po přihlášení</li>
+                </ul>
+                <div class="sec-label">Zkuste třeba</div>
+                <div class="tiles">
+                  <sc-for list="{{e.tiles}}" as="t" hint-placeholder-count="4">
+                    <button type="button" class="tile" onClick="{{t.click}}"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{t.icon.d}}" fill="{{t.icon.f}}" stroke="{{t.icon.s}}"></path></svg></span><b>{{t.title}}</b><small>{{t.sub}}</small></button>
+                  </sc-for>
+                </div>
+                <div class="chips">
+                  <sc-for list="{{e.quick}}" as="c" hint-placeholder-count="3">
+                    <button type="button" class="chip" onClick="{{c.click}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.icon.d}}" fill="{{c.icon.f}}" stroke="{{c.icon.s}}"></path></svg>{{c.label}}</button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{e.hasRecent}}" hint-placeholder-val="{{false}}">
+                  <div class="sec-label">Pokračovat v konverzaci</div>
+                  <div class="hist-list">
+                    <sc-for list="{{e.recent}}" as="it" hint-placeholder-count="2">
+                      <div class="hist-item compact"><button type="button" class="hist-open" onClick="{{it.open}}"><span class="hi-ic"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.icon.d}}" fill="{{it.icon.f}}" stroke="{{it.icon.s}}"></path></svg></span><span class="hi-tx"><b>{{it.title}}</b><small>{{it.sub}}</small></span></button></div>
+                    </sc-for>
+                    <button type="button" class="chip ghost" onClick="{{e.openHistory}}">Celá historie</button>
+                  </div>
+                </sc-if>
+              </div></div>
+            </sc-if>
+
+            <!-- Zpráva zákazníka -->
+            <sc-if value="{{e.isUser}}" hint-placeholder-val="{{false}}">
+              <div class="m m-user"><span class="sr-only">Vy: </span><div class="t">{{e.text}}</div></div>
+            </sc-if>
+
+            <!-- Upřesňující otázka -->
+            <sc-if value="{{e.isClarify}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="clarify" role="group" aria-label="{{e.q}}">
+                  <span class="step">Upřesnění {{e.stepNo}} z {{e.total}}</span>
+                  <div class="bar"><i class="{{e.barCls}}"></i></div>
+                  <b>{{e.q}}</b>
+                  <div class="chips">
+                    <sc-for list="{{e.options}}" as="o" hint-placeholder-count="4">
+                      <button type="button" class="chip" aria-pressed="{{o.pressed}}" disabled="{{o.disabled}}" onClick="{{o.click}}"><sc-if value="{{o.on}}" hint-placeholder-val="{{false}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{o.icon.d}}" fill="{{o.icon.f}}" stroke="{{o.icon.s}}"></path></svg></sc-if>{{o.label}}</button>
+                    </sc-for>
+                    <sc-if value="{{e.showSkip}}" hint-placeholder-val="{{true}}"><button type="button" class="chip ghost" onClick="{{e.skip}}">Přeskočit</button></sc-if>
+                  </div>
+                </div>
+              </div></div>
+            </sc-if>
+
+            <!-- Průběh odpovědi -->
+            <sc-if value="{{e.isProgress}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="progress" aria-busy="true">
+                  <ol>
+                    <sc-for list="{{e.steps}}" as="s" hint-placeholder-count="3">
+                      <li class="{{s.cls}}">
+                        <sc-if value="{{s.done}}" hint-placeholder-val="{{false}}"><span class="dot" style="color: var(--c-ok)"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{s.icon.d}}" fill="{{s.icon.f}}" stroke="{{s.icon.s}}"></path></svg></span></sc-if>
+                        <sc-if value="{{s.now}}" hint-placeholder-val="{{false}}"><span class="dot"><span class="spin"></span></span></sc-if>
+                        <sc-if value="{{s.pending}}" hint-placeholder-val="{{true}}"><span class="dot"><i></i></span></sc-if>
+                        {{s.text}}
+                      </li>
+                    </sc-for>
+                  </ol>
+                  <div class="row"><small style="color: var(--c-muted)">Obvykle do 10 sekund</small><button type="button" class="btn-s" onClick="{{e.stop}}"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.stop.d}}" fill="{{e.I.stop.f}}" stroke="{{e.I.stop.s}}"></path></svg>Zastavit</button></div>
+                </div>
+                <sc-if value="{{e.showSkel}}" hint-placeholder-val="{{false}}"><div class="skel" aria-hidden="true"><div></div><div></div></div></sc-if>
+              </div></div>
+            </sc-if>
+
+            <!-- Odpověď s produkty -->
+            <sc-if value="{{e.isAnswer}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="txt"><p><sc-for list="{{e.intro}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.b}}" hint-placeholder-val="{{false}}"><b>{{s.t}}</b></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{true}}"><span>{{s.t}}</span></sc-if></sc-for></p></div>
+                <div class="carousel" role="list">
+                  <sc-for list="{{e.cards}}" as="c" hint-placeholder-count="2">
+                    <sc-if value="{{c.dismissed}}" hint-placeholder-val="{{false}}">
+                      <article class="pcard is-dismissed" role="listitem" aria-label="{{c.hiddenLabel}}"><div class="dismissed"><b style="color: var(--c-ink)">{{c.name}}</b>Skryto. Příště vám ukážu méně podobných.<button type="button" class="btn-s" onClick="{{c.undo}}">Vrátit</button></div></article>
+                    </sc-if>
+                    <sc-if value="{{c.shown}}" hint-placeholder-val="{{true}}">
+                      <article class="{{c.cls}}" role="listitem" aria-label="{{c.name}}">
+                        <span class="{{c.tagCls}}">{{c.tag}}</span>
+                        <div class="img"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="28" y="12" width="104" height="68" rx="6" fill="#2b3640"></rect><rect x="33" y="17" width="94" height="58" rx="2" fill="{{c.screen}}"></rect><path d="M33 75 127 17v58Z" fill="#ffffff" opacity="0.12"></path><path d="M14 84h132l-8 12H22Z" fill="#9aa7b3"></path><rect x="66" y="86" width="28" height="3" rx="1.5" fill="#7c8a97"></rect></svg></div>
+                        <div class="in">
+                          <a class="nm" href="{{c.href}}" target="_blank" rel="noopener">{{c.name}}</a>
+                          <ul><li>{{c.cpu}}</li><li>{{c.mem}}</li><li>{{c.display}}</li></ul>
+                          <div class="stock"><i></i>{{c.stock}}</div>
+                          <div class="dlv">{{c.delivery}}</div>
+                          <div class="price">{{c.priceStr}}</div>
+                          <div class="acts">
+                            <sc-if value="{{c.inCart}}" hint-placeholder-val="{{false}}"><button type="button" class="btn-p in-cart" onClick="{{c.cart}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.I.check.d}}" fill="{{c.I.check.f}}" stroke="{{c.I.check.s}}"></path></svg>V košíku</button></sc-if>
+                            <sc-if value="{{c.notInCart}}" hint-placeholder-val="{{true}}"><button type="button" class="btn-p" onClick="{{c.cart}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.I.cart.d}}" fill="{{c.I.cart.f}}" stroke="{{c.I.cart.s}}"></path></svg>Do košíku</button></sc-if>
+                          </div>
+                        </div>
+                        <div class="more">
+                          <label class="cmp"><input type="checkbox" checked="{{c.compare}}" onChange="{{c.toggleCmp}}">Porovnat</label>
+                          <span>
+                            <button type="button" class="ibtn" aria-label="Hlídat cenu" title="Hlídat cenu" aria-pressed="{{c.watchPressed}}" onClick="{{c.watch}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.I.bell.d}}" fill="{{c.I.bell.f}}" stroke="{{c.I.bell.s}}"></path></svg></button>
+                            <button type="button" class="ibtn" aria-label="Nezajímá mě" title="Nezajímá mě" onClick="{{c.dismiss}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.I.x.d}}" fill="{{c.I.x.f}}" stroke="{{c.I.x.s}}"></path></svg></button>
+                          </span>
+                        </div>
+                      </article>
+                    </sc-if>
+                  </sc-for>
+                </div>
+                <sc-if value="{{e.hasFollow}}" hint-placeholder-val="{{true}}">
+                  <div class="chips"><sc-for list="{{e.followups}}" as="f" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{f.click}}">{{f.label}}</button></sc-for></div>
+                </sc-if>
+                <div class="msg-acts">
+                  <button type="button" class="ibtn" aria-label="Užitečná odpověď" aria-pressed="{{e.upPressed}}" onClick="{{e.rateUp}}"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.up.d}}" fill="{{e.I.up.f}}" stroke="{{e.I.up.s}}"></path></svg></button>
+                  <button type="button" class="ibtn" aria-label="Neužitečná odpověď" aria-pressed="{{e.downPressed}}" onClick="{{e.rateDown}}"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.down.d}}" fill="{{e.I.down.f}}" stroke="{{e.I.down.s}}"></path></svg></button>
+                  <button type="button" class="ibtn" aria-label="Kopírovat odpověď" onClick="{{e.copy}}"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.copy.d}}" fill="{{e.I.copy.f}}" stroke="{{e.I.copy.s}}"></path></svg></button>
+                </div>
+                <sc-if value="{{e.showWhy}}" hint-placeholder-val="{{false}}">
+                  <div class="why">Co nesedí?<sc-for list="{{e.reasons}}" as="r" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{r.click}}">{{r.label}}</button></sc-for></div>
+                </sc-if>
+                <sc-if value="{{e.showThanks}}" hint-placeholder-val="{{false}}"><div class="why">Díky, předáme to týmu.</div></sc-if>
+              </div></div>
+            </sc-if>
+
+            <!-- Oznámení: info, nic nenalezeno, chyba -->
+            <sc-if value="{{e.isNotice}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="{{e.cls}}" role="{{e.role}}">
+                  <span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.icon.d}}" fill="{{e.icon.f}}" stroke="{{e.icon.s}}"></path></svg></span>
+                  <div class="nb"><b>{{e.title}}</b><p>{{e.text}}</p>
+                    <sc-if value="{{e.hasActions}}" hint-placeholder-val="{{false}}">
+                      <div class="chips"><sc-for list="{{e.actions}}" as="a" hint-placeholder-count="1"><button type="button" class="{{a.cls}}" onClick="{{a.click}}"><sc-if value="{{a.hasIcon}}" hint-placeholder-val="{{false}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{a.icon.d}}" fill="{{a.icon.f}}" stroke="{{a.icon.s}}"></path></svg></sc-if>{{a.label}}</button></sc-for></div>
+                    </sc-if>
+                  </div>
+                </div>
+              </div></div>
+            </sc-if>
+
+            <!-- Předání člověku -->
+            <sc-if value="{{e.isHandoff}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="txt"><p>Rád vás spojím s kolegy z bscom. Shrnutí konverzace jim předám, ať nemusíte nic opakovat.</p></div>
+                <div class="svc">
+                  <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.headset.d}}" fill="{{e.I.headset.f}}" stroke="{{e.I.headset.s}}"></path></svg></span><div><b>Zákaznická linka</b><div style="font-size: 12.5px; color: var(--c-muted)">Po–Pá 9:00–17:00</div></div></div>
+                  <div class="big">499 944 944</div>
+                  <div class="chips"><button type="button" class="btn-s" onClick="{{e.copyPhone}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.copy.d}}" fill="{{e.I.copy.f}}" stroke="{{e.I.copy.s}}"></path></svg>Kopírovat číslo</button><button type="button" class="btn-p" onClick="{{e.write}}">Napsat dotaz</button></div>
+                </div>
+              </div></div>
+            </sc-if>
+
+            <!-- Objednávka – přihlášení -->
+            <sc-if value="{{e.isLogin}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="svc">
+                  <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.lock.d}}" fill="{{e.I.lock.f}}" stroke="{{e.I.lock.s}}"></path></svg></span><b>Pro stav objednávky se přihlaste</b></div>
+                  <p style="margin: 0; font-size: 13px; color: var(--c-ink-2)">Po přihlášení vám ukážu vaše objednávky a kde je zásilka.</p>
+                  <div><button type="button" class="btn-p" onClick="{{e.login}}">Přihlásit se</button></div>
+                </div>
+              </div></div>
+            </sc-if>
+
+            <!-- Objednávka – detail -->
+            <sc-if value="{{e.isOrder}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <div class="txt"><p>Tady je vaše poslední objednávka.</p></div>
+                <div class="svc">
+                  <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.box.d}}" fill="{{e.I.box.f}}" stroke="{{e.I.box.s}}"></path></svg></span><b>Objednávka [číslo objednávky]</b></div>
+                  <dl class="kv"><dt>Stav</dt><dd>[stav z e-shopu]</dd><dt>Doručení</dt><dd>[termín]</dd><dt>Dopravce</dt><dd>[dopravce]</dd><dt>Položky</dt><dd>[seznam položek]</dd></dl>
+                  <div class="chips"><button type="button" class="btn-s" onClick="{{e.track}}">Sledovat zásilku</button><button type="button" class="btn-s" onClick="{{e.reclaim}}">Reklamovat</button></div>
+                </div>
+              </div></div>
+            </sc-if>
+
+            <!-- Hlídání ceny -->
+            <sc-if value="{{e.isWatch}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+                <sc-if value="{{e.done}}" hint-placeholder-val="{{false}}">
+                  <div class="svc"><div class="ok-line"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.check.d}}" fill="{{e.I.check.f}}" stroke="{{e.I.check.s}}"></path></svg>Hlídám cenu</div><p style="margin: 0; font-size: 13.5px">Napíšu vám e-mailem, až <b>{{e.name}}</b> zlevní pod <b>{{e.targetStr}}</b>. Hlídání zrušíte v účtu.</p></div>
+                </sc-if>
+                <sc-if value="{{e.form}}" hint-placeholder-val="{{true}}">
+                  <form class="svc" onSubmit="{{e.submit}}">
+                    <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.bell.d}}" fill="{{e.I.bell.f}}" stroke="{{e.I.bell.s}}"></path></svg></span><div><b>Hlídat cenu</b><div style="font-size: 12.5px; color: var(--c-muted)">{{e.name}} · teď {{e.priceStr}}</div></div></div>
+                    <label class="field" for="{{e.inputId}}">Dejte mi vědět, až bude cena pod<span class="in"><input id="{{e.inputId}}" inputmode="numeric" placeholder="{{e.ph}}" value="{{e.input}}" onChange="{{e.onInput}}"><span>Kč</span></span></label>
+                    <sc-if value="{{e.hasError}}" hint-placeholder-val="{{false}}"><p style="margin: 0; color: var(--c-err); font-size: 13px">{{e.error}}</p></sc-if>
+                    <div><button type="submit" class="btn-p">Hlídat cenu</button></div>
+                  </form>
+                </sc-if>
+              </div></div>
+            </sc-if>
+
+            <!-- Krátká zpráva asistenta -->
+            <sc-if value="{{e.isAi}}" hint-placeholder-val="{{false}}">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body"><div class="txt"><p>{{e.text}}</p></div></div></div>
+            </sc-if>
+
+          </div>
+        </sc-for>
+      </sc-if>
+    </div>
+
+    <footer class="ap-foot">
+      <sc-if value="{{cmpBarOn}}" hint-placeholder-val="{{false}}">
+        <div class="cmpbar"><span><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="display: inline-block; vertical-align: -4px"><path d="{{I.compare.d}}" fill="{{I.compare.f}}" stroke="{{I.compare.s}}"></path></svg> Vybráno k porovnání: {{cmpCount}}</span><button type="button" class="btn-p" style="height: 32px; font-size: 13px" disabled="{{cmpDisabled}}" onClick="{{openCompare}}">Porovnat</button></div>
+      </sc-if>
+      <form class="composer" onSubmit="{{submitQ}}">
+        <label class="sr-only" for="q">Napište dotaz</label>
+        <textarea id="q" rows="1" placeholder="Napište, co hledáte…" ref="{{setQ}}" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}"></textarea>
+        <button class="send" type="submit" aria-label="Odeslat" disabled="{{sendDisabled}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.send.d}}" fill="{{I.send.f}}" stroke="{{I.send.s}}"></path></svg></button>
+      </form>
+      <p class="foot-note"><span>AI může chybovat. Ceny a sklad bereme z e-shopu.</span><button type="button" onClick="{{how}}">Jak to funguje</button></p>
+    </footer>
+  </section>
+  </sc-if>
+
+  <!-- ===== Toast ===== -->
+  <sc-if value="{{toastOn}}" hint-placeholder-val="{{false}}">
+    <div class="toast" role="status"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.check.d}}" fill="{{I.check.f}}" stroke="{{I.check.s}}"></path></svg><span>{{toast}}</span></div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Uvítání s dlaždicemi","Upřesňující otázka","Průběh odpovědi","Odpověď s produkty","Porovnání","Hlídání ceny","Nic nenalezeno","Chyba","Předání člověku","Objednávka – přihlášení","Objednávka – detail","Historie konverzací"]},"bubbles":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+var PD = {
+  products: [
+    { id: 'hp', name: 'HP 250R G9 Dark Ash', price: 13297, tag: 'Nejlepší poměr cena/výkon', tagKind: '', cpu: 'Intel Core i5-1335U', ram: 8, ssd: 512, display: '15,6" Full HD, matný', os: 'Windows 11 Home', weight: '1,74 kg', extra: 'Numerická klávesnice', stock: 'Skladem 5 ks', delivery: 'doručení cca 1 den', screen: '#2f6db5', href: 'https://www.bscom.cz/notebook-hp-250r-g9-dark-ash-9g1p8et-bcm_d2197349/' },
+    { id: 'lenovo', name: 'Lenovo V15 G4 AMN Black', price: 12517, tag: 'Nejlevnější nový', tagKind: 'ok', cpu: 'AMD Ryzen 5 7520U', ram: 8, ssd: 512, display: '15,6" Full HD, matný', os: 'Windows 11 Home', weight: '1,65 kg', extra: 'Numerická klávesnice', stock: 'Skladem více než 10 ks', delivery: 'doručení cca 1 den', screen: '#6b4fb8', href: 'https://www.bscom.cz/notebook-lenovo-v15-g4-amn-black-82yu00u4ck_d1937271/' },
+    { id: 'dell', name: 'Repasovaný Dell Latitude 5430', price: 11360, tag: 'Repasovaný · 16 GB RAM', tagKind: '', cpu: 'Intel Core i5-1245U', ram: 16, ssd: 256, display: '14" Full HD, dotykový', os: 'Windows 11 Pro', weight: 'neuvedeno', extra: 'Záruka 24 měsíců', stock: 'Skladem 1 ks', delivery: 'doručení cca 1 den', screen: '#1f8a7a', href: 'https://www.bscom.cz/repasovany-notebook-dell-latitude-5430-zaruka-24-mesicu-312729_d2578271/' },
+    { id: 'acer', name: 'Acer TravelMate P2 16', price: 15145, tag: 'Mírně nad rozpočtem', tagKind: 'warn', cpu: 'Intel Core 3 100U', ram: 8, ssd: 512, display: '16" IPS 1920 × 1200', os: 'Windows 11 Pro', weight: 'neuvedeno', extra: 'Podsvícená klávesnice, čtečka otisků, Wi‑Fi 6E', stock: 'Skladem více než 10 ks', delivery: 'doručení cca 1 den', screen: '#b5562f', href: 'https://www.bscom.cz/notebook-acer-travelmate-p2-16-steel-gray-tmp216-51-g2-tco-300d-nx-b6mec-002_d2197772/' }
+  ],
+  suggestions: [
+    { icon: 'laptop', title: 'Notebook do školy', sub: 'do 15 000 Kč', q: 'Hledám notebook do školy do 15 000 Kč' },
+    { icon: 'gift', title: 'Lego pro pětiletou', sub: 'do 2 000 Kč', q: 'Hledám lego vhodné pro mou 5letou dceru do 2 000 Kč' },
+    { icon: 'battery', title: 'Levná powerbanka', sub: 'alespoň 20 000 mAh', q: 'Nějaká levná powerbanka s kapacitou alespoň 20 000 mAh?' },
+    { icon: 'phone', title: 'Sklo na telefon', sub: 'Samsung Galaxy S25 Ultra', q: 'Hledám sklo pro mobilní telefon Samsung Galaxy S25 Ultra' }
+  ],
+  quick: [
+    { icon: 'box', label: 'Stav objednávky', q: 'Jaký je stav mé objednávky?' },
+    { icon: 'tool', label: 'Reklamace', q: 'Chci reklamovat zboží' },
+    { icon: 'headset', label: 'Mluvit s člověkem', q: 'Chci mluvit s člověkem' }
+  ],
+  clarify: [
+    { q: 'Na co bude notebook hlavně?', options: ['Kancelář a online výuka', 'Programování', 'Grafika a video', 'Hry'] },
+    { q: 'Jak velký displej chcete?', options: ['14" a lehký', '15,6"', '16"', 'Je mi to jedno'] }
+  ],
+  phone: '499 944 944'
+};
+
+var S_ = 'currentColor', N_ = 'none';
+var I = {
+  spark: { d: 'M12 3c.4 3.6 2.4 5.6 6 6-3.6.4-5.6 2.4-6 6-.4-3.6-2.4-5.6-6-6 3.6-.4 5.6-2.4 6-6ZM19 14c.2 1.6 1 2.4 2.6 2.6-1.6.2-2.4 1-2.6 2.6-.2-1.6-1-2.4-2.6-2.6 1.6-.2 2.4-1 2.6-2.6ZM5 15.5c.15 1.2.8 1.85 2 2-1.2.15-1.85.8-2 2-.15-1.2-.8-1.85-2-2 1.2-.15 1.85-.8 2-2Z', f: S_, s: N_ },
+  chat: { d: 'M20 12.5a7.5 7.5 0 0 1-11.1 6.6L4 20l1-4.3A7.5 7.5 0 1 1 20 12.5Z', f: N_, s: S_ },
+  search: { d: 'M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5', f: N_, s: S_ },
+  user: { d: 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21c.8-4 4-6 8-6s7.2 2 8 6', f: N_, s: S_ },
+  cart: { d: 'M4 8h16l-1.3 11.2a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8L4 8ZM8.5 8V6.5a3.5 3.5 0 0 1 7 0V8', f: N_, s: S_ },
+  menu: { d: 'M4 6h16M4 12h16M4 18h16', f: N_, s: S_ },
+  close: { d: 'M6 6l12 12M18 6 6 18', f: N_, s: S_ },
+  newchat: { d: 'M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6', f: N_, s: S_ },
+  expand: { d: 'M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7', f: N_, s: S_ },
+  shrink: { d: 'M20 10h-6V4M4 14h6v6M14 10l7-7M10 14l-7 7', f: N_, s: S_ },
+  check: { d: 'm5 12.5 4.5 4.5L19 7.5', f: N_, s: S_ },
+  bell: { d: 'M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16ZM10 20.5a2 2 0 0 0 4 0', f: N_, s: S_ },
+  x: { d: 'M7 7l10 10M17 7 7 17', f: N_, s: S_ },
+  up: { d: 'M7 11v9H4v-9h3Zm0 0 4-7c1.5 0 2.5 1 2.2 2.5L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7', f: N_, s: S_ },
+  down: { d: 'M7 13V4H4v9h3Zm0 0 4 7c1.5 0 2.5-1 2.2-2.5L12.6 14H18a2 2 0 0 0 2-2.3l-1.2-6A2 2 0 0 0 16.8 4H7', f: N_, s: S_ },
+  copy: { d: 'M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2ZM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2', f: N_, s: S_ },
+  back: { d: 'M19 12H5m6-6-6 6 6 6', f: N_, s: S_ },
+  send: { d: 'M12 19V5m-6 6 6-6 6 6', f: N_, s: S_ },
+  stop: { d: 'M9 7h6a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z', f: S_, s: N_ },
+  phone: { d: 'M9.5 3h5A2.5 2.5 0 0 1 17 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 7 18.5v-13A2.5 2.5 0 0 1 9.5 3ZM11 18h2', f: N_, s: S_ },
+  headset: { d: 'M4 14v-2a8 8 0 0 1 16 0v2M4.5 13h1A1.5 1.5 0 0 1 7 14.5v3A1.5 1.5 0 0 1 5.5 19h-1A1.5 1.5 0 0 1 3 17.5v-3A1.5 1.5 0 0 1 4.5 13ZM18.5 13h1a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-3a1.5 1.5 0 0 1 1.5-1.5ZM19 19c0 1.5-1.5 2.5-4 2.5h-2', f: N_, s: S_ },
+  box: { d: 'M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5v-9ZM3.5 7.5 12 12l8.5-4.5M12 12v9', f: N_, s: S_ },
+  tool: { d: 'M14.5 6.5a4 4 0 0 0 5 5l-8.5 8.5a2.1 2.1 0 0 1-3-3l8.5-8.5a4 4 0 0 0-2-2Z', f: N_, s: S_ },
+  laptop: { d: 'M6.5 5h11A1.5 1.5 0 0 1 19 6.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 13.5v-7A1.5 1.5 0 0 1 6.5 5ZM3 18.5h18', f: N_, s: S_ },
+  gift: { d: 'M5.5 9h13A1.5 1.5 0 0 1 20 10.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-8A1.5 1.5 0 0 1 5.5 9ZM3 9h18M12 9v11M12 9c-2-4-6-4-6-1.5S9 9 12 9Zm0 0c2-4 6-4 6-1.5S15 9 12 9Z', f: N_, s: S_ },
+  battery: { d: 'M5 7h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2ZM21 10.5v3M7 10v4M10.5 10v4', f: N_, s: S_ },
+  info: { d: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM12 11v5M12 7.5v.5', f: N_, s: S_ },
+  alert: { d: 'M12 3.5 21.5 20h-19L12 3.5ZM12 10v4.5M12 17v.5', f: N_, s: S_ },
+  refresh: { d: 'M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4', f: N_, s: S_ },
+  compare: { d: 'M5 5h4a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 9 19H5a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 5 5ZM15 5h4a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 19 19h-4a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 15 5Z', f: N_, s: S_ },
+  lock: { d: 'M7 10.5h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2ZM8 10.5V8a4 4 0 0 1 8 0v2.5', f: N_, s: S_ },
+  history: { d: 'M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2', f: N_, s: S_ },
+  trash: { d: 'M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v5.5M14 11v5.5', f: N_, s: S_ }
+};
+
+var STATE_KEYS = {
+  'Zavřeno – web se vstupy': 'closed', 'Uvítání s dlaždicemi': 'welcome', 'Upřesňující otázka': 'clarify', 'Průběh odpovědi': 'progress',
+  'Odpověď s produkty': 'answer', 'Porovnání': 'compare', 'Hlídání ceny': 'watch', 'Nic nenalezeno': 'empty', 'Chyba': 'error',
+  'Předání člověku': 'handoff', 'Objednávka – přihlášení': 'login', 'Objednávka – detail': 'order', 'Historie konverzací': 'history'
+};
+var HKEY = 'bscom-ai-historie';
+var NB_Q = 'Hledám notebook do školy do 15 000 Kč';
+var STEPS_NB = ['Hledám notebooky kolem 15 000 Kč', 'Kontroluji sklad a doručení', 'Porovnávám parametry'];
+var FOLLOW_ALL = [{ id: 'cmp2', label: 'Porovnat první dva' }, { id: 'ram16', label: 'Jen s 16 GB RAM' }, { id: 'cheap', label: 'Levnější varianty' }, { id: 'human', label: 'Poradit se s člověkem' }];
+
+function prod(id) { for (var i = 0; i < PD.products.length; i++) if (PD.products[i].id === id) return PD.products[i]; return null; }
+function kc(n) { return n.toLocaleString('cs-CZ').replace(/ /g, ' ') + ' Kč'; }
+function seg(s) { return String(s).split('**').map(function (t, i) { return { t: t, b: i % 2 === 1, n: i % 2 === 0 }; }).filter(function (x) { return x.t !== ''; }); }
+function plain(s) { return String(s).split('**').join(''); }
+function loadHistory() { try { return JSON.parse(localStorage.getItem(HKEY) || '[]'); } catch (e) { return []; } }
+function relTime(at) {
+  var d = new Date(at), now = new Date(), t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  var hm = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+  if (at >= t0) return 'Dnes ' + hm;
+  if (at >= t0 - 864e5) return 'Včera ' + hm;
+  return d.getDate() + '. ' + (d.getMonth() + 1) + '.';
+}
+function groupOf(at) {
+  var now = new Date(), t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  if (at >= t0) return 'Dnes';
+  if (at >= t0 - 864e5) return 'Včera';
+  if (at >= t0 - 7 * 864e5) return 'Posledních 7 dní';
+  return 'Starší';
+}
+function hasUser(list) { return list.some(function (e) { return e.t === 'user'; }); }
+function summaryOf(list) {
+  for (var i = list.length - 1; i >= 0; i--) {
+    var e = list[i];
+    if (e.t === 'answer') { var n = e.ids.length; return n + (n === 1 ? ' produkt' : n < 5 ? ' produkty' : ' produktů') + ': ' + e.ids.map(function (id) { return prod(id).name.split(' ').slice(0, 2).join(' '); }).join(', '); }
+    if (e.t === 'handoff') return 'Předáno zákaznické lince';
+    if (e.t === 'order' || e.t === 'login') return 'Stav objednávky';
+    if (e.t === 'notice') return e.title;
+    if (e.t === 'clarify') return 'Rozpracované upřesnění';
+  }
+  return 'Bez odpovědi';
+}
+function iconOf(list) {
+  var u = ''; for (var i = 0; i < list.length; i++) if (list[i].t === 'user') { u = list[i].text; break; }
+  return /notebook/i.test(u) ? 'laptop' : /objedn/i.test(u) ? 'box' : /člověk|reklam/i.test(u) ? 'headset' : /lego|dár/i.test(u) ? 'gift' : 'chat';
+}
+function answerEntry(intro, ids, follow) { return { t: 'answer', intro: intro, ids: ids, followups: follow }; }
+
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.timers = [];
+    this.history = loadHistory();
+    this.cart = 0;
+    this.inCart = [];
+    this.m = this.build(STATE_KEYS[this.props.state] || 'closed');
+    var self = this;
+    this.setLog = function (el) { self.logEl = el; };
+    this.setQ = function (el) { self.qEl = el; };
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.state !== this.props.state) { this.clearTimers(); this.m = this.build(STATE_KEYS[this.props.state] || 'closed'); this.scroll = 'auto'; this.forceUpdate(); return; }
+    this.afterRender();
+  }
+  componentDidMount() { this.scroll = 'auto'; this.afterRender(); }
+  componentWillUnmount() { this.clearTimers(); clearTimeout(this.toastT); }
+
+  afterRender() {
+    var log = this.logEl, mode = this.scroll; this.scroll = null;
+    if (this.focusQ && this.qEl) { this.focusQ = false; this.qEl.focus(); }
+    if (!log || !mode) return;
+    if (mode === 'top') { log.scrollTop = 0; return; }
+    var last = this.m.entries[this.m.entries.length - 1];
+    if ((mode === 'answer' || mode === 'auto') && last && last.t === 'answer' && this.m.view === 'chat') {
+      var ws = log.querySelectorAll('.entry-w'); var el = ws[ws.length - 1];
+      if (el) { log.scrollTop = el.offsetTop - 12; return; }
+    }
+    log.scrollTop = log.scrollHeight;
+  }
+
+  /* ---------- stav ---------- */
+  build(k) {
+    var m = { open: false, wide: false, logged: false, compare: [], dismissed: [], watch: {}, entries: [], view: 'chat', busy: false, picks: [], convId: null, hq: '', q: '', wq: '', sugOpen: false, toast: null, bump: false };
+    if (k === 'closed') return m;
+    m.open = true;
+    var u = { t: 'user', text: NB_Q };
+    var ans = answerEntry('Vybral jsem 4 notebooky kolem 15 000 Kč, všechny skladem s doručením cca do 1 dne.', ['hp', 'lenovo', 'dell', 'acer'], FOLLOW_ALL);
+    switch (k) {
+      case 'welcome': m.entries = [{ t: 'welcome' }]; break;
+      case 'clarify': m.entries = [{ t: 'welcome' }, u, { t: 'clarify', step: 0, picked: null }]; break;
+      case 'progress': m.entries = [u, { t: 'progress', steps: STEPS_NB, cur: 2 }]; m.busy = true; break;
+      case 'answer': m.entries = [u, ans]; m.compare = ['hp']; break;
+      case 'compare': m.entries = [u, ans]; m.compare = ['hp', 'lenovo', 'dell']; m.view = 'compare'; break;
+      case 'watch': m.entries = [u, ans, { t: 'watch', id: 'hp' }]; break;
+      case 'empty': m.entries = [{ t: 'user', text: 'vysavač na hrnky' }, this.noResults('vysavač na hrnky')]; break;
+      case 'error': m.entries = [u, this.errorEntry()]; break;
+      case 'handoff': m.entries = [{ t: 'user', text: 'Chci mluvit s člověkem' }, { t: 'handoff' }]; break;
+      case 'login': m.entries = [{ t: 'user', text: 'Jaký je stav mé objednávky?' }, { t: 'login' }]; break;
+      case 'order': m.logged = true; m.entries = [{ t: 'user', text: 'Jaký je stav mé objednávky?' }, { t: 'order' }]; break;
+      case 'history': {
+        var now = Date.now(), H = 36e5;
+        var ex = [
+          { id: 'ex1', title: NB_Q, icon: 'laptop', at: now - 2 * H, entries: [u, answerEntry('Vybral jsem 4 notebooky kolem 15 000 Kč, všechny skladem s doručením cca do 1 dne.', ['hp', 'lenovo', 'dell', 'acer'], FOLLOW_ALL.slice(0, 2))] },
+          { id: 'ex2', title: 'Jaký je stav mé objednávky?', icon: 'box', at: now - 26 * H, entries: [{ t: 'user', text: 'Jaký je stav mé objednávky?' }, { t: 'login' }] },
+          { id: 'ex3', title: 'Chci mluvit s člověkem', icon: 'headset', at: now - 4 * 24 * H, entries: [{ t: 'user', text: 'Chci mluvit s člověkem' }, { t: 'handoff' }] }
+        ];
+        ex.forEach(function (h) { h.summary = summaryOf(h.entries); });
+        this.history = ex.concat(this.history.filter(function (h) { return !/^ex\d/.test(h.id); }));
+        m.entries = [{ t: 'welcome' }]; m.view = 'history'; break;
+      }
+    }
+    return m;
+  }
+
+  saveHistory() { try { localStorage.setItem(HKEY, JSON.stringify(this.history)); } catch (e) {} }
+  clearTimers() { this.timers.forEach(clearTimeout); this.timers = []; }
+  later(fn, ms) { var self = this; this.timers.push(setTimeout(function () { fn.call(self); }, ms)); }
+  up(scroll) { if (scroll) this.scroll = scroll; this.forceUpdate(); }
+  push(e) { this.m.entries.push(e); this.up(e.t === 'answer' ? 'answer' : 'end'); return e; }
+  pop(t) { var es = this.m.entries; for (var i = es.length - 1; i >= 0; i--) if (es[i].t === t) { es.splice(i, 1); break; } }
+  showToast(msg) {
+    var self = this; this.m.toast = msg; this.forceUpdate();
+    clearTimeout(this.toastT); this.toastT = setTimeout(function () { self.m.toast = null; self.forceUpdate(); }, 2600);
+  }
+  bumpCart() { var self = this; this.m.bump = false; this.forceUpdate(); setTimeout(function () { self.m.bump = true; self.forceUpdate(); setTimeout(function () { self.m.bump = false; self.forceUpdate(); }, 450); }, 10); }
+  copyText(text, msg) {
+    var self = this;
+    try { navigator.clipboard.writeText(text).then(function () { self.showToast(msg); }, function () { self.showToast(msg + ' (v náhledu nedostupné)'); }); }
+    catch (e) { this.showToast(msg + ' (v náhledu nedostupné)'); }
+  }
+
+  /* ---------- scénář ---------- */
+  openPanel(q) {
+    var m = this.m; m.open = true; m.view = 'chat'; m.sugOpen = false;
+    if (!m.entries.length) m.entries.push({ t: 'welcome' });
+    this.focusQ = true; this.up('end');
+    if (q) this.ask(q);
+  }
+  closePanel() { this.clearTimers(); this.m.busy = false; this.pop('progress'); this.m.open = false; this.up(); }
+  noResults(q) {
+    return { t: 'notice', kind: 'warn', title: 'Pro „' + q + '“ jsem nic nenašel', text: 'Zkuste napsat, k čemu zboží potřebujete, nebo rozpočet. Můžete se také podívat do kategorií.',
+      actions: [{ label: 'Notebook do školy', ask: NB_Q }, { label: 'Mluvit s člověkem', ask: 'Chci mluvit s člověkem' }] };
+  }
+  errorEntry() { return { t: 'notice', kind: 'err', title: 'Odpověď se nepodařilo načíst', text: 'Nejspíš vypadlo spojení. Váš dotaz zůstal uložený.', actions: [{ label: 'Zkusit znovu', icon: 'refresh', btn: true, retry: true }] }; }
+  ask(text) {
+    var m = this.m; if (m.busy) return;
+    m.view = 'chat';
+    this.push({ t: 'user', text: text });
+    var s = text.toLowerCase();
+    if (/notebook|laptop/.test(s)) { m.picks = []; this.later(function () { this.push({ t: 'clarify', step: 0, picked: null }); }, 450); }
+    else if (/objedn/.test(s)) { this.later(function () { this.push(m.logged ? { t: 'order' } : { t: 'login' }); }, 450); }
+    else if (/reklam|člověk|clovek|operátor|kontakt/.test(s)) { this.later(function () { this.push({ t: 'handoff' }); }, 450); }
+    else if (/lego|powerbank|sklo|s25|dárek|darek/.test(s)) {
+      this.run(['Hledám v katalogu', 'Kontroluji sklad'], function () {
+        this.push({ t: 'notice', kind: '', title: 'V prototypu je připravený jen výběr notebooků', text: 'V ostrém provozu by tu byly produktové dlaždice pro tento dotaz.', actions: [{ label: 'Ukázat notebooky do školy', icon: 'laptop', ask: NB_Q }] });
+      });
+    }
+    else if (/chyba|error/.test(s)) { this.run(['Hledám v katalogu'], function () { this.push(this.errorEntry()); }); }
+    else { this.run(['Hledám v katalogu', 'Kontroluji sklad'], function () { this.push(this.noResults(text)); }); }
+  }
+  run(steps, done) {
+    var m = this.m; m.busy = true;
+    var e = this.push({ t: 'progress', steps: steps, cur: 0 });
+    var i = 0, self = this;
+    (function next() {
+      self.later(function () {
+        i++;
+        if (i < steps.length) { e.cur = i; self.up('end'); next(); }
+        else { self.pop('progress'); m.busy = false; done.call(self); }
+      }, 800);
+    })();
+  }
+  answerAll() {
+    var m = this.m;
+    var use = m.picks[0] != null && m.picks[0] >= 0 ? PD.clarify[0].options[m.picks[0]] : null;
+    var size = m.picks[1] != null && m.picks[1] >= 0 ? PD.clarify[1].options[m.picks[1]] : null;
+    var lead = 'Vybral jsem 4 notebooky kolem 15 000 Kč, všechny skladem s doručením cca do 1 dne' + (use ? ' a vhodné pro **' + use.toLowerCase() + '**' : '') + '.';
+    if (size === '14" a lehký') lead += ' Kompaktní 14" displej má repasovaný Dell.';
+    if (use === 'Hry' || use === 'Grafika a video') lead += ' Na náročnější ' + (use === 'Hry' ? 'hry' : 'grafiku') + ' ale v tomto rozpočtu počítejte s kompromisy.';
+    this.run(STEPS_NB, function () { this.push(answerEntry(lead, ['hp', 'lenovo', 'dell', 'acer'], FOLLOW_ALL)); });
+  }
+  follow(id) {
+    var m = this.m;
+    if (id === 'cmp2') { m.compare = ['hp', 'lenovo']; m.view = 'compare'; this.up('top'); return; }
+    if (id === 'ram16') { this.push({ t: 'user', text: 'Jen s 16 GB RAM' }); this.run(['Filtruji podle paměti'], function () {
+      this.push(answerEntry('Do 15 000 Kč má 16 GB RAM jen **repasovaný Dell Latitude 5430**, s 24měsíční zárukou.', ['dell'], [{ id: 'all', label: 'Zpět na všechny 4' }, { id: 'watch-hp', label: 'Hlídat cenu HP 250R G9' }]));
+    }); return; }
+    if (id === 'cheap') { this.push({ t: 'user', text: 'Levnější varianty' }); this.run(['Řadím podle ceny'], function () {
+      this.push(answerEntry('Pod 13 000 Kč jsou tyto dva, seřazené od nejlevnějšího.', ['dell', 'lenovo'], [{ id: 'all', label: 'Zpět na všechny 4' }, { id: 'cmp-cheap', label: 'Porovnat je' }]));
+    }); return; }
+    if (id === 'cmp-cheap') { m.compare = ['dell', 'lenovo']; m.view = 'compare'; this.up('top'); return; }
+    if (id === 'all') { this.push({ t: 'user', text: 'Zpět na všechny 4' }); this.answerAll(); return; }
+    if (id === 'human') { this.ask('Chci mluvit s člověkem'); return; }
+    if (id === 'watch-hp') { this.push({ t: 'watch', id: 'hp' }); return; }
+  }
+  pick(step, i) {
+    var m = this.m, e = null;
+    m.entries.forEach(function (x) { if (x.t === 'clarify' && x.step === step) e = x; });
+    if (!e || e.picked != null) return;
+    e.picked = i; m.picks[step] = i; this.up();
+    if (step + 1 < PD.clarify.length) this.later(function () { this.push({ t: 'clarify', step: step + 1, picked: null }); }, 350);
+    else this.answerAll();
+  }
+  skip() {
+    var c = null; this.m.entries.forEach(function (x) { if (x.t === 'clarify') c = x; });
+    if (c && c.picked == null) { c.picked = -1; this.up(); this.answerAll(); }
+  }
+  stop() { this.clearTimers(); this.m.busy = false; this.pop('progress'); this.push({ t: 'notice', kind: '', title: 'Zastaveno', text: 'Odpověď jsem nedokončil.', actions: [{ label: 'Pokračovat', icon: 'refresh', btn: true, retry: true }] }); }
+  retry() { this.pop('notice'); this.answerAll(); }
+  addCart(id) {
+    var m = this.m;
+    if (this.inCart.indexOf(id) > -1) { this.showToast('Už je v košíku'); return; }
+    this.inCart.push(id); this.cart++; this.bumpCart();
+    this.showToast('Přidáno do košíku: ' + prod(id).name);
+  }
+  toggleCmp(id) {
+    var c = this.m.compare, i = c.indexOf(id);
+    if (i > -1) c.splice(i, 1);
+    else { if (c.length >= 3) { this.showToast('Porovnat jde nejvýš 3 produkty'); this.forceUpdate(); return; } c.push(id); }
+    this.up();
+  }
+  dismiss(id) { var m = this.m; if (m.dismissed.indexOf(id) < 0) m.dismissed.push(id); var i = m.compare.indexOf(id); if (i > -1) m.compare.splice(i, 1); this.up(); }
+  undo(id) { var d = this.m.dismissed, i = d.indexOf(id); if (i > -1) d.splice(i, 1); this.up(); }
+  watch(id) { if (this.m.watch[id]) { this.showToast('Cenu už hlídám'); return; } this.push({ t: 'watch', id: id }); }
+  rate(e, v) { e.rating = e.rating === v ? null : v; e.reason = null; this.up(); if (e.rating === 'up') this.showToast('Díky za hodnocení'); }
+  saveWatch(e) {
+    var p = prod(e.id), n = parseInt(String(e.input || '').replace(/\D/g, ''), 10);
+    if (!n) e.error = 'Zadejte cílovou cenu v korunách.';
+    else if (n >= p.price) e.error = 'Zadejte částku nižší než aktuální cena ' + kc(p.price) + '.';
+    else { e.error = null; e.done = true; e.target = n; this.m.watch[e.id] = n; this.showToast('Hlídám cenu'); }
+    this.up();
+  }
+  login() { this.m.logged = true; this.pop('login'); this.push({ t: 'ai', text: 'Přihlášení proběhlo (ukázka).' }); this.push({ t: 'order' }); }
+  how() { this.push({ t: 'notice', kind: '', title: 'Jak asistent funguje', text: 'Asistent je umělá inteligence. Hledá v katalogu bscom.cz; ceny a dostupnost bere přímo z e-shopu, ne z vlastního odhadu. Může se splést, proto si důležité údaje ověřte na detailu produktu. [Text o zpracování údajů doplní bscom.]', actions: [] }); }
+
+  /* ---------- historie ---------- */
+  archive() {
+    var m = this.m;
+    var list = m.entries.filter(function (e) { return e.t !== 'progress' && e.t !== 'welcome'; });
+    if (!hasUser(list)) return false;
+    var first = list.filter(function (e) { return e.t === 'user'; })[0];
+    var item = { id: m.convId || ('c' + Date.now()), title: first.text, summary: summaryOf(list), icon: iconOf(list), at: Date.now(), entries: JSON.parse(JSON.stringify(list)) };
+    this.history = [item].concat(this.history.filter(function (h) { return h.id !== item.id; })).slice(0, 30);
+    m.convId = item.id;
+    this.saveHistory();
+    return true;
+  }
+  newChat() {
+    var m = this.m; this.clearTimers(); m.busy = false;
+    var saved = this.archive();
+    m.entries = [{ t: 'welcome' }]; m.convId = null; m.compare = []; m.dismissed = []; m.view = 'chat';
+    this.up('top');
+    if (saved) this.showToast('Předchozí konverzace je v historii');
+  }
+  openConv(id) {
+    var m = this.m;
+    if (id === m.convId) { m.view = 'chat'; this.up('end'); return; }
+    this.clearTimers(); m.busy = false;
+    this.archive();
+    var h = this.history.filter(function (x) { return x.id === id; })[0]; if (!h) return;
+    m.entries = JSON.parse(JSON.stringify(h.entries)); m.convId = id; m.compare = []; m.dismissed = []; m.view = 'chat';
+    this.up('end');
+  }
+  delConv(id) {
+    var del = this.history.filter(function (h) { return h.id === id; })[0];
+    this.history = this.history.filter(function (h) { return h.id !== id; }); this.saveHistory();
+    if (this.m.convId === id) this.m.convId = null;
+    this.showToast('Konverzace „' + (del ? del.title : '') + '“ smazána');
+  }
+  toggleHistory() { var m = this.m; if (m.view !== 'history') this.archive(); m.view = m.view === 'history' ? 'chat' : 'history'; m.hq = ''; this.up(m.view === 'history' ? 'top' : 'end'); }
+
+  /* ---------- pohled ---------- */
+  histItem(h, current, compact) {
+    var self = this;
+    return { I: I, icon: I[h.icon] || I.chat, trash: I.trash, title: h.title, sub: (current ? 'Právě otevřená · ' : '') + h.summary + ' · ' + relTime(h.at),
+      cls: 'hist-item' + (current ? ' is-current' : '') + (compact ? ' compact' : ''), delLabel: 'Smazat konverzaci ' + h.title,
+      open: function () { self.openConv(h.id); }, del: function () { self.delConv(h.id); } };
+  }
+  card(id, e) {
+    var self = this, m = this.m, p = prod(id);
+    var dismissed = m.dismissed.indexOf(id) > -1, inCart = this.inCart.indexOf(id) > -1, cmp = m.compare.indexOf(id) > -1;
+    return { I: I, name: p.name, hiddenLabel: p.name + ' – skryto', dismissed: dismissed, shown: !dismissed, cls: 'pcard' + (cmp ? ' is-compare' : ''),
+      tag: p.tag, tagCls: 'tag ' + p.tagKind, screen: p.screen, href: p.href, cpu: p.cpu, mem: p.ram + ' GB RAM · SSD ' + p.ssd + ' GB', display: p.display,
+      stock: p.stock, delivery: p.delivery, priceStr: kc(p.price), inCart: inCart, notInCart: !inCart, compare: cmp,
+      watchPressed: m.watch[id] ? 'true' : 'false',
+      cart: function () { self.addCart(id); }, toggleCmp: function () { self.toggleCmp(id); },
+      watch: function () { self.watch(id); }, dismiss: function () { self.dismiss(id); }, undo: function () { self.undo(id); } };
+  }
+  entryVm(e, idx, recent) {
+    var self = this, m = this.m;
+    var v = { I: I, isWelcome: false, isUser: false, isClarify: false, isProgress: false, isAnswer: false, isNotice: false, isHandoff: false, isLogin: false, isOrder: false, isWatch: false, isAi: false };
+    switch (e.t) {
+      case 'welcome':
+        v.isWelcome = true;
+        v.tiles = PD.suggestions.map(function (s) { return { icon: I[s.icon], title: s.title, sub: s.sub, click: function () { self.ask(s.q); } }; });
+        v.quick = PD.quick.map(function (q) { return { icon: I[q.icon], label: q.label, click: function () { self.ask(q.q); } }; });
+        v.recent = recent; v.hasRecent = recent.length > 0;
+        v.openHistory = function () { self.toggleHistory(); };
+        break;
+      case 'user': v.isUser = true; v.text = e.text; break;
+      case 'clarify': {
+        v.isClarify = true;
+        var st = PD.clarify[e.step];
+        v.q = st.q; v.stepNo = e.step + 1; v.total = PD.clarify.length; v.barCls = 'w' + (e.step + 1);
+        v.options = st.options.map(function (o, i) {
+          var on = e.picked === i;
+          return { label: o, on: on, icon: I.check, pressed: on ? 'true' : 'false', disabled: e.picked != null && !on, click: function () { self.pick(e.step, i); } };
+        });
+        v.showSkip = e.picked == null; v.skip = function () { self.skip(); };
+        break;
+      }
+      case 'progress':
+        v.isProgress = true;
+        v.steps = e.steps.map(function (t, i) { var done = i < e.cur, now = i === e.cur; return { text: t, done: done, now: now, pending: !done && !now, cls: done ? 'done' : now ? 'now' : '', icon: I.check }; });
+        v.showSkel = e.cur >= e.steps.length - 1; v.stop = function () { self.stop(); };
+        break;
+      case 'answer':
+        v.isAnswer = true;
+        v.intro = seg(e.intro);
+        v.cards = e.ids.map(function (id) { return self.card(id, e); });
+        v.followups = (e.followups || []).map(function (f) { return { label: f.label, click: function () { self.follow(f.id); } }; });
+        v.hasFollow = v.followups.length > 0;
+        v.upPressed = e.rating === 'up' ? 'true' : 'false'; v.downPressed = e.rating === 'down' ? 'true' : 'false';
+        v.rateUp = function () { self.rate(e, 'up'); }; v.rateDown = function () { self.rate(e, 'down'); };
+        v.copy = function () { self.copyText(plain(e.intro), 'Odpověď zkopírována'); };
+        v.showWhy = e.rating === 'down' && !e.reason; v.showThanks = !!e.reason;
+        v.reasons = ['Nepřesné informace', 'Nehodí se mi', 'Něco jiného'].map(function (r) { return { label: r, click: function () { e.reason = r; self.up(); } }; });
+        break;
+      case 'notice':
+        v.isNotice = true;
+        v.cls = 'notice ' + (e.kind || ''); v.role = e.kind === 'err' ? 'alert' : 'status';
+        v.icon = e.kind === 'err' || e.kind === 'warn' ? I.alert : I.info;
+        v.title = e.title; v.text = e.text;
+        v.actions = (e.actions || []).map(function (a) {
+          return { label: a.label, cls: a.btn ? 'btn-s' : 'chip', hasIcon: !!a.icon, icon: I[a.icon] || I.info,
+            click: function () { if (a.retry) self.retry(); else if (a.ask) self.ask(a.ask); } };
+        });
+        v.hasActions = v.actions.length > 0;
+        break;
+      case 'handoff':
+        v.isHandoff = true;
+        v.copyPhone = function () { self.copyText(PD.phone, 'Číslo zkopírováno'); };
+        v.write = function () { self.showToast('V ostrém provozu otevře formulář se shrnutím konverzace'); };
+        break;
+      case 'login': v.isLogin = true; v.login = function () { self.login(); }; break;
+      case 'order':
+        v.isOrder = true;
+        v.track = function () { self.showToast('V ostrém provozu otevře sledování zásilky u dopravce.'); };
+        v.reclaim = function () { self.ask('Chci reklamovat zboží'); };
+        break;
+      case 'watch': {
+        v.isWatch = true;
+        var p = prod(e.id);
+        v.name = p.name; v.priceStr = kc(p.price); v.done = !!e.done; v.form = !e.done;
+        v.targetStr = e.target ? kc(e.target) : '';
+        v.inputId = 'watch-' + idx; v.input = e.input || '';
+        v.ph = 'např. ' + kc(Math.floor(p.price * 0.9 / 100) * 100).replace(' Kč', '');
+        v.hasError = !!e.error; v.error = e.error || '';
+        v.onInput = function (ev) { e.input = ev.target.value; self.forceUpdate(); };
+        v.submit = function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); self.saveWatch(e); };
+        break;
+      }
+      case 'ai': v.isAi = true; v.text = e.text; break;
+    }
+    return v;
+  }
+
+  renderVals() {
+    var self = this, m = this.m;
+    var sorted = this.history.slice().sort(function (a, b) { return b.at - a.at; });
+    var recent = sorted.filter(function (h) { return h.id !== m.convId; }).slice(0, 2).map(function (h) { return self.histItem(h, false, true); });
+
+    var hist = null;
+    if (m.view === 'history') {
+      var f = (m.hq || '').trim().toLowerCase();
+      var items = sorted.filter(function (h) { return !f || (h.title + ' ' + h.summary).toLowerCase().indexOf(f) > -1; });
+      var groups = [], by = {};
+      items.forEach(function (h) { var g = groupOf(h.at); if (!by[g]) { by[g] = { label: g, items: [] }; groups.push(by[g]); } by[g].items.push(self.histItem(h, h.id === m.convId, false)); });
+      hist = { groups: groups, hasAny: sorted.length > 0, emptyAll: sorted.length === 0, noMatch: sorted.length > 0 && items.length === 0,
+        canBack: hasUser(m.entries), back: function () { m.view = 'chat'; self.up('end'); } };
+    }
+
+    var cmp = null;
+    if (m.view === 'compare') {
+      var ps = m.compare.map(prod);
+      var rowsDef = [
+        ['Cena', function (p) { return kc(p.price); }, 'min', function (p) { return p.price; }],
+        ['Procesor', function (p) { return p.cpu; }],
+        ['Operační paměť', function (p) { return p.ram + ' GB'; }, 'max', function (p) { return p.ram; }],
+        ['Úložiště', function (p) { return 'SSD ' + p.ssd + ' GB'; }, 'max', function (p) { return p.ssd; }],
+        ['Displej', function (p) { return p.display; }],
+        ['Systém', function (p) { return p.os; }],
+        ['Hmotnost', function (p) { return p.weight; }],
+        ['Výbava', function (p) { return p.extra; }],
+        ['Dostupnost', function (p) { return p.stock + ', ' + p.delivery; }]
+      ];
+      var rowCls = 'crow n' + ps.length;
+      cmp = { n: ps.length, rowCls: rowCls + ' chead',
+        back: function () { m.view = 'chat'; self.up('end'); },
+        heads: ps.map(function (p) { var inC = self.inCart.indexOf(p.id) > -1; return { name: p.name, priceStr: kc(p.price), cartLabel: inC ? 'V košíku' : 'Do košíku', icon: inC ? I.check : I.cart, cart: function () { self.addCart(p.id); } }; }),
+        rows: rowsDef.map(function (r) {
+          var vals = ps.map(r[1]);
+          var diff = vals.some(function (x) { return x !== vals[0]; });
+          var best = null;
+          if (r[2] && diff) { var nums = ps.map(r[3]); var b = r[2] === 'min' ? Math.min.apply(null, nums) : Math.max.apply(null, nums); best = nums.map(function (n) { return n === b; }); }
+          return { label: r[0], rowCls: rowCls, cells: vals.map(function (x, i) { return { v: x, cls: 'cc' + (best && best[i] ? ' best' : diff ? ' diff' : '') }; }) };
+        }) };
+    }
+
+    return {
+      I: I,
+      wq: m.wq, sugOpen: m.sugOpen,
+      onWq: function (ev) { m.wq = ev.target.value; m.sugOpen = m.wq.trim().length >= 3; self.forceUpdate(); },
+      onWqKey: function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); var v = m.wq.trim(); if (v) { m.sugOpen = false; self.openPanel(v); } } },
+      askSug: function () { var v = m.wq.trim(); m.sugOpen = false; self.openPanel(v); },
+      askNotebook: function () { self.openPanel(NB_Q); },
+      askLego: function () { self.openPanel('Hledám lego vhodné pro mou 5letou dceru do 2 000 Kč'); },
+      askPower: function () { self.openPanel('Nějaká levná powerbanka s kapacitou alespoň 20 000 mAh?'); },
+      openPanel: function () { self.openPanel(); },
+      closePanel: function () { self.closePanel(); },
+      cart: this.cart, cartCls: 'wf-cart' + (m.bump ? ' bump' : ''),
+      open: m.open, closed: !m.open,
+      panelCls: 'ap' + (this.props.bubbles ? ' bubbles' : '') + (m.wide ? ' wide' : '') + (m.view === 'history' ? ' in-history' : ''),
+      onPanelKey: function (ev) { if (ev.key === 'Escape') self.closePanel(); },
+      histPressed: m.view === 'history' ? 'true' : 'false',
+      toggleHistory: function () { self.toggleHistory(); },
+      newChat: function () { self.newChat(); },
+      toggleWide: function () { m.wide = !m.wide; self.up(); },
+      wideIcon: m.wide ? I.shrink : I.expand, wideLabel: m.wide ? 'Zúžit' : 'Rozšířit',
+      isHistory: m.view === 'history', isCompare: m.view === 'compare', isChat: m.view === 'chat',
+      hist: hist || { groups: [], hasAny: false, emptyAll: false, noMatch: false, canBack: false, back: function () {} },
+      hq: m.hq, onHq: function (ev) { m.hq = ev.target.value; self.forceUpdate(); },
+      cmp: cmp || { n: 0, rowCls: 'crow', back: function () {}, heads: [], rows: [] },
+      entries: m.view === 'chat' ? m.entries.map(function (e, i) { return self.entryVm(e, i, recent); }) : [],
+      cmpBarOn: m.view === 'chat' && m.compare.length > 0, cmpCount: m.compare.length, cmpDisabled: m.compare.length < 2,
+      openCompare: function () { if (m.compare.length >= 2) { m.view = 'compare'; self.up('top'); } },
+      q: m.q, sendDisabled: m.busy || !m.q.trim(),
+      setLog: this.setLog, setQ: this.setQ,
+      onQ: function (ev) { m.q = ev.target.value; var t = ev.target; t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 120) + 'px'; self.forceUpdate(); },
+      onQKey: function (ev) { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); self.sendQ(); } },
+      submitQ: function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); self.sendQ(); },
+      how: function () { self.how(); },
+      toastOn: !!m.toast, toast: m.toast || ''
+    };
+  }
+  sendQ() {
+    var m = this.m, v = m.q.trim();
+    if (!v || m.busy) return;
+    m.q = ''; if (this.qEl) this.qEl.style.height = 'auto';
+    this.ask(v);
+  }
+}
+</script>
+</body>
+</html>

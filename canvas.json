@@ -1,0 +1,206 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Desktop-04-Odpoved.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Desktop · Odpověď s produkty",
+      "w": 1440,
+      "x": 0,
+      "y": 2784
+    },
+    "Desktop-05-Porovnani.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Desktop · Porovnání",
+      "w": 1440,
+      "x": 1520,
+      "y": 2784
+    },
+    "Desktop-12-Historie.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Desktop · Historie konverzací",
+      "w": 1440,
+      "x": 3040,
+      "y": 2784
+    },
+    "Main.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Desktop · prototyp",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Mobil-01-Uvitani.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Uvítání s dlaždicemi",
+      "w": 390,
+      "x": 0,
+      "y": 1560
+    },
+    "Mobil-02-Upresneni.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Upřesňující otázka",
+      "w": 390,
+      "x": 470,
+      "y": 1560
+    },
+    "Mobil-03-Prubeh.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Průběh odpovědi",
+      "w": 390,
+      "x": 940,
+      "y": 1560
+    },
+    "Mobil-04-Odpoved.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Odpověď s produkty",
+      "w": 390,
+      "x": 1410,
+      "y": 1560
+    },
+    "Mobil-05-Porovnani.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Porovnání",
+      "w": 390,
+      "x": 1880,
+      "y": 1560
+    },
+    "Mobil-06-Hlidani-ceny.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Hlídání ceny",
+      "w": 390,
+      "x": 2350,
+      "y": 1560
+    },
+    "Mobil-07-Nic-nenalezeno.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Nic nenalezeno",
+      "w": 390,
+      "x": 2820,
+      "y": 1560
+    },
+    "Mobil-08-Chyba.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Chyba",
+      "w": 390,
+      "x": 3290,
+      "y": 1560
+    },
+    "Mobil-09-Predani.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Předání člověku",
+      "w": 390,
+      "x": 3760,
+      "y": 1560
+    },
+    "Mobil-10-Objednavka-prihlaseni.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Objednávka – přihlášení",
+      "w": 390,
+      "x": 4230,
+      "y": 1560
+    },
+    "Mobil-11-Objednavka-detail.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Objednávka – detail",
+      "w": 390,
+      "x": 4700,
+      "y": 1560
+    },
+    "Mobil-12-Historie.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Historie konverzací",
+      "w": 390,
+      "x": 5170,
+      "y": 1560
+    },
+    "Mobil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · prototyp",
+      "w": 390,
+      "x": 2420,
+      "y": 0
+    },
+    "Tablet.dc.html": {
+      "h": 1180,
+      "is_interactive": true,
+      "title": "Tablet · prototyp",
+      "w": 820,
+      "x": 1520,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-08T06:24:24Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "t1": {
+      "kind": "title1",
+      "maxW": 2810,
+      "text": "Prototyp – spusťte Play a proklikejte",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "t2": {
+      "kind": "title1",
+      "maxW": 5560,
+      "text": "Stavy na mobilu",
+      "w": 240,
+      "x": 0,
+      "y": 1260
+    },
+    "t3": {
+      "kind": "title1",
+      "maxW": 4480,
+      "text": "Klíčové stavy na desktopu",
+      "w": 240,
+      "x": 0,
+      "y": 2484
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Tablet.dc.html",
+    "Mobil.dc.html",
+    "Mobil-01-Uvitani.dc.html",
+    "Mobil-02-Upresneni.dc.html",
+    "Mobil-03-Prubeh.dc.html",
+    "Mobil-04-Odpoved.dc.html",
+    "Mobil-05-Porovnani.dc.html",
+    "Mobil-06-Hlidani-ceny.dc.html",
+    "Mobil-07-Nic-nenalezeno.dc.html",
+    "Mobil-08-Chyba.dc.html",
+    "Mobil-09-Predani.dc.html",
+    "Mobil-10-Objednavka-prihlaseni.dc.html",
+    "Mobil-11-Objednavka-detail.dc.html",
+    "Mobil-12-Historie.dc.html",
+    "Desktop-04-Odpoved.dc.html",
+    "Desktop-05-Porovnani.dc.html",
+    "Desktop-12-Historie.dc.html"
+  ],
+  "pages": [],
+  "title": "Asistent bscom – návrh"
+}
