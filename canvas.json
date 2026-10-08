@@ -26,6 +26,22 @@
       "x": 3040,
       "y": 2784
     },
+    "Jednoduchy-Mobil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Jednoduchý · mobil",
+      "w": 390,
+      "x": 1520,
+      "y": 4064
+    },
+    "Jednoduchy.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Jednoduchý · desktop",
+      "w": 1440,
+      "x": 0,
+      "y": 4064
+    },
     "Main.dc.html": {
       "h": 900,
       "is_interactive": true,
@@ -146,53 +162,37 @@
       "x": 1520,
       "y": 0
     },
-    "Jednoduchy.dc.html": {
-      "x": 0,
-      "y": 4064,
-      "w": 1440,
-      "h": 900,
-      "title": "Jednoduchý · desktop",
-      "is_interactive": true
-    },
-    "Jednoduchy-Mobil.dc.html": {
-      "x": 1520,
-      "y": 4064,
-      "w": 390,
+    "Jednoduchy-Mobil-01-Vyber-chatu.dc.html": {
       "h": 844,
-      "title": "Jednoduchý · mobil",
-      "is_interactive": true
-    },
-    "Jednoduchy-Mobil-01-Popup-vyber.dc.html": {
+      "is_interactive": true,
+      "title": "Jednoduchý · mobil · Výběr chatu",
+      "w": 390,
       "x": 1990,
-      "y": 4064,
-      "w": 390,
-      "h": 844,
-      "title": "Jednoduchý · mobil · Popup – výběr chatu",
-      "is_interactive": true
+      "y": 4064
     },
-    "Jednoduchy-Mobil-02-Popup-odpoved.dc.html": {
+    "Jednoduchy-Mobil-02-Novy-chat.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Jednoduchý · mobil · Nový chat",
+      "w": 390,
       "x": 2460,
-      "y": 4064,
-      "w": 390,
-      "h": 844,
-      "title": "Jednoduchý · mobil · Popup – odpověď",
-      "is_interactive": true
+      "y": 4064
     },
-    "Jednoduchy-Mobil-03-Stranka-vyber.dc.html": {
+    "Jednoduchy-Mobil-03-Prubeh.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Jednoduchý · mobil · Průběh odpovědi",
+      "w": 390,
       "x": 2930,
-      "y": 4064,
-      "w": 390,
-      "h": 844,
-      "title": "Jednoduchý · mobil · Stránka asistenta – výběr",
-      "is_interactive": true
+      "y": 4064
     },
-    "Jednoduchy-Mobil-04-Stranka-odpoved.dc.html": {
-      "x": 3400,
-      "y": 4064,
-      "w": 390,
+    "Jednoduchy-Mobil-04-Odpoved.dc.html": {
       "h": 844,
-      "title": "Jednoduchý · mobil · Stránka asistenta – odpověď",
-      "is_interactive": true
+      "is_interactive": true,
+      "title": "Jednoduchý · mobil · Odpověď s produkty",
+      "w": 390,
+      "x": 3400,
+      "y": 4064
     }
   },
   "createdOnFiles": {
@@ -232,6 +232,7 @@
       "kind": "title1",
       "maxW": 3800,
       "text": "Jednoduchý návrh – funkce jako dnes na bscom.cz",
+      "w": 240,
       "x": 0,
       "y": 3764
     }
@@ -257,10 +258,10 @@
     "Desktop-12-Historie.dc.html",
     "Jednoduchy.dc.html",
     "Jednoduchy-Mobil.dc.html",
-    "Jednoduchy-Mobil-01-Popup-vyber.dc.html",
-    "Jednoduchy-Mobil-02-Popup-odpoved.dc.html",
-    "Jednoduchy-Mobil-03-Stranka-vyber.dc.html",
-    "Jednoduchy-Mobil-04-Stranka-odpoved.dc.html"
+    "Jednoduchy-Mobil-01-Vyber-chatu.dc.html",
+    "Jednoduchy-Mobil-02-Novy-chat.dc.html",
+    "Jednoduchy-Mobil-03-Prubeh.dc.html",
+    "Jednoduchy-Mobil-04-Odpoved.dc.html"
   ],
   "pages": [],
   "title": "Asistent bscom – návrh"
