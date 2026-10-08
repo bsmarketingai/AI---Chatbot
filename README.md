@@ -15,6 +15,8 @@ Stránka běží přímo ze souborů plátna Claude Design. Každý `*.dc.html` 
 | `Main.dc.html` | celý interaktivní prototyp (přizpůsobí se šířce okna) |
 | `Tablet.dc.html`, `Mobil.dc.html` | prototyp v pevné šířce 820 a 390 px |
 | `Mobil-NN-*.dc.html`, `Desktop-NN-*.dc.html` | jednotlivé stavy |
+| `Jednoduchy.dc.html` | jednoduchý návrh: jen funkce, které má asistent dnes na bscom.cz |
+| `Jednoduchy-Mobil*.dc.html` | jednoduchý návrh na mobilu a jeho stavy |
 | `prototyp.css` | tokeny a styly všech komponent |
 | `canvas.json` | rozložení plátna (pro sledování změn) |
 | `support.js` | běhové prostředí Claude Design (načte React 18 z cdn.jsdelivr.net) |

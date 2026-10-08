@@ -145,6 +145,54 @@
       "w": 820,
       "x": 1520,
       "y": 0
+    },
+    "Jednoduchy.dc.html": {
+      "x": 0,
+      "y": 4064,
+      "w": 1440,
+      "h": 900,
+      "title": "Jednoduchý · desktop",
+      "is_interactive": true
+    },
+    "Jednoduchy-Mobil.dc.html": {
+      "x": 1520,
+      "y": 4064,
+      "w": 390,
+      "h": 844,
+      "title": "Jednoduchý · mobil",
+      "is_interactive": true
+    },
+    "Jednoduchy-Mobil-01-Popup-vyber.dc.html": {
+      "x": 1990,
+      "y": 4064,
+      "w": 390,
+      "h": 844,
+      "title": "Jednoduchý · mobil · Popup – výběr chatu",
+      "is_interactive": true
+    },
+    "Jednoduchy-Mobil-02-Popup-odpoved.dc.html": {
+      "x": 2460,
+      "y": 4064,
+      "w": 390,
+      "h": 844,
+      "title": "Jednoduchý · mobil · Popup – odpověď",
+      "is_interactive": true
+    },
+    "Jednoduchy-Mobil-03-Stranka-vyber.dc.html": {
+      "x": 2930,
+      "y": 4064,
+      "w": 390,
+      "h": 844,
+      "title": "Jednoduchý · mobil · Stránka asistenta – výběr",
+      "is_interactive": true
+    },
+    "Jednoduchy-Mobil-04-Stranka-odpoved.dc.html": {
+      "x": 3400,
+      "y": 4064,
+      "w": 390,
+      "h": 844,
+      "title": "Jednoduchý · mobil · Stránka asistenta – odpověď",
+      "is_interactive": true
     }
   },
   "createdOnFiles": {
@@ -179,6 +227,13 @@
       "w": 240,
       "x": 0,
       "y": 2484
+    },
+    "t4": {
+      "kind": "title1",
+      "maxW": 3800,
+      "text": "Jednoduchý návrh – funkce jako dnes na bscom.cz",
+      "x": 0,
+      "y": 3764
     }
   },
   "order": [
@@ -199,7 +254,13 @@
     "Mobil-12-Historie.dc.html",
     "Desktop-04-Odpoved.dc.html",
     "Desktop-05-Porovnani.dc.html",
-    "Desktop-12-Historie.dc.html"
+    "Desktop-12-Historie.dc.html",
+    "Jednoduchy.dc.html",
+    "Jednoduchy-Mobil.dc.html",
+    "Jednoduchy-Mobil-01-Popup-vyber.dc.html",
+    "Jednoduchy-Mobil-02-Popup-odpoved.dc.html",
+    "Jednoduchy-Mobil-03-Stranka-vyber.dc.html",
+    "Jednoduchy-Mobil-04-Stranka-odpoved.dc.html"
   ],
   "pages": [],
   "title": "Asistent bscom – návrh"

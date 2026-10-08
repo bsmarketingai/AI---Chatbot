@@ -27,13 +27,13 @@ body{margin:0}
         <svg class="i" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg>
         <sc-if value="{{sugOpen}}" hint-placeholder-val="{{false}}">
           <div class="wf-suggest">
-            <button type="button" class="ask" onClick="{{askSug}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg><span>Zeptat se asistenta: „{{wq}}“</span></button>
+            <button type="button" class="ask" onClick="{{askSug}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.aisearch.d}}" fill="{{I.aisearch.f}}" stroke="{{I.aisearch.s}}"></path><path d="{{I.aisearchB.d}}" fill="{{I.aisearchB.f}}" stroke="{{I.aisearchB.s}}"></path></svg><span>Zeptat se asistenta: „{{wq}}“</span></button>
             <button type="button" class="wire" tabindex="-1"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg><span>[návrhy produktů z našeptávače]</span></button>
             <button type="button" class="wire" tabindex="-1"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.search.d}}" fill="{{I.search.f}}" stroke="{{I.search.s}}"></path></svg><span>[návrhy kategorií]</span></button>
           </div>
         </sc-if>
       </div>
-      <button type="button" class="wf-ai" onClick="{{openPanel}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg><span>AI asistent</span></button>
+      <button type="button" class="wf-ai" onClick="{{openPanel}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.aisearch.d}}" fill="{{I.aisearch.f}}" stroke="{{I.aisearch.s}}"></path><path d="{{I.aisearchB.d}}" fill="{{I.aisearchB.f}}" stroke="{{I.aisearchB.s}}"></path></svg><span>AI asistent</span></button>
       <div class="wf-icons">
         <svg class="i" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Můj účet"><path d="{{I.user.d}}" fill="{{I.user.f}}" stroke="{{I.user.s}}"></path></svg>
         <span class="{{cartCls}}"><svg class="i" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Košík"><path d="{{I.cart.d}}" fill="{{I.cart.f}}" stroke="{{I.cart.s}}"></path></svg><b>{{cart}}</b></span>
@@ -44,7 +44,7 @@ body{margin:0}
     <main class="wf-main">
       <div class="wf-hero"><div class="wf-box" data-label="[hlavní banner]"></div><div class="wf-box" data-label="[vedlejší banner]"></div></div>
       <section class="entry" aria-label="Nákupní asistent">
-        <span class="entry__ico"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg></span>
+        <span class="entry__ico"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path><path d="{{I.sparkB.d}}" fill="{{I.sparkB.f}}" stroke="{{I.sparkB.s}}"></path></svg></span>
         <div><h2>Nevíte, co vybrat? Zeptejte se.</h2><p>Nákupní asistent najde a porovná zboží podle toho, k čemu ho potřebujete.</p></div>
         <div class="chips">
           <button type="button" class="chip" onClick="{{askNotebook}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.laptop.d}}" fill="{{I.laptop.f}}" stroke="{{I.laptop.s}}"></path></svg>Notebook do školy</button>
@@ -66,14 +66,14 @@ body{margin:0}
 
   <!-- ===== Plovoucí spouštěč ===== -->
   <sc-if value="{{closed}}" hint-placeholder-val="{{true}}">
-    <button type="button" class="launcher" onClick="{{openPanel}}" aria-label="Otevřít nákupního asistenta"><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg><span>Nákupní asistent</span></button>
+    <button type="button" class="launcher" onClick="{{openPanel}}" aria-label="Otevřít nákupního asistenta"><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path><path d="{{I.sparkB.d}}" fill="{{I.sparkB.f}}" stroke="{{I.sparkB.s}}"></path></svg><span>Nákupní asistent</span></button>
   </sc-if>
 
   <!-- ===== Panel asistenta ===== -->
   <sc-if value="{{open}}" hint-placeholder-val="{{false}}">
   <section class="{{panelCls}}" role="dialog" aria-modal="false" aria-labelledby="ap-t" onKeyDown="{{onPanelKey}}">
     <header class="ap-head">
-      <span class="av" style="width: 32px; height: 32px"><svg class="i" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg></span>
+      <span class="av" style="width: 32px; height: 32px"><svg class="i" width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path><path d="{{I.sparkB.d}}" fill="{{I.sparkB.f}}" stroke="{{I.sparkB.s}}"></path></svg></span>
       <div class="ap-title"><b id="ap-t">Nákupní asistent<span class="ai-tag">AI</span></b><small>Odpověď obvykle do 10 s</small></div>
       <button type="button" class="ibtn hist-btn" aria-pressed="{{histPressed}}" onClick="{{toggleHistory}}" aria-label="Historie konverzací" title="Historie konverzací"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.history.d}}" fill="{{I.history.f}}" stroke="{{I.history.s}}"></path></svg></button>
       <button type="button" class="ibtn" onClick="{{newChat}}" aria-label="Nová konverzace" title="Nová konverzace"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.newchat.d}}" fill="{{I.newchat.f}}" stroke="{{I.newchat.s}}"></path></svg></button>
@@ -119,7 +119,7 @@ body{margin:0}
       <sc-if value="{{isCompare}}" hint-placeholder-val="{{false}}">
         <div class="compare">
           <button type="button" class="btn-s back" onClick="{{cmp.back}}"><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.back.d}}" fill="{{I.back.f}}" stroke="{{I.back.s}}"></path></svg>Zpět do konverzace</button>
-          <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path></svg></span><div class="body"><div class="txt"><p><b>Porovnání {{cmp.n}} notebooků.</b> Zvýrazněné jsou rozdíly, zeleně nejlepší hodnota.</p></div></div></div>
+          <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{I.spark.d}}" fill="{{I.spark.f}}" stroke="{{I.spark.s}}"></path><path d="{{I.sparkB.d}}" fill="{{I.sparkB.f}}" stroke="{{I.sparkB.s}}"></path></svg></span><div class="body"><div class="txt"><p><b>Porovnání {{cmp.n}} notebooků.</b> Zvýrazněné jsou rozdíly, zeleně nejlepší hodnota.</p></div></div></div>
           <div class="tblw">
             <div class="ctbl" role="table" aria-label="Porovnání notebooků">
               <div class="{{cmp.rowCls}}" role="row">
@@ -149,7 +149,7 @@ body{margin:0}
 
             <!-- Uvítání s dlaždicemi -->
             <sc-if value="{{e.isWelcome}}" hint-placeholder-val="{{true}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="welcome txt"><h2>Dobrý den, s čím vám pomohu?</h2><p>Jsem nákupní asistent bscom. Zeptejte se vlastními slovy.</p></div>
                 <ul class="can">
                   <li><svg class="i" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.check.d}}" fill="{{e.I.check.f}}" stroke="{{e.I.check.s}}"></path></svg>Najdu a porovnám zboží podle vašich potřeb</li>
@@ -186,7 +186,7 @@ body{margin:0}
 
             <!-- Upřesňující otázka -->
             <sc-if value="{{e.isClarify}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="clarify" role="group" aria-label="{{e.q}}">
                   <span class="step">Upřesnění {{e.stepNo}} z {{e.total}}</span>
                   <div class="bar"><i class="{{e.barCls}}"></i></div>
@@ -203,7 +203,7 @@ body{margin:0}
 
             <!-- Průběh odpovědi -->
             <sc-if value="{{e.isProgress}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="progress" aria-busy="true">
                   <ol>
                     <sc-for list="{{e.steps}}" as="s" hint-placeholder-count="3">
@@ -223,7 +223,7 @@ body{margin:0}
 
             <!-- Odpověď s produkty -->
             <sc-if value="{{e.isAnswer}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="txt"><p><sc-for list="{{e.intro}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.b}}" hint-placeholder-val="{{false}}"><b>{{s.t}}</b></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{true}}"><span>{{s.t}}</span></sc-if></sc-for></p></div>
                 <div class="carousel" role="list">
                   <sc-for list="{{e.cards}}" as="c" hint-placeholder-count="2">
@@ -273,7 +273,7 @@ body{margin:0}
 
             <!-- Oznámení: info, nic nenalezeno, chyba -->
             <sc-if value="{{e.isNotice}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="{{e.cls}}" role="{{e.role}}">
                   <span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.icon.d}}" fill="{{e.icon.f}}" stroke="{{e.icon.s}}"></path></svg></span>
                   <div class="nb"><b>{{e.title}}</b><p>{{e.text}}</p>
@@ -287,7 +287,7 @@ body{margin:0}
 
             <!-- Předání člověku -->
             <sc-if value="{{e.isHandoff}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="txt"><p>Rád vás spojím s kolegy z bscom. Shrnutí konverzace jim předám, ať nemusíte nic opakovat.</p></div>
                 <div class="svc">
                   <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.headset.d}}" fill="{{e.I.headset.f}}" stroke="{{e.I.headset.s}}"></path></svg></span><div><b>Zákaznická linka</b><div style="font-size: 12.5px; color: var(--c-muted)">Po–Pá 9:00–17:00</div></div></div>
@@ -299,7 +299,7 @@ body{margin:0}
 
             <!-- Objednávka – přihlášení -->
             <sc-if value="{{e.isLogin}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="svc">
                   <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.lock.d}}" fill="{{e.I.lock.f}}" stroke="{{e.I.lock.s}}"></path></svg></span><b>Pro stav objednávky se přihlaste</b></div>
                   <p style="margin: 0; font-size: 13px; color: var(--c-ink-2)">Po přihlášení vám ukážu vaše objednávky a kde je zásilka.</p>
@@ -310,7 +310,7 @@ body{margin:0}
 
             <!-- Objednávka – detail -->
             <sc-if value="{{e.isOrder}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <div class="txt"><p>Tady je vaše poslední objednávka.</p></div>
                 <div class="svc">
                   <div class="hd"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.box.d}}" fill="{{e.I.box.f}}" stroke="{{e.I.box.s}}"></path></svg></span><b>Objednávka [číslo objednávky]</b></div>
@@ -322,7 +322,7 @@ body{margin:0}
 
             <!-- Hlídání ceny -->
             <sc-if value="{{e.isWatch}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body">
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body">
                 <sc-if value="{{e.done}}" hint-placeholder-val="{{false}}">
                   <div class="svc"><div class="ok-line"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.check.d}}" fill="{{e.I.check.f}}" stroke="{{e.I.check.s}}"></path></svg>Hlídám cenu</div><p style="margin: 0; font-size: 13.5px">Napíšu vám e-mailem, až <b>{{e.name}}</b> zlevní pod <b>{{e.targetStr}}</b>. Hlídání zrušíte v účtu.</p></div>
                 </sc-if>
@@ -339,7 +339,7 @@ body{margin:0}
 
             <!-- Krátká zpráva asistenta -->
             <sc-if value="{{e.isAi}}" hint-placeholder-val="{{false}}">
-              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path></svg></span><div class="body"><div class="txt"><p>{{e.text}}</p></div></div></div>
+              <div class="m m-ai"><span class="av"><svg class="i" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="{{e.I.spark.d}}" fill="{{e.I.spark.f}}" stroke="{{e.I.spark.s}}"></path><path d="{{e.I.sparkB.d}}" fill="{{e.I.sparkB.f}}" stroke="{{e.I.sparkB.s}}"></path></svg></span><div class="body"><div class="txt"><p>{{e.text}}</p></div></div></div>
             </sc-if>
 
           </div>
@@ -360,6 +360,9 @@ body{margin:0}
     </footer>
   </section>
   </sc-if>
+
+  <!-- ===== Přepínač návrhů ===== -->
+  <nav class="dsw" aria-label="Přepínač návrhů"><span>Návrh</span><a class="on" href="Main.dc.html" aria-current="page">Propracovaný</a><a href="Jednoduchy.dc.html">Jednoduchý</a></nav>
 
   <!-- ===== Toast ===== -->
   <sc-if value="{{toastOn}}" hint-placeholder-val="{{false}}">
@@ -395,7 +398,10 @@ var PD = {
 
 var S_ = 'currentColor', N_ = 'none';
 var I = {
-  spark: { d: 'M12 3c.4 3.6 2.4 5.6 6 6-3.6.4-5.6 2.4-6 6-.4-3.6-2.4-5.6-6-6 3.6-.4 5.6-2.4 6-6ZM19 14c.2 1.6 1 2.4 2.6 2.6-1.6.2-2.4 1-2.6 2.6-.2-1.6-1-2.4-2.6-2.6 1.6-.2 2.4-1 2.6-2.6ZM5 15.5c.15 1.2.8 1.85 2 2-1.2.15-1.85.8-2 2-.15-1.2-.8-1.85-2-2 1.2-.15 1.85-.8 2-2Z', f: S_, s: N_ },
+  spark: { d: 'M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z', f: S_, s: N_ },
+  sparkB: { d: 'M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5', f: N_, s: S_ },
+  aisearch: { d: 'M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z', f: S_, s: N_ },
+  aisearchB: { d: 'M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465', f: N_, s: S_ },
   chat: { d: 'M20 12.5a7.5 7.5 0 0 1-11.1 6.6L4 20l1-4.3A7.5 7.5 0 1 1 20 12.5Z', f: N_, s: S_ },
   search: { d: 'M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5', f: N_, s: S_ },
   user: { d: 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21c.8-4 4-6 8-6s7.2 2 8 6', f: N_, s: S_ },
