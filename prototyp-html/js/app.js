@@ -20,7 +20,7 @@
       '<div class="wf-top"><span>bscom.cz</span><span>|</span><span>bsshop.cz</span><span>|</span><span>LOXONE</span></div>' +
       '<header class="wf-head"><div class="wf-logo"><i>bs</i>bscom</div>' +
       '<div class="wf-search"><label class="sr-only" for="wf-q">Hledat zboží</label><input id="wf-q" autocomplete="off" placeholder="Co hledáte? Zkuste třeba: notebook do školy">' + I('search', 22) + '<div class="wf-suggest" id="wf-sug" hidden></div></div>' +
-      '<button type="button" class="wf-ai" data-act="open">' + I('spark', 20) + '<span>AI asistent</span></button>' +
+      '<button type="button" class="wf-ai" data-act="open">' + I('aisearch', 22) + '<span>AI asistent</span></button>' +
       '<div class="wf-icons">' + I('user', 24, 'Můj účet') + '<span class="wf-cart" id="wf-cart">' + I('cart', 24, 'Košík') + '<b>' + S.cart + '</b></span><span class="wf-menu">' + I('menu', 26, 'Menu') + '</span></div></header>' +
       '<nav class="wf-nav" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></nav>' +
       '<main class="wf-main">' +
@@ -48,7 +48,7 @@
         '<button type="button" class="ibtn wide-btn" data-act="wide" aria-label="Rozšířit" title="Rozšířit">' + I('expand', 18) + '</button>' +
         '<button type="button" class="ibtn" data-act="close" aria-label="Zavřít asistenta" title="Zavřít">' + I('close', 20) + '</button></header>' +
         '<div class="ap-log" id="ap-log" aria-live="polite"></div>' +
-        '<footer class="ap-foot"><div id="cmpbar-host"></div><form class="composer" id="composer"><label class="sr-only" for="q">Napište dotaz</label><textarea id="q" rows="1" placeholder="Napište, co hledáte…"></textarea><button class="send" type="submit" aria-label="Odeslat" disabled>' + I('send', 20) + '</button></form>' +
+        '<footer class="ap-foot"><div id="cmpbar-host"></div><form class="composer" id="composer"><label class="sr-only" for="q">Napište dotaz</label><textarea id="q" rows="1" placeholder="Napište, co hledáte…"></textarea><button class="send" type="submit" aria-label="Odeslat" disabled>' + I('spark', 20) + '</button></form>' +
         '<p class="foot-note"><span>AI může chybovat. Ceny a sklad bereme z e-shopu.</span><button type="button" data-act="how">Jak to funguje</button></p></footer></section>';
       panel = $('#ap'); log = $('#ap-log');
       setTimeout(function () { var q = $('#q'); if (q) q.focus(); }, 30);
@@ -309,7 +309,7 @@
     if (t.id === 'wf-q') {
       var sug = $('#wf-sug'), v = t.value.trim();
       if (v.length < 3) { sug.hidden = true; return; }
-      sug.innerHTML = '<button type="button" class="ask" data-act="open-ask" data-q="' + C.esc(v) + '">' + I('spark', 18) + '<span>Zeptat se asistenta: „' + C.esc(v) + '“</span></button>' +
+      sug.innerHTML = '<button type="button" class="ask" data-act="open-ask" data-q="' + C.esc(v) + '">' + I('aisearch', 18) + '<span>Zeptat se asistenta: „' + C.esc(v) + '“</span></button>' +
         '<button type="button" class="wire" tabindex="-1">' + I('search', 18) + '<span>[návrhy produktů z našeptávače]</span></button><button type="button" class="wire" tabindex="-1">' + I('search', 18) + '<span>[návrhy kategorií]</span></button>';
       sug.hidden = false;
     }
