@@ -22,6 +22,10 @@ Stránka běží přímo ze souborů plátna Claude Design. Každý `*.dc.html` 
 | `support.js` | běhové prostředí Claude Design (načte React 18 z cdn.jsdelivr.net) |
 | `prototyp-html/` | starší HTML verze s lištou (šířka, stavy, bubliny) |
 
+## Vzhled pro jiný web
+
+Vlevo dole (u přepínače návrhů) je tlačítko **Vzhled**: hlavní barva, zaoblení rohů, písmo, spouštěč s textem / jen ikona, umístění vpravo / vlevo. Nastavení se uloží v prohlížeči a platí pro oba návrhy. **Kopírovat CSS** zkopíruje CSS proměnné (`--c-primary`, `--r-base`, `--font-body`…) pro nasazení na jiný web; odstíny (hover, světlý podklad, barva textu) se dopočítají z hlavní barvy. Na plátně v Claude Design jsou stejná nastavení v Tweakách (sekce Vzhled).
+
 ## Postup při změnách
 
 1. Změny dělejte na plátně v Claude Design (nebo je zadejte Claudovi).

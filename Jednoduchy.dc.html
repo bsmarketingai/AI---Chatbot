@@ -9,22 +9,22 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;family=Source+Sans+3:wght@400;600;700;800&amp;family=Nunito+Sans:wght@400;600;700;800&amp;family=Lato:wght@400;700&amp;display=swap">
 <style>
 body{margin:0}
 </style>
 </helmet>
-<div class="site">
+<div class="{{siteCls}}" style="{{siteStyle}}">
 
   <!-- ===== Drátěný web ===== -->
-  <div class="scroll">
+  <div class="scroll" ref="{{setPage}}">
     <div class="wf-top"><span>bscom.cz</span><span>|</span><span>bsshop.cz</span><span>|</span><span>LOXONE</span></div>
     <header class="wf-head">
-      <div class="wf-logo"><i>bs</i>bscom</div>
+      <button type="button" class="wf-logo" onClick="{{goHome}}" aria-label="bscom – úvodní stránka"><i>bs</i>bscom</button>
       <div class="wf-search">
         <label class="sr-only" for="wf-q">Hledat zboží</label>
-        <input id="wf-q" autocomplete="off" placeholder="Již 20 let jsme s Vámi">
-        <svg class="i" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5" fill="none" stroke="currentColor"></path></svg>
+        <input id="wf-q" autocomplete="off" placeholder="Již 20 let jsme s Vámi" value="{{wq}}" onChange="{{onWq}}" onKeyDown="{{onWqKey}}">
+        <button type="button" class="go" onClick="{{doSearch}}" aria-label="Hledat"><svg class="i" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5" fill="none" stroke="currentColor"></path></svg></button>
       </div>
       <button type="button" class="wf-ai" onClick="{{openPanel}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg><span>AI asistent</span></button>
       <div class="wf-icons">
@@ -34,24 +34,61 @@ body{margin:0}
       </div>
     </header>
     <nav class="wf-nav" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></nav>
-    <main class="wf-main">
-      <div class="wf-hero"><div class="wf-box" data-label="[hlavní banner]"></div><div class="wf-box" data-label="[vedlejší banner]"></div></div>
-      <section class="entry" aria-label="Nákupní asistent">
-        <span class="entry__ico"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></span>
-        <div><h2>Náš nový virtuální Nákupní asistent</h2><p>Vám poradí 24/7.</p></div>
-        <div class="chips">
-          <button type="button" class="btn-p" onClick="{{openPanel}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
+    <!-- Úvodní stránka -->
+    <sc-if value="{{isHome}}" hint-placeholder-val="{{true}}">
+      <main class="wf-main">
+        <div class="wf-hero"><div class="wf-box" data-label="[hlavní banner]"></div><div class="wf-box" data-label="[vedlejší banner]"></div></div>
+        <section class="entry" aria-label="Nákupní asistent">
+          <span class="entry__ico"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></span>
+          <div><h2>Náš nový virtuální Nákupní asistent</h2><p>Vám poradí 24/7.</p></div>
+          <div class="chips">
+            <button type="button" class="btn-p" onClick="{{openPanel}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
+          </div>
+        </section>
+        <div class="wf-h" aria-hidden="true"></div>
+        <div class="wf-grid" aria-hidden="true">
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
         </div>
-      </section>
-      <div class="wf-h" aria-hidden="true"></div>
-      <div class="wf-grid" aria-hidden="true">
-        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
-        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
-        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
-        <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
-      </div>
-      <div class="wf-hero" aria-hidden="true"><div class="wf-box" data-label="[články]" style="min-height: 140px"></div><div class="wf-box" data-label="[značky]" style="min-height: 140px"></div></div>
-    </main>
+        <div class="wf-hero" aria-hidden="true"><div class="wf-box" data-label="[články]" style="min-height: 140px"></div><div class="wf-box" data-label="[značky]" style="min-height: 140px"></div></div>
+      </main>
+    </sc-if>
+
+    <!-- Výsledky vyhledávání: nic nenalezeno -->
+    <sc-if value="{{isSearch}}" hint-placeholder-val="{{false}}">
+      <main class="wf-main">
+        <nav class="sr-crumbs" aria-label="Drobečková navigace"><button type="button" onClick="{{goHome}}">Úvod</button><span aria-hidden="true">›</span><span aria-current="page">Vyhledávání</span></nav>
+        <div class="sr-h"><h1>Výsledky hledání „{{sq}}“</h1><p>Nenašli jsme žádné zboží (0 produktů).</p></div>
+        <div class="sr-empty">
+          <section class="sr-miss" aria-labelledby="sr-miss-t">
+            <span class="ill"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5M8 10.5h5" fill="none" stroke="currentColor"></path></svg></span>
+            <h2 id="sr-miss-t">Pro tento dotaz jsme nic nenašli</h2>
+            <ul><li>Zkontrolujte, jestli v dotazu není překlep.</li><li>Zkuste obecnější nebo kratší výraz.</li><li>Projděte kategorie níže.</li></ul>
+          </section>
+          <section class="sr-ai" aria-labelledby="sr-ai-t">
+            <div class="hd"><span class="ic"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></span><div><h2 id="sr-ai-t">Zkuste našeho AI asistenta</h2><p>Popište vlastními slovy, co hledáte a k čemu to potřebujete. Asistent projde celý katalog a doporučí vhodné zboží.</p></div></div>
+            <form class="sr-ask" onSubmit="{{askSr}}">
+              <label class="sr-only" for="sr-q">Dotaz pro asistenta</label>
+              <input id="sr-q" autocomplete="off" placeholder="Např. notebook do školy, který vydrží celý den" value="{{aq}}" onChange="{{onAq}}">
+              <button type="submit" class="btn-p"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
+            </form>
+            <p class="why"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor"></path></svg>Rozumí i překlepům a celým větám.</p>
+          </section>
+        </div>
+        <div class="wf-h" aria-hidden="true"></div>
+        <div class="sr-cats" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="wf-h" aria-hidden="true"></div>
+        <div class="wf-grid" aria-hidden="true">
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+        </div>
+      </main>
+    </sc-if>
+
     <div class="wf-foot" aria-hidden="true"></div>
   </div>
 
@@ -144,10 +181,38 @@ body{margin:0}
   </sc-if>
 
   <!-- ===== Přepínač návrhů ===== -->
-  <nav class="dsw" aria-label="Přepínač návrhů"><span>Návrh</span><a href="Main.dc.html">Propracovaný</a><a class="on" href="Jednoduchy.dc.html" aria-current="page">Jednoduchý</a></nav>
+  <nav class="dsw" aria-label="Přepínač návrhů"><span>Návrh</span><a href="Main.dc.html">Propracovaný</a><a class="on" href="Jednoduchy.dc.html" aria-current="page">Jednoduchý</a><button type="button" aria-expanded="{{thm.openStr}}" onClick="{{thm.toggle}}"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5C21 6.4 17 3 12 3ZM7.5 12.5h.01M9 8h.01M14 7.5h.01M17 11h.01" fill="none" stroke="currentColor"></path></svg>Vzhled</button></nav>
+  <!-- ===== Vzhled (nástroj prototypu: barva, zaoblení, písmo, spouštěč) ===== -->
+  <sc-if value="{{thm.open}}" hint-placeholder-val="{{false}}">
+    <section class="thm" aria-label="Vzhled asistenta">
+      <div class="thm-hd"><b>Vzhled asistenta</b><button type="button" onClick="{{thm.close}}" aria-label="Zavřít nastavení vzhledu"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor"></path></svg></button></div>
+      <fieldset>
+        <legend>Hlavní barva</legend>
+        <div class="thm-sw">
+          <sc-for list="{{thm.swatches}}" as="s" hint-placeholder-count="5"><button type="button" style="{{s.style}}" aria-pressed="{{s.pressed}}" aria-label="{{s.name}}" title="{{s.name}}" onClick="{{s.pick}}"></button></sc-for>
+          <label class="thm-pick"><input type="color" value="{{thm.primary}}" onChange="{{thm.onPrimary}}">Vlastní</label>
+          <span class="thm-hex">{{thm.hex}}</span>
+        </div>
+        <sc-if value="{{thm.lowContrast}}" hint-placeholder-val="{{false}}"><p class="thm-warn">Text na této barvě má kontrast jen {{thm.contrastStr}} : 1 (potřeba aspoň 4,5). Zvolte tmavší odstín.</p></sc-if>
+      </fieldset>
+      <div class="thm-f"><label class="lbl" for="thm-r">Zaoblení rohů<span>{{thm.radiusStr}}</span></label><input id="thm-r" type="range" min="0" max="24" step="1" value="{{thm.radius}}" onChange="{{thm.onRadius}}"></div>
+      <div class="thm-f"><label class="lbl" for="thm-font">Písmo</label><select id="thm-font" value="{{thm.font}}" onChange="{{thm.onFont}}"><sc-for list="{{thm.fonts}}" as="f" hint-placeholder-count="5"><option value="{{f.value}}">{{f.label}}</option></sc-for></select></div>
+      <fieldset>
+        <legend>Spouštěč</legend>
+        <div class="thm-seg"><button type="button" aria-pressed="{{thm.lText}}" onClick="{{thm.setText}}">S textem</button><button type="button" aria-pressed="{{thm.lIcon}}" onClick="{{thm.setIcon}}">Jen ikona</button></div>
+      </fieldset>
+      <fieldset>
+        <legend>Umístění</legend>
+        <div class="thm-seg"><button type="button" aria-pressed="{{thm.sRight}}" onClick="{{thm.setRight}}">Vpravo</button><button type="button" aria-pressed="{{thm.sLeft}}" onClick="{{thm.setLeft}}">Vlevo</button></div>
+      </fieldset>
+      <p class="thm-note">Uloží se v tomto prohlížeči a platí pro oba návrhy. Pro nasazení na jiný web zkopírujte CSS proměnné.</p>
+      <div class="thm-ft"><button type="button" class="rs" onClick="{{thm.reset}}">Výchozí</button><button type="button" class="cp" onClick="{{thm.copy}}"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2ZM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor"></path></svg>{{thm.copyLabel}}</button></div>
+    </section>
+  </sc-if>
+
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty"]},"bubbles":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0073cc","options":["#0073cc","#1a7f37","#6b4fb8","#c2410c"],"section":"Vzhled"},"radius":{"editor":"range","default":12,"min":0,"max":24,"step":1,"unit":"px","section":"Vzhled"},"font":{"editor":"enum","default":"Open Sans","options":["Open Sans","Source Sans 3","Nunito Sans","Lato","Systémové"],"section":"Vzhled"},"launcher":{"editor":"enum","default":"S textem","options":["S textem","Jen ikona"],"section":"Vzhled"},"side":{"editor":"enum","default":"Vpravo","options":["Vpravo","Vlevo"],"section":"Vzhled"},"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty","Hledání bez výsledků"]},"bubbles":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
 var PD = {
   intro: 'Do školy bych doporučil především modely s **minimálně 8 GB RAM, SSD 512 GB a Full HD displejem**. Do rozpočtu 15 000 Kč mám tyto volby, všechny s doručením cca do 1 dne:',
   closing: '**Za nejlepší poměr výkonu a ceny bych pro studium volil HP 250R G9.** Pokud chcete ušetřit, velmi dobře poslouží Lenovo V15.',
@@ -160,23 +225,103 @@ var PD = {
 };
 var GREETING = 'Dobrý den, jak Vám mohu pomoci?';
 var NB_Q = 'Hledám notebook do školy do 15 000 Kč';
-var STATE_KEYS = { 'Zavřeno – web se vstupy': 'closed', 'Výběr chatu': 'start', 'Nový chat': 'new', 'Průběh odpovědi': 'progress', 'Odpověď s produkty': 'answer' };
+var STATE_KEYS = { 'Zavřeno – web se vstupy': 'closed', 'Výběr chatu': 'start', 'Nový chat': 'new', 'Průběh odpovědi': 'progress', 'Odpověď s produkty': 'answer', 'Hledání bez výsledků': 'search' };
 
 function kc(n) { return n.toLocaleString('cs-CZ').replace(/ /g, ' ') + ' Kč'; }
 function seg(s) { return String(s).split('**').map(function (t, i) { return { t: t, b: i % 2 === 1, n: i % 2 === 0 }; }).filter(function (x) { return x.t !== ''; }); }
 function hasUser(list) { return list.some(function (e) { return e.t === 'user'; }); }
 
+/* ---------- Vzhled: barva, zaoblení, písmo, spouštěč (Tweaky + panel Vzhled) ---------- */
+var THEME_KEY = 'bscom-ai-vzhled';
+var THEME_DEF = { primary: '#0073cc', radius: 12, font: 'Open Sans', launcher: 'S textem', side: 'Vpravo' };
+var THEME_PROPS = ['primary', 'radius', 'font', 'launcher', 'side'];
+var FONTS = {
+  'Open Sans': '"Open Sans", Arial, sans-serif',
+  'Source Sans 3': '"Source Sans 3", Arial, sans-serif',
+  'Nunito Sans': '"Nunito Sans", Arial, sans-serif',
+  'Lato': 'Lato, Arial, sans-serif',
+  'Systémové': 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif'
+};
+var SWATCHES = [
+  { hex: '#0073cc', name: 'Modrá bscom' }, { hex: '#1a7f37', name: 'Zelená' }, { hex: '#6b4fb8', name: 'Fialová' },
+  { hex: '#c2410c', name: 'Oranžová' }, { hex: '#1f2933', name: 'Grafitová' }
+];
+function hexRgb(h) { h = String(h || '').replace('#', '').trim(); if (h.length === 3) h = h.split('').map(function (c) { return c + c; }).join(''); var n = parseInt(h, 16); return h.length === 6 && !isNaN(n) ? [n >> 16 & 255, n >> 8 & 255, n & 255] : null; }
+function rgbHex(a) { return '#' + a.map(function (v) { return Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0'); }).join(''); }
+function mixc(a, b, t) { return a.map(function (v, i) { return v + (b[i] - v) * t; }); }
+function lum(a) { var c = a.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function loadTheme() { try { var o = JSON.parse(localStorage.getItem(THEME_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+function saveTheme(o) { try { localStorage.setItem(THEME_KEY, JSON.stringify(o)); } catch (e) {} }
+function themeOf(self) {
+  var p = self.props, o = self.thOver || {}, t = {};
+  THEME_PROPS.forEach(function (k) { t[k] = o[k] != null ? o[k] : (p[k] != null ? p[k] : THEME_DEF[k]); });
+  return t;
+}
+function themeVars(t) {
+  var p = hexRgb(t.primary) || hexRgb(THEME_DEF.primary), K = [0, 0, 0], W = [255, 255, 255], INK = [31, 41, 51];
+  var white = contrast(p, W) >= contrast(p, INK);
+  var r = Math.max(0, Math.min(40, Number(t.radius))); if (isNaN(r)) r = THEME_DEF.radius;
+  return {
+    '--c-primary': rgbHex(p), '--c-primary-hover': rgbHex(mixc(p, K, 0.18)), '--c-primary-active': rgbHex(mixc(p, K, 0.35)),
+    '--c-on-primary': white ? '#ffffff' : '#1f2933', '--c-primary-soft': rgbHex(mixc(p, W, 0.9)), '--c-on-primary-soft': rgbHex(mixc(p, K, 0.42)),
+    '--c-link': rgbHex(mixc(p, K, 0.18)), '--r-base': r + 'px', '--font-body': FONTS[t.font] || FONTS['Open Sans']
+  };
+}
+function themeCss(t) { var v = themeVars(t); return Object.keys(v).map(function (k) { return k + ': ' + v[k]; }).join('; '); }
+function themeCls(t) { return 'site' + (t.launcher === 'Jen ikona' ? ' launch-icon' : '') + (t.side === 'Vlevo' ? ' launch-left' : ''); }
+function themeSync(self, prev) {
+  var ch = false;
+  THEME_PROPS.forEach(function (k) { if (prev[k] !== self.props[k] && self.thOver[k] != null) { delete self.thOver[k]; ch = true; } });
+  if (ch) saveTheme(self.thOver);
+}
+function themeVm(self) {
+  var t = themeOf(self), v = themeVars(t);
+  var set = function (k, val) { self.thOver[k] = val; saveTheme(self.thOver); self.forceUpdate(); };
+  var cr = contrast(hexRgb(v['--c-primary']), hexRgb(v['--c-on-primary']));
+  return {
+    open: !!self.thOpen, openStr: self.thOpen ? 'true' : 'false',
+    toggle: function () { self.thOpen = !self.thOpen; self.forceUpdate(); },
+    close: function () { self.thOpen = false; self.forceUpdate(); },
+    primary: v['--c-primary'], hex: v['--c-primary'].toUpperCase(),
+    swatches: SWATCHES.map(function (s) { return { name: s.name, style: 'background: ' + s.hex, pressed: s.hex === v['--c-primary'] ? 'true' : 'false', pick: function () { set('primary', s.hex); } }; }),
+    onPrimary: function (ev) { set('primary', ev.target.value); },
+    lowContrast: cr < 4.5, contrastStr: cr.toFixed(1).replace('.', ','),
+    radius: Number(v['--r-base'].replace('px', '')), radiusStr: v['--r-base'].replace('px', ' px'),
+    onRadius: function (ev) { set('radius', Number(ev.target.value)); },
+    font: FONTS[t.font] ? t.font : 'Open Sans', fonts: Object.keys(FONTS).map(function (f) { return { label: f, value: f }; }),
+    onFont: function (ev) { set('font', ev.target.value); },
+    lText: t.launcher !== 'Jen ikona' ? 'true' : 'false', lIcon: t.launcher === 'Jen ikona' ? 'true' : 'false',
+    setText: function () { set('launcher', 'S textem'); }, setIcon: function () { set('launcher', 'Jen ikona'); },
+    sRight: t.side !== 'Vlevo' ? 'true' : 'false', sLeft: t.side === 'Vlevo' ? 'true' : 'false',
+    setRight: function () { set('side', 'Vpravo'); }, setLeft: function () { set('side', 'Vlevo'); },
+    reset: function () { self.thOver = {}; saveTheme({}); self.forceUpdate(); },
+    copyLabel: self.thCopied ? 'Zkopírováno' : 'Kopírovat CSS',
+    copy: function () {
+      var css = '/* Nákupní asistent – vzhled pro nasazení (vložte za prototyp.css) */\n.site {\n' +
+        Object.keys(v).map(function (k) { return '  ' + k + ': ' + v[k] + ';'; }).join('\n') +
+        '\n}\n/* Spouštěč: ' + t.launcher.toLowerCase() + ', ' + t.side.toLowerCase() + ' (třídy .launch-icon, .launch-left na .site) */\n';
+      var done = function () { self.thCopied = true; self.forceUpdate(); clearTimeout(self.thCopyT); self.thCopyT = setTimeout(function () { self.thCopied = false; self.forceUpdate(); }, 2000); };
+      try { navigator.clipboard.writeText(css).then(done, function () { window.prompt('Zkopírujte CSS:', css); }); } catch (e) { window.prompt('Zkopírujte CSS:', css); }
+    }
+  };
+}
+var SR_Q = 'notebook na školu, co vydrží celý den';
+
 class Component extends DCLogic {
   constructor() {
     super(...arguments);
     this.timers = [];
+    this.thOver = loadTheme(); this.thOpen = false;
     this.m = this.build(STATE_KEYS[this.props.state] || 'closed');
     var self = this;
     this.setLog = function (el) { self.logEl = el; };
     this.setQ = function (el) { self.qEl = el; };
+    this.setPage = function (el) { self.pageEl = el; };
   }
 
   componentDidUpdate(prev) {
+    themeSync(this, prev);
     if (prev.state !== this.props.state) { this.clearTimers(); this.m = this.build(STATE_KEYS[this.props.state] || 'closed'); this.scroll = 'auto'; this.forceUpdate(); return; }
     this.afterRender();
   }
@@ -198,7 +343,8 @@ class Component extends DCLogic {
 
   /* ---------- stav ---------- */
   build(k) {
-    var m = { open: false, entries: [], prev: null, busy: false, q: '' };
+    var m = { open: false, entries: [], prev: null, busy: false, q: '', page: 'home', wq: '', sq: '', aq: '' };
+    if (k === 'search') { m.page = 'search'; m.sq = m.aq = m.wq = SR_Q; return m; }
     if (k === 'closed') return m;
     m.open = true;
     var chat = [{ t: 'ai', text: GREETING }, { t: 'user', text: NB_Q }];
@@ -215,6 +361,15 @@ class Component extends DCLogic {
   up(scroll) { if (scroll) this.scroll = scroll; this.forceUpdate(); }
   push(e) { this.m.entries.push(e); this.up(e.t === 'answer' ? 'answer' : 'end'); return e; }
   pop(t) { var es = this.m.entries; for (var i = es.length - 1; i >= 0; i--) if (es[i].t === t) { es.splice(i, 1); break; } }
+
+  /* ---------- stránky webu ---------- */
+  search(v) { var m = this.m; v = (v || '').trim(); if (!v) return; m.page = 'search'; m.sq = m.aq = v; if (this.pageEl) this.pageEl.scrollTop = 0; this.up(); }
+  goHome() { this.m.page = 'home'; if (this.pageEl) this.pageEl.scrollTop = 0; this.up(); }
+  askFromSearch() {
+    var m = this.m, v = (m.aq || '').trim() || m.sq; this.clearTimers(); m.busy = false;
+    if (hasUser(m.entries)) m.prev = m.entries;
+    m.open = true; m.entries = [{ t: 'ai', text: GREETING }]; this.ask(v);
+  }
 
   /* ---------- funkce, které má asistent dnes ---------- */
   openPanel() {
@@ -242,7 +397,7 @@ class Component extends DCLogic {
     m.busy = true; this.push({ t: 'progress' });
     this.later(function () {
       this.pop('progress'); m.busy = false;
-      if (/notebook|laptop/i.test(text)) this.push({ t: 'answer' });
+      if (/note?bo*k|notebuk|laptop/i.test(text)) this.push({ t: 'answer' });
       else this.push({ t: 'ai', text: 'V prototypu je připravená jen ukázková odpověď na dotaz „' + NB_Q + '“. Zkuste ho napsat.' });
     }, 1600);
   }
@@ -267,8 +422,16 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    var self = this, m = this.m;
+    var self = this, m = this.m, th = themeOf(this);
     return {
+      thm: themeVm(this), siteCls: themeCls(th), siteStyle: themeCss(th), setPage: this.setPage,
+      wq: m.wq, onWq: function (ev) { m.wq = ev.target.value; self.forceUpdate(); },
+      onWqKey: function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); self.search(m.wq); } },
+      doSearch: function () { self.search(m.wq); },
+      goHome: function () { self.goHome(); },
+      isHome: m.page !== 'search', isSearch: m.page === 'search', sq: m.sq, aq: m.aq,
+      onAq: function (ev) { m.aq = ev.target.value; self.forceUpdate(); },
+      askSr: function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); self.askFromSearch(); },
       open: m.open, closed: !m.open,
       panelCls: 'ap' + (this.props.bubbles ? ' bubbles' : ''),
       openPanel: function () { self.openPanel(); },
