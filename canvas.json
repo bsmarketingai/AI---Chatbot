@@ -217,6 +217,38 @@
       "w": 390,
       "x": 3870,
       "y": 4064
+    },
+    "Mobil-14-Stranka-asistenta.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Mobil · Samostatná stránka (LP)",
+      "w": 390,
+      "x": 6110,
+      "y": 1560
+    },
+    "Desktop-14-Stranka-asistenta.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Desktop · Samostatná stránka (LP)",
+      "w": 1440,
+      "x": 6080,
+      "y": 2784
+    },
+    "Jednoduchy-Mobil-06-Stranka-asistenta.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Jednoduchý · mobil · Samostatná stránka (LP)",
+      "w": 390,
+      "x": 4340,
+      "y": 4064
+    },
+    "Jednoduchy-Desktop-Stranka-asistenta.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Jednoduchý · desktop · Samostatná stránka (LP)",
+      "w": 1440,
+      "x": 4810,
+      "y": 4064
     }
   },
   "createdOnFiles": {
@@ -238,7 +270,7 @@
     },
     "t2": {
       "kind": "title1",
-      "maxW": 6030,
+      "maxW": 6500,
       "text": "Stavy na mobilu",
       "w": 240,
       "x": 0,
@@ -246,7 +278,7 @@
     },
     "t3": {
       "kind": "title1",
-      "maxW": 6000,
+      "maxW": 7520,
       "text": "Klíčové stavy na desktopu",
       "w": 240,
       "x": 0,
@@ -254,7 +286,7 @@
     },
     "t4": {
       "kind": "title1",
-      "maxW": 4260,
+      "maxW": 6250,
       "text": "Jednoduchý návrh – funkce jako dnes na bscom.cz",
       "w": 240,
       "x": 0,
@@ -278,17 +310,21 @@
     "Mobil-11-Objednavka-detail.dc.html",
     "Mobil-12-Historie.dc.html",
     "Mobil-13-Hledani-bez-vysledku.dc.html",
+    "Mobil-14-Stranka-asistenta.dc.html",
     "Desktop-04-Odpoved.dc.html",
     "Desktop-05-Porovnani.dc.html",
     "Desktop-12-Historie.dc.html",
     "Desktop-13-Hledani-bez-vysledku.dc.html",
+    "Desktop-14-Stranka-asistenta.dc.html",
     "Jednoduchy.dc.html",
     "Jednoduchy-Mobil.dc.html",
     "Jednoduchy-Mobil-01-Vyber-chatu.dc.html",
     "Jednoduchy-Mobil-02-Novy-chat.dc.html",
     "Jednoduchy-Mobil-03-Prubeh.dc.html",
     "Jednoduchy-Mobil-04-Odpoved.dc.html",
-    "Jednoduchy-Mobil-05-Hledani-bez-vysledku.dc.html"
+    "Jednoduchy-Mobil-05-Hledani-bez-vysledku.dc.html",
+    "Jednoduchy-Mobil-06-Stranka-asistenta.dc.html",
+    "Jednoduchy-Desktop-Stranka-asistenta.dc.html"
   ],
   "pages": [],
   "title": "Asistent bscom – návrh"
