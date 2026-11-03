@@ -13,8 +13,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap">
 <style>
 body{margin:0}
-/* Okno roste s obsahem až do zvolené výšky; vlastní scrollbar okna se nezobrazuje */
-@container site (min-width:1000px){.site.final:not(.is-lp) .ap{top:auto;height:auto;max-height:calc(100% - 32px)}.site.final.ap-half:not(.is-lp) .ap{max-height:50%}.site.final.ap-twothirds:not(.is-lp) .ap{max-height:66.667%}.site.final:not(.is-lp) .ap-log{flex:1 1 auto}}
+/* Plovoucí okno má vždy zvolenou výšku (i prázdný chat); vlastní scrollbar okna se nezobrazuje */
+@container site (min-width:1000px){.site.final:not(.is-lp) .ap{top:auto;height:calc(100% - 32px);max-height:none}.site.final.ap-half:not(.is-lp) .ap{height:50%;min-height:380px}.site.final.ap-twothirds:not(.is-lp) .ap{height:66.667%;min-height:380px}.site.final:not(.is-lp) .ap-log{flex:1 1 0}}
 .site.final .ap-log{scrollbar-width:none}
 .site.final .ap-log::-webkit-scrollbar{display:none}
 /* unslop (Damir Sokolovsky, @heydamir, CC BY 4.0) – leštění: váhy písma, popisky, stíny, pohyb, mřížka 4 px */
@@ -51,17 +51,19 @@ body{margin:0}
 .site.final .ap-head .ibtn:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
 /* Soustředné rádiusy (hodnoty počítá themeVars z nastavení) */
 .site.final .ap,.site.final.is-lp .ap{border-radius:var(--r-out12)}
-.site.final .composer{border-radius:var(--r-ctl)}
+.site.final .composer{border-radius:var(--r-ctl);align-items:flex-end;padding:6px 6px 6px 20px}
+/* Pole pro psaní: jeden řádek má stejnou výšku jako tlačítko Odeslat (38 px), text je tak svisle na středu */
+.site.final .composer textarea{display:block;box-sizing:border-box;min-height:38px;padding:8px 0;line-height:22px;font-size:15px}
 .site.final .send{border-radius:var(--r-in6)}
-.site.final .tile{border-radius:var(--r-out12)}
+.site.final .tile{border-radius:var(--r-m)}
 .site.final .tile .ic{border-radius:var(--r-ctl)}
 .site.final .entry{border-radius:var(--r-out20)}
 .site.final .entry__ico{border-radius:var(--r-ctl)}
 .site.final .sr-miss{border-radius:var(--r-out20)}
 .site.final .sr-miss .ill{border-radius:var(--r-ctl)}
 .site.final .sr-ai{border-radius:var(--r-out28)}
-.site.final .sr-ai .ic{border-radius:var(--r-out6)}
-.site.final .sr-ask{border-radius:var(--r-out6)}
+.site.final .sr-ai .ic{border-radius:var(--r-m)}
+.site.final .sr-ask{border-radius:var(--r-m)}
 .site.final .sr-ask .btn-p{border-radius:var(--r-ctl)}
 .site.final .lp-card{border-radius:var(--r-out16)}
 .site.final .lp-card .ic{border-radius:var(--r-ctl)}
@@ -193,7 +195,7 @@ body{margin:0}
         <header class="ap-head">
           <span class="av" style="width: 44px; height: 44px; background: none; box-shadow: none; border: none"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}" style="background: none; box-shadow: none"><img class="avp" src="{{av.src}}" alt="" style="background: none; box-shadow: none"></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}" style="background: none; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="background: none; box-shadow: none; width: 30px; height: 30px"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none" style="background: none; box-shadow: none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor" style="background: none; box-shadow: none"></path></svg></sc-if></span>
           <div class="ap-title"><b id="ap-t">Nákupní asistent</b><small style="color: inherit; opacity: 0.9">{{expertName}}<sc-if value="{{notLp}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{goLp}}" style="margin-left: 8px; padding: 0; background: none; border: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer" style-hover="opacity: 0.8">Změnit</button></sc-if></small></div>
-          <button type="button" class="ibtn" onClick="{{newChat}}" aria-label="Nový chat" data-tip="Nový chat"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></button>
+          <button type="button" class="ibtn" onClick="{{continueChat}}" aria-label="Pokračovat v chatu" data-tip="Pokračovat v chatu"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2" fill="none" stroke="currentColor"></path></svg></button><button type="button" class="ibtn" onClick="{{newChat}}" aria-label="Nový chat" data-tip="Nový chat"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></button>
           <sc-if value="{{isLp}}" hint-placeholder-val="{{false}}"><button type="button" class="ibtn" onClick="{{minimize}}" aria-label="Zmenšit do plovoucího okna" data-tip="Zmenšit do plovoucího okna"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="transform: none"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" fill="none" stroke="currentColor"></path></svg></button></sc-if><button type="button" class="ibtn lp-btn" onClick="{{goLp}}" aria-label="Otevřít chat na velké samostatné stránce" data-tip="Otevřít na samostatné stránce"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10V3M9 6l3-3 3 3M12 14v7M9 18l3 3 3-3M10 12H3M6 9l-3 3 3 3M14 12h7M18 9l3 3-3 3" fill="none" stroke="currentColor"></path></svg></button>
       <button type="button" class="ibtn ap-x" onClick="{{closePanel}}" aria-label="Zavřít asistenta" data-tip="Zavřít" style="background: rgba(255,255,255,0.18)" style-hover="background: rgba(255,255,255,0.3)"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor"></path></svg></button>
         </header>
@@ -207,8 +209,8 @@ body{margin:0}
                 <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body">
                   <div class="welcome txt"><h2>S čím vám mám pomoct?</h2><p>Napište, co hledáte a k čemu to potřebujete. Doporučím konkrétní produkty z nabídky bscom a odpovím na otázky k nim.</p></div>
                   <div class="tiles">
-                    <button type="button" class="tile" onClick="{{e.newChat}}" style="display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; text-align: left"><span class="ic" style="grid-row: 1 / span 2; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 2; align-self: end">Nový chat</b><small style="grid-column: 2; align-self: start">Založíte nové vlákno vyhledávání. Předchozí konverzace bude ukončena.</small></button>
-                    <button type="button" class="tile" onClick="{{e.continueChat}}" style="display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; text-align: left"><span class="ic" style="grid-row: 1 / span 2; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 2; align-self: end">Pokračovat v chatu</b><small style="grid-column: 2; align-self: start">Chat máte otevřený v jiném okně nebo jste obnovili stránku.</small></button>
+                    <button type="button" class="tile" onClick="{{e.newChat}}" style="display: grid; grid-template-columns: 1fr; column-gap: 8px; row-gap: 4px; align-items: center; text-align: left; justify-items: start"><span class="ic" style="grid-row: 1; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; grid-column: 1; margin-bottom: 4px; border-radius: 999px"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 1; align-self: start; grid-row: 2">Nový chat</b><small style="grid-column: 1; align-self: start; grid-row: 3">Založíte nové vlákno vyhledávání. Předchozí konverzace bude ukončena.</small></button>
+                    <button type="button" class="tile" onClick="{{e.continueChat}}" style="display: grid; grid-template-columns: 1fr; column-gap: 8px; row-gap: 4px; align-items: center; text-align: left; justify-items: start"><span class="ic" style="grid-row: 1; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; grid-column: 1; margin-bottom: 4px; border-radius: 999px"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 1; align-self: start; grid-row: 2">Pokračovat v chatu</b><small style="grid-column: 1; align-self: start; grid-row: 3">Chat máte otevřený v jiném okně nebo jste obnovili stránku.</small></button>
                   </div>
                 </div></div>
               </sc-if>
@@ -261,10 +263,10 @@ body{margin:0}
         </div>
 
         <footer class="ap-foot">
-          <form class="composer" onSubmit="{{submitQ}}">
+          <form class="composer" onSubmit="{{submitQ}}" style="border-radius: 999px">
             <label class="sr-only" for="q">Napište dotaz</label>
-            <textarea id="q" rows="1" placeholder="Hledám notebook do školy…" ref="{{setQ}}" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}"></textarea>
-            <button class="send" type="submit" aria-label="Odeslat" disabled="{{sendDisabled}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></button>
+            <textarea id="q" rows="1" placeholder="Hledám notebook do školy…" ref="{{setQ}}" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}" style="border-radius: 999px"></textarea>
+            <button class="send" type="submit" aria-label="Odeslat" disabled="{{sendDisabled}}" style="border-radius: 999px"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></button>
           </form>
           
         </footer>
@@ -315,7 +317,7 @@ body{margin:0}
         </div>
         <sc-if value="{{thm.lowContrast}}" hint-placeholder-val="{{false}}"><p class="thm-warn">Text na této barvě má kontrast jen {{thm.contrastStr}} : 1 (potřeba aspoň 4,5). Zvolte tmavší odstín.</p></sc-if>
       </fieldset>
-      <div class="thm-f"><label class="lbl" for="thm-r">Zaoblení rohů<span>{{thm.radiusStr}}</span></label><input id="thm-r" type="range" min="0" max="24" step="1" value="{{thm.radius}}" onChange="{{thm.onRadius}}"></div>
+      <div class="thm-f"><label class="lbl" for="thm-r">Zaoblení vnějších rohů<span>{{thm.radiusStr}}</span></label><input id="thm-r" type="range" min="0" max="32" step="1" value="{{thm.radius}}" onChange="{{thm.onRadius}}"></div>
       <fieldset>
         <legend>Výška okna chatu (desktop)</legend>
         <div class="thm-seg"><button type="button" aria-pressed="{{thm.hHalf}}" onClick="{{thm.setHalf}}">1/2</button><button type="button" aria-pressed="{{thm.hTwo}}" onClick="{{thm.setTwo}}">2/3</button><button type="button" aria-pressed="{{thm.hFull}}" onClick="{{thm.setFull}}">Celá</button></div>
@@ -327,7 +329,7 @@ body{margin:0}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0073cc","options":["#0073cc","#1a7f37","#6b4fb8","#c2410c"],"section":"Vzhled"},"radius":{"editor":"range","default":12,"min":0,"max":24,"step":1,"unit":"px","section":"Vzhled"},"height":{"editor":"enum","default":"1/2 výšky","options":["1/2 výšky","2/3 výšky","Celá výška"],"section":"Vzhled"},"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty","Hledání bez výsledků","Samostatná stránka (LP)"]},"$preview":{"width":1440,"height":900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0073cc","options":["#0073cc","#1a7f37","#6b4fb8","#c2410c"],"section":"Vzhled"},"radius":{"editor":"range","default":16,"min":0,"max":32,"step":1,"unit":"px","section":"Vzhled"},"height":{"editor":"enum","default":"1/2 výšky","options":["1/2 výšky","2/3 výšky","Celá výška"],"section":"Vzhled"},"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty","Hledání bez výsledků","Samostatná stránka (LP)"]},"$preview":{"width":1440,"height":900}}'>
 var PD = {
   intro: 'Do školy bych doporučil především modely s **minimálně 8 GB RAM, SSD 512 GB a Full HD displejem**. Do rozpočtu 15 000 Kč mám tyto volby, všechny s doručením cca do 1 dne:',
   closing: '**Za nejlepší poměr výkonu a ceny bych pro studium volil HP 250R G9.** Pokud chcete ušetřit, velmi dobře poslouží Lenovo V15.',
@@ -349,7 +351,7 @@ function hasUser(list) { return list.some(function (e) { return e.t === 'user'; 
 /* ---------- Vzhled: barva, zaoblení, písmo, spouštěč (Tweaky + panel Vzhled) ---------- */
 /* Finální návrh: nastavitelná jen barva a zaoblení; písmo, spouštěč, umístění a avatar jsou pevné. */
 var THEME_KEY = 'bscom-ai-nastaveni-final';
-var THEME_DEF = { primary: '#0073cc', radius: 12, height: '1/2 výšky', font: 'Open Sans', launcher: 'Jen ikona', side: 'Vpravo', avatar: 'Ikona', avatarUrl: '' };
+var THEME_DEF = { primary: '#0073cc', radius: 16, height: '1/2 výšky', font: 'Open Sans', launcher: 'Jen ikona', side: 'Vpravo', avatar: 'Ikona', avatarUrl: '' };
 var THEME_PROPS = ['primary', 'radius', 'height'];
 var FONTS = {
   'Open Sans': '"Open Sans", Arial, sans-serif',
@@ -382,12 +384,10 @@ function themeVars(t) {
     '--c-primary': rgbHex(p), '--c-primary-hover': rgbHex(mixc(p, K, 0.18)), '--c-primary-active': rgbHex(mixc(p, K, 0.35)),
     '--c-on-primary': white ? '#ffffff' : '#1f2933', '--c-primary-soft': rgbHex(mixc(p, W, 0.9)), '--c-on-primary-soft': rgbHex(mixc(p, K, 0.42)),
     '--c-link': rgbHex(mixc(p, K, 0.18)), '--r-base': r + 'px', '--font-body': FONTS[t.font] || FONTS['Open Sans'],
-    /* Soustředné rádiusy: R = prvek (tlačítko, pole, karta, ikona); obal s odsazením p má R + p, vnořený prvek R − p (min. R/3). R = 0 → vše hranaté. */
-    '--r-ctl': r + 'px', '--r-m': r + 'px', '--r-s': r + 'px',
-    '--r-xs': rin(r, 8) + 'px', '--r-xxs': (r > 0 ? Math.max(2, Math.round(r / 4)) : 0) + 'px', '--r-in6': rin(r, 6) + 'px',
-    '--r-xl': rout(r, 6) + 'px', '--r-l': rout(r, 12) + 'px', '--r-out6': rout(r, 6) + 'px', '--r-out12': rout(r, 12) + 'px',
-    '--r-out14': rout(r, 14) + 'px', '--r-out16': rout(r, 16) + 'px', '--r-out20': rout(r, 20) + 'px', '--r-out28': rout(r, 28) + 'px',
-    '--r-launch': rout(r, 18) + 'px'
+    /* Rádiusy: posuvník nastavuje jen vnější obaly (okno chatu, bloky na stránce). Vnitřní prvky mají pevné zaoblení, spouštěč je vždy kulatý. */
+    '--r-l': r + 'px', '--r-out12': r + 'px', '--r-out14': r + 'px', '--r-out16': r + 'px', '--r-out20': r + 'px', '--r-out28': r + 'px',
+    '--r-ctl': '8px', '--r-s': '8px', '--r-m': '12px', '--r-xs': '6px', '--r-xxs': '4px', '--r-in6': '6px', '--r-out6': '12px', '--r-xl': '16px',
+    '--r-pill': '999px', '--r-launch': '999px'
   };
 }
 function rout(r, p) { return r > 0 ? r + p : 0; }
@@ -636,6 +636,7 @@ class Component extends DCLogic {
       openPanel: function () { self.openPanel(); },
       closePanel: function () { self.closePanel(); },
       newChat: function () { self.newChat(); },
+      continueChat: function () { self.continueChat(); },
       onPanelKey: function (ev) { if (ev.key === 'Escape') self.closePanel(); },
       entries: m.entries.map(function (e) { return self.entryVm(e); }),
       q: m.q, sendDisabled: m.busy || !m.q.trim(),
