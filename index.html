@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Asistent bscom – finální návrh</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./dc-runtime.js"></script>
+<link rel="stylesheet" href="./prototyp.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+/* Okno roste s obsahem až do zvolené výšky; vlastní scrollbar okna se nezobrazuje */
+@container site (min-width:1000px){.site.final:not(.is-lp) .ap{top:auto;height:auto;max-height:calc(100% - 32px)}.site.final.ap-half:not(.is-lp) .ap{max-height:50%}.site.final.ap-twothirds:not(.is-lp) .ap{max-height:66.667%}.site.final:not(.is-lp) .ap-log{flex:1 1 auto}}
+.site.final .ap-log{scrollbar-width:none}
+.site.final .ap-log::-webkit-scrollbar{display:none}
+/* unslop (Damir Sokolovsky, @heydamir, CC BY 4.0) – leštění: váhy písma, popisky, stíny, pohyb, mřížka 4 px */
+.site.final .lp-hero h1{font-weight:600;letter-spacing:0}
+.site.final .welcome h2,.site.final .ap b,.site.final .ap strong,.site.final .ai-tag,.site.final .pcard .tag,.site.final .pcard .nm,.site.final .pcard .price,.site.final .sr-h h1,.site.final .sr-ai .lbl,.site.final .wf-cart b{font-weight:600}
+.site.final .sec-label{text-transform:none;letter-spacing:0;font-size:13px}
+.site.final .launcher{box-shadow:0 6px 20px rgba(16,24,32,.22)}
+.site.final .tile{transition:border-color .15s,box-shadow .15s}
+.site.final .tile:hover{transform:none;box-shadow:0 4px 12px rgba(16,24,32,.08)}
+.site.final .ap-foot{padding:12px}
+.site.final .m{gap:12px}
+.site.final .carousel{gap:12px}
+.site.final .m-user .t{padding:8px 16px}
+.site.final .clarify{padding:16px;gap:12px}
+.site.final .progress,.site.final .notice{padding:12px 16px}
+.site.final .pcard .in{padding:12px}
+.site.final .btn-p{padding:0 16px}
+.site.final .toast{padding:12px 16px}
+.site.final .lp-help{padding:16px;border-radius:var(--r-out16)}
+.site.final .lp-faq summary{padding:16px 4px}
+/* Samostatná stránka: okno se roztáhne celé, roluje jen hlavní scrollbar stránky, pole pro psaní zůstává dole na obrazovce */
+.site.final.is-lp .ap{height:auto;overflow:visible}
+.site.final.is-lp .ap-log{flex:none;overflow:visible}
+/* Samostatná stránka: odpovědi asistenta vlevo jen na šířku 4 karet produktů, zákazník zůstává vpravo */
+.site.final.is-lp .m-ai{max-width:960px}
+.site.final.is-lp .ap .carousel{grid-template-columns:repeat(4,minmax(0,1fr))}
+@container site (max-width:749px){.site.final.is-lp .ap .carousel{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.site.final.is-lp .ap-head{border-radius:var(--r-out12) var(--r-out12) 0 0}
+.site.final.is-lp .ap-foot{position:sticky;bottom:0;z-index:2;border-radius:0 0 var(--r-out12) var(--r-out12)}
+.site.final .ap-head{background:var(--c-primary);color:var(--c-on-primary);border-bottom-color:transparent}
+.site.final .ap-head .av{background:rgba(255,255,255,.18);color:inherit}
+.site.final .ap-head .ibtn{color:inherit}
+.site.final .ap-head .ibtn:hover{background:rgba(255,255,255,.16)}
+.site.final .ap-head .ibtn:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
+/* Soustředné rádiusy (hodnoty počítá themeVars z nastavení) */
+.site.final .ap,.site.final.is-lp .ap{border-radius:var(--r-out12)}
+.site.final .composer{border-radius:var(--r-ctl)}
+.site.final .send{border-radius:var(--r-in6)}
+.site.final .tile{border-radius:var(--r-out12)}
+.site.final .tile .ic{border-radius:var(--r-ctl)}
+.site.final .entry{border-radius:var(--r-out20)}
+.site.final .entry__ico{border-radius:var(--r-ctl)}
+.site.final .sr-miss{border-radius:var(--r-out20)}
+.site.final .sr-miss .ill{border-radius:var(--r-ctl)}
+.site.final .sr-ai{border-radius:var(--r-out28)}
+.site.final .sr-ai .ic{border-radius:var(--r-out6)}
+.site.final .sr-ask{border-radius:var(--r-out6)}
+.site.final .sr-ask .btn-p{border-radius:var(--r-ctl)}
+.site.final .lp-card{border-radius:var(--r-out16)}
+.site.final .lp-card .ic{border-radius:var(--r-ctl)}
+.site.final .lp-help{border-radius:var(--r-out14)}
+.site.final .lp-help .ic{border-radius:var(--r-ctl)}
+.site.final .launcher{border-radius:var(--r-launch)}
+@container site (max-width:999px){.site.final:not(.is-lp) .ap{border-radius:0}}
+@container site (min-width:1000px){.site.final:not(.is-lp) .ap{right:calc(16px + var(--sbw, 0px))}.site.final .launcher{right:calc(24px + var(--sbw, 0px))}}
+/* Šířka obsahu: web max. 1560 px, samostatná stránka asistenta max. 1240 px */
+.site.final .wf-main{max-width:1560px;box-sizing:border-box}
+.site.final .lp-hero,.site.final .lp-sec,.site.final.is-lp .lp-slot{max-width:1240px;box-sizing:border-box}
+/* Výběr odborníka (LP) */
+.exp{border:0;margin:4px 0 0;padding:0;min-width:0}
+.exp legend{padding:0;margin-bottom:8px;font-size:14px;font-weight:600;color:var(--c-ink)}
+.exp-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@container site (max-width:699px){.exp-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.exp-opt{position:relative;display:flex;align-items:center;gap:10px;min-height:44px;padding:10px 12px;border:1px solid var(--c-line-2);border-radius:var(--r-ctl);background:#fff;cursor:pointer;font-size:14px;font-weight:600;color:var(--c-ink);transition:border-color .15s,box-shadow .15s}
+.exp-opt:hover{border-color:var(--c-primary)}
+.exp-opt input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.exp-opt .ic{flex:none;width:44px;height:44px;display:grid;place-items:center;padding:4px;box-sizing:border-box;border-radius:var(--r-xs);background:#fff;overflow:hidden}
+.exp-opt .ic img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.exp-opt.on{border-color:var(--c-primary);box-shadow:0 0 0 1px var(--c-primary);background:var(--c-primary-soft)}
+.exp-opt:has(input:focus-visible){outline:2px solid var(--c-focus);outline-offset:2px}
+/* Tooltipy tlačítek v hlavičce */
+.site.final .ap-head .ibtn[data-tip]{position:relative}
+.site.final .ap-head .ibtn[data-tip]::after{content:attr(data-tip);position:absolute;top:calc(100% + 8px);right:0;z-index:5;padding:6px 10px;border-radius:var(--r-in6);background:#1f2933;color:#fff;font:600 12px/1.2 var(--font-body);white-space:nowrap;box-shadow:0 4px 12px rgba(16,24,32,.2);opacity:0;transform:translateY(-2px);pointer-events:none;transition:opacity .12s,transform .12s}
+.site.final .ap-head .ibtn[data-tip]:hover::after,.site.final .ap-head .ibtn[data-tip]:focus-visible::after{opacity:1;transform:none}
+</style>
+</helmet>
+<div class="{{siteCls}}" style="{{siteStyle}}">
+
+  <!-- ===== Drátěný web ===== -->
+  <div class="scroll" ref="{{setPage}}">
+    <div class="wf-top"><span>bscom.cz</span><span>|</span><span>bsshop.cz</span><span>|</span><span>LOXONE</span></div>
+    <header class="wf-head">
+      <button type="button" class="wf-logo" onClick="{{goHome}}" aria-label="bscom – úvodní stránka"><i>bs</i>bscom</button>
+      <div class="wf-search">
+        <label class="sr-only" for="wf-q">Hledat zboží</label>
+        <input id="wf-q" autocomplete="off" placeholder="Již 20 let jsme s Vámi" value="{{wq}}" onChange="{{onWq}}" onKeyDown="{{onWqKey}}">
+        <button type="button" class="go" onClick="{{doSearch}}" aria-label="Hledat"><svg class="i" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5" fill="none" stroke="currentColor"></path></svg></button>
+      </div>
+      <button type="button" class="wf-ai" onClick="{{goLp}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg><span>AI asistent</span></button>
+      <div class="wf-icons">
+        <svg class="i" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Můj účet"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21c.8-4 4-6 8-6s7.2 2 8 6" fill="none" stroke="currentColor"></path></svg>
+        <span class="wf-cart"><svg class="i" width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Košík"><path d="M4 8h16l-1.3 11.2a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8L4 8ZM8.5 8V6.5a3.5 3.5 0 0 1 7 0V8" fill="none" stroke="currentColor"></path></svg><b>0</b></span>
+        <span class="wf-menu"><svg class="i" width="26" height="26" viewBox="0 0 24 24" role="img" aria-label="Menu"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor"></path></svg></span>
+      </div>
+    </header>
+    <nav class="wf-nav" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></nav>
+    <!-- Úvodní stránka -->
+    <sc-if value="{{isHome}}" hint-placeholder-val="{{true}}">
+      <main class="wf-main">
+        <div class="wf-hero"><div class="wf-box" data-label="[hlavní banner]"></div><div class="wf-box" data-label="[vedlejší banner]"></div></div>
+        <section class="entry" aria-label="Nákupní asistent">
+          <span class="entry__ico"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}"><img class="avp" src="{{av.src}}" alt=""></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></sc-if></span>
+          <div><h2>Náš nový virtuální Nákupní asistent</h2><p>Vám poradí 24/7.</p></div>
+          <div class="chips">
+            <button type="button" class="btn-p" onClick="{{goLp}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
+          </div>
+        </section>
+        <div class="wf-h" aria-hidden="true"></div>
+        <div class="wf-grid" aria-hidden="true">
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+        </div>
+        <div class="wf-hero" aria-hidden="true"><div class="wf-box" data-label="[články]" style="min-height: 140px"></div><div class="wf-box" data-label="[značky]" style="min-height: 140px"></div></div>
+      </main>
+    </sc-if>
+
+    <!-- Výsledky vyhledávání: nic nenalezeno -->
+    <sc-if value="{{isSearch}}" hint-placeholder-val="{{false}}">
+      <main class="wf-main">
+        <nav class="sr-crumbs" aria-label="Drobečková navigace"><button type="button" onClick="{{goHome}}">Úvod</button><span aria-hidden="true">›</span><span aria-current="page">Vyhledávání</span></nav>
+        <div class="sr-h"><h1>Výsledky hledání „{{sq}}“</h1><p>Nenašli jsme žádné zboží (0 produktů).</p></div>
+        <div class="sr-empty">
+          <section class="sr-miss" aria-labelledby="sr-miss-t">
+            <span class="ill"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5M8 10.5h5" fill="none" stroke="currentColor"></path></svg></span>
+            <h2 id="sr-miss-t">Pro tento dotaz jsme nic nenašli</h2>
+            <ul><li>Zkontrolujte, jestli v dotazu není překlep.</li><li>Zkuste obecnější nebo kratší výraz.</li><li>Projděte kategorie níže.</li></ul>
+          </section>
+          <section class="sr-ai" aria-labelledby="sr-ai-t">
+            <div class="hd"><span class="ic"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}"><img class="avp" src="{{av.src}}" alt=""></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></sc-if></span><div><h2 id="sr-ai-t">Zkuste našeho AI asistenta</h2><p>Popište vlastními slovy, co hledáte a k čemu to potřebujete. Asistent projde celý katalog a doporučí vhodné zboží.</p></div></div>
+            <form class="sr-ask" onSubmit="{{askSr}}">
+              <label class="sr-only" for="sr-q">Dotaz pro asistenta</label>
+              <input id="sr-q" autocomplete="off" placeholder="Např. notebook do školy, který vydrží celý den" value="{{aq}}" onChange="{{onAq}}">
+              <button type="submit" class="btn-p"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
+            </form>
+            <p class="why"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor"></path></svg>Rozumí i překlepům a celým větám.</p>
+          </section>
+        </div>
+        <div class="wf-h" aria-hidden="true"></div>
+        <div class="sr-cats" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="wf-h" aria-hidden="true"></div>
+        <div class="wf-grid" aria-hidden="true">
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+          <div class="wf-card"><div class="img"></div><div class="l"></div><div class="l s"></div><div class="row"><span class="p"></span><span class="b"></span></div></div>
+        </div>
+      </main>
+    </sc-if>
+
+
+    <!-- Samostatná stránka asistenta (LP) -->
+    <sc-if value="{{isLp}}" hint-placeholder-val="{{false}}">
+      <section class="lp-hero" aria-labelledby="lp-t">
+        <nav class="sr-crumbs" aria-label="Drobečková navigace"><button type="button" onClick="{{goHome}}">Úvod</button><span aria-hidden="true">›</span><span aria-current="page">Nákupní asistent</span></nav>
+        <sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}"><img class="lp-av" src="{{av.src}}" alt=""></sc-if>
+        
+        <h1 id="lp-t">Nákupní asistent bscom</h1>
+        <p class="lead">Poradí s výběrem notebooku, tiskárny nebo telefonu podle toho, k čemu ho potřebujete. Ceny a dostupnost bere přímo z e-shopu.</p>
+        <fieldset class="exp">
+          <legend>Vyber si odborníka na:</legend>
+          <div class="exp-list">
+            <sc-for list="{{experts}}" as="x" hint-placeholder-count="4"><label class="{{x.cls}}"><input type="radio" name="expert" checked="{{x.on}}" onChange="{{x.pick}}"><span class="ic"><img src="{{x.img}}" alt=""></span>{{x.label}}</label></sc-for>
+          </div>
+        </fieldset>
+        
+      </section>
+    </sc-if>
+
+    <!-- Panel asistenta: plovoucí, na LP vložený do stránky -->
+    <div class="lp-slot">
+      <!-- ===== Panel asistenta ===== -->
+      <sc-if value="{{open}}" hint-placeholder-val="{{false}}">
+      <section class="{{panelCls}}" role="dialog" aria-modal="false" aria-labelledby="ap-t" onKeyDown="{{onPanelKey}}">
+        <header class="ap-head">
+          <span class="av" style="width: 44px; height: 44px; background: none; box-shadow: none; border: none"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}" style="background: none; box-shadow: none"><img class="avp" src="{{av.src}}" alt="" style="background: none; box-shadow: none"></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}" style="background: none; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="background: none; box-shadow: none; width: 30px; height: 30px"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none" style="background: none; box-shadow: none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor" style="background: none; box-shadow: none"></path></svg></sc-if></span>
+          <div class="ap-title"><b id="ap-t">Nákupní asistent</b><small style="color: inherit; opacity: 0.9">{{expertName}}<sc-if value="{{notLp}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{goLp}}" style="margin-left: 8px; padding: 0; background: none; border: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer" style-hover="opacity: 0.8">Změnit</button></sc-if></small></div>
+          <button type="button" class="ibtn" onClick="{{newChat}}" aria-label="Nový chat" data-tip="Nový chat"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></button>
+          <sc-if value="{{isLp}}" hint-placeholder-val="{{false}}"><button type="button" class="ibtn" onClick="{{minimize}}" aria-label="Zmenšit do plovoucího okna" data-tip="Zmenšit do plovoucího okna"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="transform: none"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" fill="none" stroke="currentColor"></path></svg></button></sc-if><button type="button" class="ibtn lp-btn" onClick="{{goLp}}" aria-label="Otevřít chat na velké samostatné stránce" data-tip="Otevřít na samostatné stránce"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10V3M9 6l3-3 3 3M12 14v7M9 18l3 3 3-3M10 12H3M6 9l-3 3 3 3M14 12h7M18 9l3 3-3 3" fill="none" stroke="currentColor"></path></svg></button>
+      <button type="button" class="ibtn ap-x" onClick="{{closePanel}}" aria-label="Zavřít asistenta" data-tip="Zavřít" style="background: rgba(255,255,255,0.18)" style-hover="background: rgba(255,255,255,0.3)"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor"></path></svg></button>
+        </header>
+
+        <div class="ap-log" ref="{{setLog}}" aria-live="polite">
+          <sc-for list="{{entries}}" as="e" hint-placeholder-count="1">
+            <div class="entry-w">
+
+              <!-- Úvod: výběr chatu -->
+              <sc-if value="{{e.isStart}}" hint-placeholder-val="{{true}}">
+                <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body">
+                  <div class="welcome txt"><h2>S čím vám mám pomoct?</h2><p>Napište, co hledáte a k čemu to potřebujete. Doporučím konkrétní produkty z nabídky bscom a odpovím na otázky k nim.</p></div>
+                  <div class="tiles">
+                    <button type="button" class="tile" onClick="{{e.newChat}}" style="display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; text-align: left"><span class="ic" style="grid-row: 1 / span 2; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 2; align-self: end">Nový chat</b><small style="grid-column: 2; align-self: start">Založíte nové vlákno vyhledávání. Předchozí konverzace bude ukončena.</small></button>
+                    <button type="button" class="tile" onClick="{{e.continueChat}}" style="display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; text-align: left"><span class="ic" style="grid-row: 1 / span 2; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 2; align-self: end">Pokračovat v chatu</b><small style="grid-column: 2; align-self: start">Chat máte otevřený v jiném okně nebo jste obnovili stránku.</small></button>
+                  </div>
+                </div></div>
+              </sc-if>
+
+              <!-- Zpráva zákazníka -->
+              <sc-if value="{{e.isUser}}" hint-placeholder-val="{{false}}">
+                <div class="m m-user" style="display: flex; justify-content: flex-end; margin-left: auto"><span class="sr-only">Vy: </span><div class="t" style="margin-left: auto; width: fit-content; max-width: 100%">{{e.text}}</div></div>
+              </sc-if>
+
+              <!-- Průběh odpovědi -->
+              <sc-if value="{{e.isProgress}}" hint-placeholder-val="{{false}}">
+                <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body">
+                  <div class="progress" aria-busy="true">
+                    <ol><li class="now"><span class="dot"><span class="spin"></span></span>Asistent připravuje odpověď</li></ol>
+                  </div>
+                  <div class="skel" aria-hidden="true"><div></div><div></div></div>
+                </div></div>
+              </sc-if>
+
+              <!-- Odpověď s produkty -->
+              <sc-if value="{{e.isAnswer}}" hint-placeholder-val="{{false}}">
+                <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body">
+                  <div class="txt"><p><sc-for list="{{e.intro}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.b}}" hint-placeholder-val="{{false}}"><b>{{s.t}}</b></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{true}}"><span>{{s.t}}</span></sc-if></sc-for></p></div>
+                  <div class="carousel" role="list">
+                    <sc-for list="{{e.cards}}" as="c" hint-placeholder-count="2">
+                      <article class="pcard" role="listitem" aria-label="{{c.name}}">
+                        <span class="{{c.tagCls}}">{{c.tag}}</span>
+                        <div class="img"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="28" y="12" width="104" height="68" rx="6" fill="#2b3640"></rect><rect x="33" y="17" width="94" height="58" rx="2" fill="{{c.screen}}"></rect><path d="M33 75 127 17v58Z" fill="#ffffff" opacity="0.12"></path><path d="M14 84h132l-8 12H22Z" fill="#9aa7b3"></path><rect x="66" y="86" width="28" height="3" rx="1.5" fill="#7c8a97"></rect></svg></div>
+                        <div class="in">
+                          <a class="nm" href="{{c.href}}" target="_blank" rel="noopener">{{c.name}}</a>
+                          <ul><li>{{c.cpu}}</li><li>{{c.mem}}</li><li>{{c.display}}</li></ul>
+                          <div class="stock"><i></i>{{c.stock}}</div>
+                          <div class="dlv">{{c.delivery}}</div>
+                          <div class="price">{{c.priceStr}}</div><button type="button" style="margin-top: 12px; width: 100%; min-height: 44px; padding: 10px 16px; border: 0; border-radius: var(--r-ctl); background: #4dad2b; color: #ffffff; font: inherit; font-weight: 600; cursor: pointer" style-hover="background: #3e9122">Vložit do košíku</button>
+                        </div>
+                      </article>
+                    </sc-for>
+                  </div>
+                  <div class="txt"><p><sc-for list="{{e.closing}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.b}}" hint-placeholder-val="{{false}}"><b>{{s.t}}</b></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{true}}"><span>{{s.t}}</span></sc-if></sc-for></p></div>
+                </div></div>
+              </sc-if>
+
+              <!-- Krátká zpráva asistenta -->
+              <sc-if value="{{e.isAi}}" hint-placeholder-val="{{false}}">
+                <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body"><div class="txt" style="background: #eceff1; padding: 8px 16px; border-radius: var(--r-xl) var(--r-xl) var(--r-xl) var(--r-xxs); display: block; max-width: 100%; box-sizing: border-box; width: fit-content"><p>{{e.text}}</p></div></div></div>
+              </sc-if>
+
+            </div>
+          </sc-for>
+        </div>
+
+        <footer class="ap-foot">
+          <form class="composer" onSubmit="{{submitQ}}">
+            <label class="sr-only" for="q">Napište dotaz</label>
+            <textarea id="q" rows="1" placeholder="Hledám notebook do školy…" ref="{{setQ}}" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}"></textarea>
+            <button class="send" type="submit" aria-label="Odeslat" disabled="{{sendDisabled}}"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></button>
+          </form>
+          
+        </footer>
+      </section>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{isLp}}" hint-placeholder-val="{{false}}">
+      <section class="lp-sec" aria-labelledby="lp-can">
+        <h2 id="lp-can">Co asistent umí</h2>
+        <div class="lp-cards"><div class="lp-card"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5" fill="none" stroke="currentColor"></path></svg></span><b>Najde vhodné produkty</b><p>Popište, co hledáte, a asistent vybere zboží z nabídky bscom.</p></div><div class="lp-card"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12.5a7.5 7.5 0 0 1-11.1 6.6L4 20l1-4.3A7.5 7.5 0 1 1 20 12.5Z" fill="none" stroke="currentColor"></path></svg></span><b>Odpoví na otázky</b><p>Zeptejte se na parametry, rozdíly nebo na co se při výběru zaměřit.</p></div><div class="lp-card"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor"></path></svg></span><b>Zjednoduší výběr</b><p>Doporučí několik konkrétních produktů s odkazem a cenou.</p></div></div>
+      </section>
+      <section class="lp-sec" aria-labelledby="lp-how">
+        <h2 id="lp-how">Jak se ptát</h2>
+        <p class="lp-p">Pište celými větami, jako byste se ptali prodavače. Čím víc řeknete o účelu a rozpočtu, tím přesnější bude odpověď.</p>
+        <ul class="lp-tips"><li>„Hledám notebook do školy do 15 000 Kč“</li><li>„Jaký vysavač je vhodný do bytu se zvířaty?“</li><li>„Potřebuji sklo na Samsung Galaxy S25 Ultra“</li></ul>
+      </section>
+      <section class="lp-sec" aria-labelledby="lp-faq">
+        <h2 id="lp-faq">Dobré vědět</h2>
+        <div class="lp-faq">
+          <details><summary>Může se asistent splést?<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"></path></svg></summary><p>Ano. Asistent je umělá inteligence a může chybovat. Ceny a dostupnost bere přímo z e-shopu, důležité údaje si ale ověřte na detailu produktu.</p></details>
+          <details><summary>Co se děje s tím, co napíšu?<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"></path></svg></summary><p>[Text o zpracování údajů doplní bscom.]</p></details>
+          <details><summary>Stojí používání asistenta něco?<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"></path></svg></summary><p>Ne, asistent je zdarma a nemusíte se registrovat.</p></details>
+        </div>
+        <div class="lp-help"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4.5 13h1A1.5 1.5 0 0 1 7 14.5v3A1.5 1.5 0 0 1 5.5 19h-1A1.5 1.5 0 0 1 3 17.5v-3A1.5 1.5 0 0 1 4.5 13ZM18.5 13h1a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-3a1.5 1.5 0 0 1 1.5-1.5ZM19 19c0 1.5-1.5 2.5-4 2.5h-2" fill="none" stroke="currentColor"></path></svg></span><div><b>Raději s člověkem?</b><p>Zákaznická linka <b>499 944 944</b>, Po–Pá 9:00–17:00</p></div></div>
+      </section>
+    </sc-if>
+    <div class="wf-foot" aria-hidden="true"></div>
+  </div>
+
+  <!-- ===== Plovoucí spouštěč ===== -->
+  <sc-if value="{{closed}}" hint-placeholder-val="{{true}}">
+    <button type="button" class="launcher" onClick="{{openPanel}}" aria-label="Otevřít nákupního asistenta" style="border-radius: 50%"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}"><img class="avp" src="{{av.src}}" alt=""></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}"><svg class="i" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></sc-if><span>Nákupní asistent</span></button>
+  </sc-if>
+
+
+  <!-- ===== Nastavení (jen barva a zaoblení) ===== -->
+  <div class="dsw" style="padding: 4px"><button type="button" aria-expanded="{{thm.openStr}}" onClick="{{thm.toggle}}" style="margin-left: 0; box-shadow: none"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="none" stroke="currentColor"></path><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" fill="none" stroke="currentColor"></path></svg>Nastavení</button></div>
+  <sc-if value="{{thm.open}}" hint-placeholder-val="{{false}}">
+    <section class="thm" aria-label="Nastavení">
+      <div class="thm-hd"><b>Nastavení</b><button type="button" onClick="{{thm.close}}" aria-label="Zavřít nastavení"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor"></path></svg></button></div>
+      <fieldset>
+        <legend>Hlavní barva</legend>
+        <div class="thm-sw">
+          <sc-for list="{{thm.swatches}}" as="s" hint-placeholder-count="5"><button type="button" style="{{s.style}}" aria-pressed="{{s.pressed}}" aria-label="{{s.name}}" title="{{s.name}}" onClick="{{s.pick}}"></button></sc-for>
+          <label class="thm-pick"><input type="color" value="{{thm.primary}}" onChange="{{thm.onPrimary}}">Vlastní</label>
+          <span class="thm-hex">{{thm.hex}}</span>
+        </div>
+        <sc-if value="{{thm.lowContrast}}" hint-placeholder-val="{{false}}"><p class="thm-warn">Text na této barvě má kontrast jen {{thm.contrastStr}} : 1 (potřeba aspoň 4,5). Zvolte tmavší odstín.</p></sc-if>
+      </fieldset>
+      <div class="thm-f"><label class="lbl" for="thm-r">Zaoblení rohů<span>{{thm.radiusStr}}</span></label><input id="thm-r" type="range" min="0" max="24" step="1" value="{{thm.radius}}" onChange="{{thm.onRadius}}"></div>
+      <fieldset>
+        <legend>Výška okna chatu (desktop)</legend>
+        <div class="thm-seg"><button type="button" aria-pressed="{{thm.hHalf}}" onClick="{{thm.setHalf}}">1/2</button><button type="button" aria-pressed="{{thm.hTwo}}" onClick="{{thm.setTwo}}">2/3</button><button type="button" aria-pressed="{{thm.hFull}}" onClick="{{thm.setFull}}">Celá</button></div>
+      </fieldset>
+      <p class="thm-note">Písmo Open Sans, spouštěč jen s ikonou. Nastavení se uloží v tomto prohlížeči; pro nasazení zkopírujte CSS proměnné.</p>
+      <div class="thm-ft"><button type="button" class="rs" onClick="{{thm.reset}}">Výchozí</button><button type="button" class="cp" onClick="{{thm.copy}}"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2ZM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor"></path></svg>{{thm.copyLabel}}</button></div>
+    </section>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0073cc","options":["#0073cc","#1a7f37","#6b4fb8","#c2410c"],"section":"Vzhled"},"radius":{"editor":"range","default":12,"min":0,"max":24,"step":1,"unit":"px","section":"Vzhled"},"height":{"editor":"enum","default":"1/2 výšky","options":["1/2 výšky","2/3 výšky","Celá výška"],"section":"Vzhled"},"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty","Hledání bez výsledků","Samostatná stránka (LP)"]},"$preview":{"width":1440,"height":900}}'>
+var PD = {
+  intro: 'Do školy bych doporučil především modely s **minimálně 8 GB RAM, SSD 512 GB a Full HD displejem**. Do rozpočtu 15 000 Kč mám tyto volby, všechny s doručením cca do 1 dne:',
+  closing: '**Za nejlepší poměr výkonu a ceny bych pro studium volil HP 250R G9.** Pokud chcete ušetřit, velmi dobře poslouží Lenovo V15.',
+  products: [
+    { name: 'HP 250R G9 Dark Ash', price: 13297, tag: 'Nejlepší univerzální volba', tagKind: '', cpu: 'Intel Core i5-1335U', ram: 8, ssd: 512, display: '15,6" Full HD, matný', stock: 'Skladem 5 ks', delivery: 'doručení cca 1 den', screen: '#2f6db5', href: 'https://www.bscom.cz/notebook-hp-250r-g9-dark-ash-9g1p8et-bcm_d2197349/' },
+    { name: 'Lenovo V15 G4 AMN Black', price: 12517, tag: 'Výhodný s Ryzenem 5', tagKind: 'ok', cpu: 'AMD Ryzen 5 7520U', ram: 8, ssd: 512, display: '15,6" Full HD, matný', stock: 'Skladem více než 10 ks', delivery: 'doručení cca 1 den', screen: '#6b4fb8', href: 'https://www.bscom.cz/notebook-lenovo-v15-g4-amn-black-82yu00u4ck_d1937271/' },
+    { name: 'Repasovaný Dell Latitude 5430', price: 11360, tag: 'Lehčí · repasovaný', tagKind: '', cpu: 'Intel Core i5-1245U', ram: 16, ssd: 256, display: '14" Full HD, dotykový', stock: 'Skladem 1 ks', delivery: 'doručení cca 1 den', screen: '#1f8a7a', href: 'https://www.bscom.cz/repasovany-notebook-dell-latitude-5430-zaruka-24-mesicu-312729_d2578271/' },
+    { name: 'Acer TravelMate P2 16', price: 15145, tag: 'Mírně nad rozpočtem', tagKind: 'warn', cpu: 'Intel Core 3 100U', ram: 8, ssd: 512, display: '16" IPS 1920 × 1200', stock: 'Skladem více než 10 ks', delivery: 'doručení cca 1 den', screen: '#b5562f', href: 'https://www.bscom.cz/notebook-acer-travelmate-p2-16-steel-gray-tmp216-51-g2-tco-300d-nx-b6mec-002_d2197772/' }
+  ]
+};
+var GREETING = 'Dobrý den, jak Vám mohu pomoci?';
+var NB_Q = 'Hledám notebook do školy do 15 000 Kč';
+var STATE_KEYS = { 'Zavřeno – web se vstupy': 'closed', 'Výběr chatu': 'start', 'Nový chat': 'new', 'Průběh odpovědi': 'progress', 'Odpověď s produkty': 'answer', 'Hledání bez výsledků': 'search', 'Samostatná stránka (LP)': 'lp' };
+
+function kc(n) { return n.toLocaleString('cs-CZ').replace(/ /g, ' ') + ' Kč'; }
+function seg(s) { return String(s).split('**').map(function (t, i) { return { t: t, b: i % 2 === 1, n: i % 2 === 0 }; }).filter(function (x) { return x.t !== ''; }); }
+function hasUser(list) { return list.some(function (e) { return e.t === 'user'; }); }
+
+/* ---------- Vzhled: barva, zaoblení, písmo, spouštěč (Tweaky + panel Vzhled) ---------- */
+/* Finální návrh: nastavitelná jen barva a zaoblení; písmo, spouštěč, umístění a avatar jsou pevné. */
+var THEME_KEY = 'bscom-ai-nastaveni-final';
+var THEME_DEF = { primary: '#0073cc', radius: 12, height: '1/2 výšky', font: 'Open Sans', launcher: 'Jen ikona', side: 'Vpravo', avatar: 'Ikona', avatarUrl: '' };
+var THEME_PROPS = ['primary', 'radius', 'height'];
+var FONTS = {
+  'Open Sans': '"Open Sans", Arial, sans-serif',
+  'Source Sans 3': '"Source Sans 3", Arial, sans-serif',
+  'Nunito Sans': '"Nunito Sans", Arial, sans-serif',
+  'Lato': 'Lato, Arial, sans-serif',
+  'Systémové': 'system-ui, -apple-system, "Segoe UI", Arial, sans-serif'
+};
+var SWATCHES = [
+  { hex: '#0073cc', name: 'Modrá bscom' }, { hex: '#1a7f37', name: 'Zelená' }, { hex: '#6b4fb8', name: 'Fialová' },
+  { hex: '#c2410c', name: 'Oranžová' }, { hex: '#1f2933', name: 'Grafitová' }
+];
+function hexRgb(h) { h = String(h || '').replace('#', '').trim(); if (h.length === 3) h = h.split('').map(function (c) { return c + c; }).join(''); var n = parseInt(h, 16); return h.length === 6 && !isNaN(n) ? [n >> 16 & 255, n >> 8 & 255, n & 255] : null; }
+function rgbHex(a) { return '#' + a.map(function (v) { return Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0'); }).join(''); }
+function mixc(a, b, t) { return a.map(function (v, i) { return v + (b[i] - v) * t; }); }
+function lum(a) { var c = a.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function loadTheme() { try { var o = JSON.parse(localStorage.getItem(THEME_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+function saveTheme(o) { try { localStorage.setItem(THEME_KEY, JSON.stringify(o)); } catch (e) {} }
+function themeOf(self) {
+  var p = self.props, o = self.thOver || {}, t = Object.assign({}, THEME_DEF);
+  THEME_PROPS.forEach(function (k) { t[k] = o[k] != null ? o[k] : (p[k] != null ? p[k] : THEME_DEF[k]); });
+  return t;
+}
+function themeVars(t) {
+  var p = hexRgb(t.primary) || hexRgb(THEME_DEF.primary), K = [0, 0, 0], W = [255, 255, 255], INK = [31, 41, 51];
+  var white = contrast(p, W) >= contrast(p, INK);
+  var r = Math.max(0, Math.min(40, Number(t.radius))); if (isNaN(r)) r = THEME_DEF.radius;
+  return {
+    '--c-primary': rgbHex(p), '--c-primary-hover': rgbHex(mixc(p, K, 0.18)), '--c-primary-active': rgbHex(mixc(p, K, 0.35)),
+    '--c-on-primary': white ? '#ffffff' : '#1f2933', '--c-primary-soft': rgbHex(mixc(p, W, 0.9)), '--c-on-primary-soft': rgbHex(mixc(p, K, 0.42)),
+    '--c-link': rgbHex(mixc(p, K, 0.18)), '--r-base': r + 'px', '--font-body': FONTS[t.font] || FONTS['Open Sans'],
+    /* Soustředné rádiusy: R = prvek (tlačítko, pole, karta, ikona); obal s odsazením p má R + p, vnořený prvek R − p (min. R/3). R = 0 → vše hranaté. */
+    '--r-ctl': r + 'px', '--r-m': r + 'px', '--r-s': r + 'px',
+    '--r-xs': rin(r, 8) + 'px', '--r-xxs': (r > 0 ? Math.max(2, Math.round(r / 4)) : 0) + 'px', '--r-in6': rin(r, 6) + 'px',
+    '--r-xl': rout(r, 6) + 'px', '--r-l': rout(r, 12) + 'px', '--r-out6': rout(r, 6) + 'px', '--r-out12': rout(r, 12) + 'px',
+    '--r-out14': rout(r, 14) + 'px', '--r-out16': rout(r, 16) + 'px', '--r-out20': rout(r, 20) + 'px', '--r-out28': rout(r, 28) + 'px',
+    '--r-launch': rout(r, 18) + 'px'
+  };
+}
+function rout(r, p) { return r > 0 ? r + p : 0; }
+function rin(r, p) { return r > 0 ? Math.max(r - p, Math.round(r / 3)) : 0; }
+function themeCss(t) { var v = themeVars(t); return Object.keys(v).map(function (k) { return k + ': ' + v[k]; }).join('; '); }
+function themeCls(t) { return 'site' + (t.launcher === 'Jen ikona' ? ' launch-icon' : '') + (t.side === 'Vlevo' ? ' launch-left' : '') + (t.avatar === 'Fotografie' ? ' has-photo' : '') + (t.height === 'Celá výška' ? '' : t.height === '2/3 výšky' ? ' ap-twothirds' : ' ap-half'); }
+/* ---------- Avatar: ikona nebo fotografie (výchozí ilustrace v barvě značky, nebo vlastní fotka) ---------- */
+function avatarSvg(primary) {
+  var p = rgbHex(hexRgb(primary) || hexRgb(THEME_DEF.primary)), soft = rgbHex(mixc(hexRgb(p), [255, 255, 255], 0.86));
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
+    '<rect width="120" height="120" fill="' + soft + '"/>' +
+    '<path d="M16 120c2-21 19-33 44-33s42 12 44 33Z" fill="' + p + '"/>' +
+    '<path d="M50 76h20v14c0 5-4 8-10 8s-10-3-10-8Z" fill="#e3ad87"/>' +
+    '<path d="M45 95l15 9 15-9" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round" opacity=".85"/>' +
+    '<ellipse cx="60" cy="53" rx="20" ry="23" fill="#f1c4a1"/>' +
+    '<path d="M39 54c-3-19 7-31 22-31 14 0 24 10 21 29-3-8-8-13-15-15-6 6-16 10-28 17Z" fill="#3a2a22"/>' +
+    '<circle cx="52.5" cy="55" r="2.2" fill="#2b2b2b"/><circle cx="67.5" cy="55" r="2.2" fill="#2b2b2b"/>' +
+    '<path d="M53.5 64.5c3.8 3.6 9.2 3.6 13 0" fill="none" stroke="#a5523a" stroke-width="2.2" stroke-linecap="round"/>' +
+    '<path d="M37 55c0-16 10-27 23-27s23 11 23 27" fill="none" stroke="#1f2933" stroke-width="3.5"/>' +
+    '<rect x="33" y="51" width="8" height="13" rx="4" fill="#1f2933"/><rect x="79" y="51" width="8" height="13" rx="4" fill="#1f2933"/>' +
+    '<path d="M83 63c0 9-6 13-14 13" fill="none" stroke="#1f2933" stroke-width="2.5" stroke-linecap="round"/><circle cx="67" cy="76" r="3" fill="#1f2933"/>' +
+    '</svg>';
+  return 'data:image/svg+xml,' + encodeURIComponent(s);
+}
+function avatarVm(self, t) {
+  var photo = t.avatar === 'Fotografie', o = self.thOver || {};
+  var src = o.photo || (t.avatarUrl ? String(t.avatarUrl) : '') || avatarSvg(t.primary);
+  return { photo: photo, icon: !photo, src: src };
+}
+function readPhoto(file, done) {
+  if (!file || !/^image\//.test(file.type)) return;
+  var fr = new FileReader();
+  fr.onload = function () {
+    var img = new Image();
+    img.onload = function () {
+      var n = 320, c = document.createElement('canvas'); c.width = n; c.height = n;
+      var k = Math.min(img.width, img.height), sx = (img.width - k) / 2, sy = (img.height - k) / 2;
+      c.getContext('2d').drawImage(img, sx, sy, k, k, 0, 0, n, n);
+      try { done(c.toDataURL('image/jpeg', 0.86)); } catch (e) { done(fr.result); }
+    };
+    img.src = fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+
+function themeSync(self, prev) {
+  var ch = false;
+  THEME_PROPS.forEach(function (k) { if (prev[k] !== self.props[k] && self.thOver[k] != null) { delete self.thOver[k]; ch = true; } });
+  if (ch) saveTheme(self.thOver);
+}
+function themeVm(self) {
+  var t = themeOf(self), v = themeVars(t);
+  var set = function (k, val) { self.thOver[k] = val; saveTheme(self.thOver); self.forceUpdate(); };
+  var cr = contrast(hexRgb(v['--c-primary']), hexRgb(v['--c-on-primary']));
+  return {
+    open: !!self.thOpen, openStr: self.thOpen ? 'true' : 'false',
+    toggle: function () { self.thOpen = !self.thOpen; self.forceUpdate(); },
+    close: function () { self.thOpen = false; self.forceUpdate(); },
+    primary: v['--c-primary'], hex: v['--c-primary'].toUpperCase(),
+    swatches: SWATCHES.map(function (s) { return { name: s.name, style: 'background: ' + s.hex, pressed: s.hex === v['--c-primary'] ? 'true' : 'false', pick: function () { set('primary', s.hex); } }; }),
+    onPrimary: function (ev) { set('primary', ev.target.value); },
+    lowContrast: cr < 4.5, contrastStr: cr.toFixed(1).replace('.', ','),
+    radius: Number(v['--r-base'].replace('px', '')), radiusStr: v['--r-base'].replace('px', ' px'),
+    onRadius: function (ev) { set('radius', Number(ev.target.value)); },
+    hHalf: t.height !== 'Celá výška' && t.height !== '2/3 výšky' ? 'true' : 'false', hTwo: t.height === '2/3 výšky' ? 'true' : 'false', hFull: t.height === 'Celá výška' ? 'true' : 'false',
+    setHalf: function () { set('height', '1/2 výšky'); }, setTwo: function () { set('height', '2/3 výšky'); }, setFull: function () { set('height', 'Celá výška'); },
+    font: FONTS[t.font] ? t.font : 'Open Sans', fonts: Object.keys(FONTS).map(function (f) { return { label: f, value: f }; }),
+    onFont: function (ev) { set('font', ev.target.value); },
+    lText: t.launcher !== 'Jen ikona' ? 'true' : 'false', lIcon: t.launcher === 'Jen ikona' ? 'true' : 'false',
+    setText: function () { set('launcher', 'S textem'); }, setIcon: function () { set('launcher', 'Jen ikona'); },
+    sRight: t.side !== 'Vlevo' ? 'true' : 'false', sLeft: t.side === 'Vlevo' ? 'true' : 'false',
+    setRight: function () { set('side', 'Vpravo'); }, setLeft: function () { set('side', 'Vlevo'); },
+    aIcon: t.avatar !== 'Fotografie' ? 'true' : 'false', aPhoto: t.avatar === 'Fotografie' ? 'true' : 'false', isPhoto: t.avatar === 'Fotografie',
+    setAIcon: function () { set('avatar', 'Ikona'); }, setAPhoto: function () { set('avatar', 'Fotografie'); },
+    hasCustom: !!(self.thOver && self.thOver.photo),
+    photoNote: self.thOver && self.thOver.photo ? 'Vlastní fotka, uložená v tomto prohlížeči.' : 'Výchozí ilustrace v barvě značky. Nahrajte fotku nebo maskota.',
+    onUpload: function (ev) { var f = ev.target.files && ev.target.files[0]; readPhoto(f, function (url) { set('photo', url); }); ev.target.value = ''; },
+    clearPhoto: function () { delete self.thOver.photo; saveTheme(self.thOver); self.forceUpdate(); },
+    reset: function () { self.thOver = {}; saveTheme({}); self.forceUpdate(); },
+    copyLabel: self.thCopied ? 'Zkopírováno' : 'Kopírovat CSS',
+    copy: function () {
+      var css = '/* Nákupní asistent – vzhled pro nasazení (vložte za prototyp.css) */\n.site {\n' +
+        Object.keys(v).map(function (k) { return '  ' + k + ': ' + v[k] + ';'; }).join('\n') +
+        '\n}\n/* Spouštěč: jen ikona, vpravo (třída .launch-icon na .site). Písmo: Open Sans. Okno chatu na desktopu: ' + (t.height === 'Celá výška' ? 'celá výška' : t.height === '2/3 výšky' ? '2/3 výšky (třída .ap-twothirds na .site)' : '1/2 výšky (třída .ap-half na .site)') + '. */\n';
+      var done = function () { self.thCopied = true; self.forceUpdate(); clearTimeout(self.thCopyT); self.thCopyT = setTimeout(function () { self.thCopied = false; self.forceUpdate(); }, 2000); };
+      try { navigator.clipboard.writeText(css).then(done, function () { window.prompt('Zkopírujte CSS:', css); }); } catch (e) { window.prompt('Zkopírujte CSS:', css); }
+    }
+  };
+}
+var EXPERTS = [
+  { id: 'pc', label: 'Počítače', gen: 'počítače', img: 'img/expert-pocitace.jpg', path: 'M5 6.5A1.5 1.5 0 0 1 6.5 5h11A1.5 1.5 0 0 1 19 6.5V15H5V6.5ZM3 15h18v1.5A1.5 1.5 0 0 1 19.5 18h-15A1.5 1.5 0 0 1 3 16.5V15Z' },
+  { id: 'print', label: 'Tiskárny', gen: 'tiskárny', img: 'img/expert-tiskarny.jpg', path: 'M7 9V4h10v5M7 17H5.5A1.5 1.5 0 0 1 4 15.5v-5A1.5 1.5 0 0 1 5.5 9h13a1.5 1.5 0 0 1 1.5 1.5v5a1.5 1.5 0 0 1-1.5 1.5H17M7 14h10v6H7v-6Z' },
+  { id: 'phone', label: 'Telefony', gen: 'telefony', img: 'img/expert-telefony.jpg', path: 'M8.5 3h7A1.5 1.5 0 0 1 17 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 19.5v-15A1.5 1.5 0 0 1 8.5 3ZM11 18h2' },
+  { id: 'all', label: 'Expert na všechno', gen: 'všechno', img: 'img/expert-vse-bs.png', path: 'M12 3l2.2 5.6L20 9.3l-4.4 3.9 1.3 5.8L12 16l-4.9 3 1.3-5.8L4 9.3l5.8-.7L12 3Z' }
+];
+var SR_Q = 'notebook na školu, co vydrží celý den';
+
+class Component extends DCLogic {
+  constructor() {
+    super(...arguments);
+    this.timers = [];
+    this.thOver = loadTheme(); this.thOpen = false;
+    var hashLp = false; try { hashLp = (!this.props.state || this.props.state === 'Zavřeno – web se vstupy') && /asistent/.test(window.location.hash); } catch (e) {}
+    this.m = this.build(hashLp ? 'lp' : (STATE_KEYS[this.props.state] || 'closed'));
+    var self = this;
+    this.setLog = function (el) { self.logEl = el; };
+    this.setQ = function (el) { self.qEl = el; };
+    this.setPage = function (el) { self.pageEl = el; };
+  }
+
+  componentDidUpdate(prev) {
+    themeSync(this, prev);
+    if (prev.state !== this.props.state) { this.clearTimers(); this.m = this.build(STATE_KEYS[this.props.state] || 'closed'); this.scroll = this.m.page === 'lp' ? 'top' : 'auto'; this.forceUpdate(); return; }
+    this.afterRender();
+  }
+  componentDidMount() { this.scroll = this.m.page === 'lp' ? 'top' : 'auto'; this.afterRender(); }
+  componentWillUnmount() { this.clearTimers(); }
+
+  afterRender() {
+    var pe = this.pageEl; if (pe) { var sbw = Math.max(15, pe.offsetWidth - pe.clientWidth); /* bez viditelného scrollbaru (overlay) se počítá s rezervou 15 px */ if (sbw !== this.sbw) { this.sbw = sbw; this.forceUpdate(); } }
+    var log = this.logEl, mode = this.scroll; this.scroll = null;
+    if (this.focusQ && this.qEl) { this.focusQ = false; this.qEl.focus(); }
+    if (!log || !mode) return;
+    if (this.m.page === 'lp' && pe) {
+      if (mode === 'top') return;
+      var pTop = pe.getBoundingClientRect().top, lastE = this.m.entries[this.m.entries.length - 1];
+      if ((mode === 'answer' || mode === 'auto') && lastE && lastE.t === 'answer') {
+        var aw = log.querySelectorAll('.entry-w'); var ae = aw[aw.length - 1];
+        if (ae) { pe.scrollTop += ae.getBoundingClientRect().top - pTop - 16; return; }
+      }
+      var lc = log.lastElementChild, foot = log.parentNode && log.parentNode.querySelector('.ap-foot');
+      if (lc) { var d = lc.getBoundingClientRect().bottom - (pTop + pe.clientHeight - (foot ? foot.offsetHeight : 0) - 16); if (d > 0) pe.scrollTop += d; }
+      return;
+    }
+    if (mode === 'top') { log.scrollTop = 0; return; }
+    var last = this.m.entries[this.m.entries.length - 1];
+    if ((mode === 'answer' || mode === 'auto') && last && last.t === 'answer') {
+      var ws = log.querySelectorAll('.entry-w'); var el = ws[ws.length - 1];
+      if (el) { log.scrollTop = el.offsetTop - 12; return; }
+    }
+    log.scrollTop = log.scrollHeight;
+  }
+
+  /* ---------- stav ---------- */
+  build(k) {
+    var m = { open: false, entries: [], prev: null, busy: false, q: '', page: 'home', wq: '', sq: '', aq: '' };
+    if (k === 'lp') { m.page = 'lp'; m.open = true; m.entries = [{ t: 'start' }]; return m; }
+    if (k === 'search') { m.page = 'search'; m.sq = m.aq = m.wq = SR_Q; return m; }
+    if (k === 'closed') return m;
+    m.open = true;
+    var chat = [{ t: 'ai', text: GREETING }, { t: 'user', text: NB_Q }];
+    switch (k) {
+      case 'start': m.entries = [{ t: 'start' }]; break;
+      case 'new': m.entries = [{ t: 'ai', text: GREETING }]; break;
+      case 'progress': m.entries = chat.concat([{ t: 'progress' }]); m.busy = true; break;
+      case 'answer': m.entries = chat.concat([{ t: 'answer' }]); break;
+    }
+    return m;
+  }
+  clearTimers() { this.timers.forEach(clearTimeout); this.timers = []; }
+  later(fn, ms) { var self = this; this.timers.push(setTimeout(function () { fn.call(self); }, ms)); }
+  up(scroll) { if (scroll) this.scroll = scroll; this.forceUpdate(); }
+  push(e) { this.m.entries.push(e); this.up(e.t === 'answer' ? 'answer' : 'end'); return e; }
+  pop(t) { var es = this.m.entries; for (var i = es.length - 1; i >= 0; i--) if (es[i].t === t) { es.splice(i, 1); break; } }
+
+  /* ---------- stránky webu ---------- */
+  search(v) { var m = this.m; v = (v || '').trim(); if (!v) return; if (m.page === 'lp') m.open = false; m.page = 'search'; m.sq = m.aq = v; if (this.pageEl) this.pageEl.scrollTop = 0; this.up(); }
+  goHome() { var m = this.m; if (m.page === 'lp') m.open = false; m.page = 'home'; if (this.pageEl) this.pageEl.scrollTop = 0; this.up(); }
+  minimize() {
+    var m = this.m; m.page = this.lpFrom && this.lpFrom !== 'lp' ? this.lpFrom : 'home'; m.open = true;
+    if (this.pageEl) this.pageEl.scrollTop = 0; this.up('end');
+  }
+  goLp() {
+    var m = this.m; if (m.page !== 'lp') this.lpFrom = m.page; m.page = 'lp'; m.open = true; if (!m.entries.length) m.entries = [{ t: 'start' }];
+    if (this.pageEl) this.pageEl.scrollTop = 0; this.up(m.entries.length > 1 ? 'end' : 'top');
+  }
+  askFromSearch() {
+    var m = this.m, v = (m.aq || '').trim() || m.sq; this.clearTimers(); m.busy = false;
+    if (hasUser(m.entries)) m.prev = m.entries;
+    m.open = true; m.entries = [{ t: 'ai', text: GREETING }]; this.ask(v);
+  }
+
+  /* ---------- funkce, které má asistent dnes ---------- */
+  openPanel() {
+    var m = this.m; m.open = true;
+    if (hasUser(m.entries)) m.prev = m.entries;
+    m.entries = [{ t: 'start' }];
+    this.focusQ = true; this.up('top');
+  }
+  closePanel() { if (this.m.page === 'lp') return; this.clearTimers(); this.m.busy = false; this.pop('progress'); this.m.open = false; this.up(); }
+  newChat() {
+    var m = this.m; this.clearTimers(); m.busy = false; this.pop('progress');
+    if (hasUser(m.entries)) m.prev = m.entries;
+    m.entries = [{ t: 'ai', text: GREETING }]; this.focusQ = true; this.up('top');
+  }
+  continueChat() {
+    var m = this.m;
+    m.entries = m.prev ? m.prev : [{ t: 'ai', text: GREETING }];
+    this.focusQ = true; this.up('end');
+  }
+  ask(text) {
+    var m = this.m; if (m.busy) return;
+    m.entries = m.entries.filter(function (e) { return e.t !== 'start'; });
+    if (!m.entries.length) m.entries.push({ t: 'ai', text: GREETING });
+    this.push({ t: 'user', text: text });
+    m.busy = true; this.push({ t: 'progress' });
+    this.later(function () {
+      this.pop('progress'); m.busy = false;
+      if (/note?bo*k|notebuk|laptop/i.test(text)) this.push({ t: 'answer' });
+      else this.push({ t: 'ai', text: 'V prototypu je připravená jen ukázková odpověď na dotaz „' + NB_Q + '“. Zkuste ho napsat.' });
+    }, 1600);
+  }
+  sendQ() {
+    var m = this.m, v = m.q.trim();
+    if (!v || m.busy) return;
+    m.q = ''; if (this.qEl) this.qEl.style.height = 'auto';
+    this.ask(v);
+  }
+
+  /* ---------- pohled ---------- */
+  card(p) {
+    return { name: p.name, tag: p.tag, tagCls: 'tag ' + p.tagKind, screen: p.screen, href: p.href, cpu: p.cpu,
+      mem: p.ram + ' GB RAM · SSD ' + p.ssd + ' GB', display: p.display, stock: p.stock, delivery: p.delivery, priceStr: kc(p.price) };
+  }
+  entryVm(e) {
+    var self = this;
+    var v = { isStart: e.t === 'start', isUser: e.t === 'user', isProgress: e.t === 'progress', isAnswer: e.t === 'answer', isAi: e.t === 'ai', text: e.text || '' };
+    if (v.isStart) { v.newChat = function () { self.newChat(); }; v.continueChat = function () { self.continueChat(); }; }
+    if (v.isAnswer) { v.intro = seg(PD.intro); v.closing = seg(PD.closing); v.cards = PD.products.map(function (p) { return self.card(p); }); }
+    return v;
+  }
+
+  renderVals() {
+    var self = this, m = this.m, th = themeOf(this);
+    return {
+      thm: themeVm(this), av: avatarVm(this, th), siteCls: themeCls(th) + ' final' + (m.page === 'lp' ? ' is-lp' : ''), siteStyle: themeCss(th) + '; --sbw: ' + (this.sbw || 0) + 'px', setPage: this.setPage,
+      wq: m.wq, onWq: function (ev) { m.wq = ev.target.value; self.forceUpdate(); },
+      onWqKey: function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); self.search(m.wq); } },
+      doSearch: function () { self.search(m.wq); },
+      goHome: function () { self.goHome(); },
+      isHome: m.page === 'home', isSearch: m.page === 'search', isLp: m.page === 'lp', notLp: m.page !== 'lp', minimize: function () { self.minimize(); }, experts: EXPERTS.map(function (x) { var on = (self.expert || 'all') === x.id; return { label: x.label, path: x.path, img: x.img, on: on, cls: 'exp-opt' + (on ? ' on' : ''), pick: function () { self.expert = x.id; self.forceUpdate(); } }; }), expertName: (function () { var x = EXPERTS.filter(function (e) { return e.id === (self.expert || 'all'); })[0] || EXPERTS[3]; return x.id === 'all' ? 'Expert na všechno' : 'Odborník na ' + x.gen; })(), goLp: function () { self.goLp(); }, sq: m.sq, aq: m.aq,
+      onAq: function (ev) { m.aq = ev.target.value; self.forceUpdate(); },
+      askSr: function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); self.askFromSearch(); },
+      open: m.open, closed: !m.open && m.page !== 'lp',
+      panelCls: 'ap',
+      openPanel: function () { self.openPanel(); },
+      closePanel: function () { self.closePanel(); },
+      newChat: function () { self.newChat(); },
+      onPanelKey: function (ev) { if (ev.key === 'Escape') self.closePanel(); },
+      entries: m.entries.map(function (e) { return self.entryVm(e); }),
+      q: m.q, sendDisabled: m.busy || !m.q.trim(),
+      setLog: this.setLog, setQ: this.setQ,
+      onQ: function (ev) { m.q = ev.target.value; var t = ev.target; t.style.height = 'auto'; t.style.height = Math.min(t.scrollHeight, 120) + 'px'; self.forceUpdate(); },
+      onQKey: function (ev) { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); self.sendQ(); } },
+      submitQ: function (ev) { if (ev && ev.preventDefault) ev.preventDefault(); self.sendQ(); }
+    };
+  }
+}
+</script>
+</body>
+</html>
