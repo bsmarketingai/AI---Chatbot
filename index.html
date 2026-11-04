@@ -14,7 +14,7 @@
 <style>
 body{margin:0}
 /* Plovoucí okno má vždy zvolenou výšku (i prázdný chat); vlastní scrollbar okna se nezobrazuje */
-@container site (min-width:1000px){.site.final:not(.is-lp) .ap{top:auto;height:calc(100% - 32px);max-height:none}.site.final.ap-half:not(.is-lp) .ap{height:50%;min-height:380px}.site.final.ap-twothirds:not(.is-lp) .ap{height:66.667%;min-height:380px}.site.final:not(.is-lp) .ap-log{flex:1 1 0}}
+@container site (min-width:550px){.site.final:not(.is-lp) .ap{top:auto;bottom:16px;width:420px;max-width:calc(100% - 32px);border-radius:var(--r-out12);height:calc(100% - 32px);max-height:none}.site.final.ap-half:not(.is-lp) .ap{height:50%;min-height:380px}.site.final.ap-twothirds:not(.is-lp) .ap{height:66.667%;min-height:380px}.site.final:not(.is-lp) .ap-log{flex:1 1 0}}
 .site.final .ap-log{scrollbar-width:none}
 .site.final .ap-log::-webkit-scrollbar{display:none}
 /* unslop (Damir Sokolovsky, @heydamir, CC BY 4.0) – leštění: váhy písma, popisky, stíny, pohyb, mřížka 4 px */
@@ -35,15 +35,22 @@ body{margin:0}
 .site.final .toast{padding:12px 16px}
 .site.final .lp-help{padding:16px;border-radius:var(--r-out16)}
 .site.final .lp-faq summary{padding:16px 4px}
-/* Samostatná stránka: okno se roztáhne celé, roluje jen hlavní scrollbar stránky, pole pro psaní zůstává dole na obrazovce */
-.site.final.is-lp .ap{height:auto;overflow:visible}
-.site.final.is-lp .ap-log{flex:none;overflow:visible}
+/* Samostatná stránka: okno vyplní výšku okna prohlížeče, pole pro psaní je vždy dole, zprávy rostou odspodu a rolují se uvnitř okna */
+.site.final.is-lp .ap{height:var(--aph, calc(100vh - 32px));min-height:0}
+.site.final.is-lp .ap-log{flex:1 1 0;min-height:0;overflow-y:auto}
+.site.final .ap-log > :first-child{margin-top:auto}
+/* Samostatná stránka: bez modré hlavičky, jen tlačítko pro zmenšení absolutně vpravo nahoře */
+.site.final.is-lp .ap{position:relative}
+.site.final.is-lp .ap-head{position:absolute;top:12px;right:12px;z-index:3;padding:0;gap:0;background:none;border:0;color:var(--c-ink-2)}
+.site.final.is-lp .ap-head .av,.site.final.is-lp .ap-head .ap-title{display:none}
+.site.final.is-lp .ap-head .ibtn:hover{background:var(--c-surface-2)}
+.site.final.is-lp .ap-log{padding-top:60px}
+/* Popis pod nadpisem je vidět jen před začátkem konverzace (úvodní výběr); s novým chatem i během chatování se skryje */
+.site.final.has-chat .lp-hero .lead{display:none}
 /* Samostatná stránka: odpovědi asistenta vlevo jen na šířku 4 karet produktů, zákazník zůstává vpravo */
 .site.final.is-lp .m-ai{max-width:960px}
 .site.final.is-lp .ap .carousel{grid-template-columns:repeat(4,minmax(0,1fr))}
 @container site (max-width:749px){.site.final.is-lp .ap .carousel{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.site.final.is-lp .ap-head{border-radius:var(--r-out12) var(--r-out12) 0 0}
-.site.final.is-lp .ap-foot{position:sticky;bottom:0;z-index:2;border-radius:0 0 var(--r-out12) var(--r-out12)}
 .site.final .ap-head{background:var(--c-primary);color:var(--c-on-primary);border-bottom-color:transparent}
 .site.final .ap-head .av{background:rgba(255,255,255,.18);color:inherit}
 .site.final .ap-head .ibtn{color:inherit}
@@ -51,7 +58,7 @@ body{margin:0}
 .site.final .ap-head .ibtn:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
 /* Soustředné rádiusy (hodnoty počítá themeVars z nastavení) */
 .site.final .ap,.site.final.is-lp .ap{border-radius:var(--r-out12)}
-.site.final .composer{border-radius:var(--r-ctl);align-items:flex-end;padding:6px 6px 6px 20px}
+.site.final .composer{border-radius:var(--r-ctl);align-items:flex-end;padding:6px 6px 6px 20px;border-color:var(--c-primary)}
 /* Pole pro psaní: jeden řádek má stejnou výšku jako tlačítko Odeslat (38 px), text je tak svisle na středu */
 .site.final .composer textarea{display:block;box-sizing:border-box;min-height:38px;padding:8px 0;line-height:22px;font-size:15px}
 .site.final .send{border-radius:var(--r-in6)}
@@ -70,8 +77,14 @@ body{margin:0}
 .site.final .lp-help{border-radius:var(--r-out14)}
 .site.final .lp-help .ic{border-radius:var(--r-ctl)}
 .site.final .launcher{border-radius:var(--r-launch)}
-@container site (max-width:999px){.site.final:not(.is-lp) .ap{border-radius:0}}
-@container site (min-width:1000px){.site.final:not(.is-lp) .ap{right:calc(16px + var(--sbw, 0px))}.site.final .launcher{right:calc(24px + var(--sbw, 0px))}}
+/* Tablet i desktop: stejné plovoucí okno; mobil (pod 550 px) přes celou obrazovku */
+/* Mobil: hlavička webu při rolování dolů zmizí, při rolování nahoru se vrátí */
+@container site (max-width:549px){.site.final .wf-head{z-index:15;transition:transform .25s cubic-bezier(.65,0,.35,1)}.site.final.hdr-hidden .wf-head{transform:translateY(-100%)}}
+/* Vysunutí draweru: jen posun zespodu, bez prolnutí, ease-in-out */
+@keyframes drawerUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+/* Mobil: chat se vysune zespodu jako drawer – plná šířka, 2/3 výšky, zaoblené horní rohy */
+@container site (max-width:549px){.site.final:not(.is-lp) .ap{top:auto;left:0;right:0;bottom:0;width:100%;max-width:none;height:66.667%;min-height:360px;border-radius:var(--r-out12) var(--r-out12) 0 0;box-shadow:0 -16px 48px rgba(16,24,32,.32),0 -2px 10px rgba(16,24,32,.14);animation:drawerUp .32s cubic-bezier(.65,0,.35,1)}.site.final .launcher{width:56px;height:56px;padding:0}}
+@container site (min-width:550px){.site.final:not(.is-lp) .ap{right:calc(16px + var(--sbw, 0px))}.site.final .launcher{right:calc(24px + var(--sbw, 0px))}}
 /* Šířka obsahu: web max. 1560 px, samostatná stránka asistenta max. 1240 px */
 .site.final .wf-main{max-width:1560px;box-sizing:border-box}
 .site.final .lp-hero,.site.final .lp-sec,.site.final.is-lp .lp-slot{max-width:1240px;box-sizing:border-box}
@@ -96,7 +109,7 @@ body{margin:0}
 <div class="{{siteCls}}" style="{{siteStyle}}">
 
   <!-- ===== Drátěný web ===== -->
-  <div class="scroll" ref="{{setPage}}">
+  <div class="scroll" ref="{{setPage}}" onScroll="{{onPageScroll}}">
     <div class="wf-top"><span>bscom.cz</span><span>|</span><span>bsshop.cz</span><span>|</span><span>LOXONE</span></div>
     <header class="wf-head">
       <button type="button" class="wf-logo" onClick="{{goHome}}" aria-label="bscom – úvodní stránka"><i>bs</i>bscom</button>
@@ -119,7 +132,7 @@ body{margin:0}
         <div class="wf-hero"><div class="wf-box" data-label="[hlavní banner]"></div><div class="wf-box" data-label="[vedlejší banner]"></div></div>
         <section class="entry" aria-label="Nákupní asistent">
           <span class="entry__ico"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}"><img class="avp" src="{{av.src}}" alt=""></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}"><svg class="i" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></sc-if></span>
-          <div><h2>Náš nový virtuální Nákupní asistent</h2><p>Vám poradí 24/7.</p></div>
+          <div><h2>Náš nový virtuální Nákupní asistent</h2><p>Vyzkoušejte našeho nového nákupního asistenta! Stále ho ladíme, ale už teď vám může pomoci najít vhodné produkty, odpovědět na otázky a zjednodušit výběr.</p></div>
           <div class="chips">
             <button type="button" class="btn-p" onClick="{{goLp}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
           </div>
@@ -151,7 +164,7 @@ body{margin:0}
             <form class="sr-ask" onSubmit="{{askSr}}">
               <label class="sr-only" for="sr-q">Dotaz pro asistenta</label>
               <input id="sr-q" autocomplete="off" placeholder="Např. notebook do školy, který vydrží celý den" value="{{aq}}" onChange="{{onAq}}">
-              <button type="submit" class="btn-p"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
+              <button type="button" class="btn-p" onClick="{{askSr}}"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.429 2.71426C13.727 2.71426 13.9709 2.95814 13.9709 3.25621C13.9709 5.35628 15.6736 7.0544 17.7691 7.0544C18.0672 7.0544 18.3111 7.29828 18.3111 7.59636C18.3111 7.89443 18.0672 8.13831 17.7691 8.13831C15.669 8.13831 13.9709 9.84095 13.9709 11.9365C13.9709 12.2346 13.727 12.4785 13.429 12.4785C13.1309 12.4785 12.887 12.2346 12.887 11.9365C12.887 9.83643 11.1844 8.13831 9.08883 8.13831C8.79075 8.13831 8.54688 7.89443 8.54688 7.59636C8.54688 7.29828 8.79075 7.0544 9.08883 7.0544C11.1889 7.0544 12.887 5.35177 12.887 3.25621C12.887 2.95814 13.1309 2.71426 13.429 2.71426ZM18.3156 0.541931C18.4511 0.541931 18.5549 0.650322 18.5549 0.781294C18.5549 1.71616 19.3092 2.47038 20.244 2.47038C20.375 2.47038 20.4834 2.57877 20.4834 2.70974C20.4834 2.84072 20.375 2.94911 20.244 2.94911C19.3092 2.94911 18.5549 3.70333 18.5549 4.6382C18.5549 4.76917 18.4466 4.87756 18.3156 4.87756C18.1846 4.87756 18.0762 4.76917 18.0762 4.6382C18.0762 3.70333 17.322 2.94911 16.3871 2.94911C16.2562 2.94911 16.1478 2.84072 16.1478 2.70974C16.1478 2.57877 16.2562 2.47038 16.3871 2.47038C17.322 2.47038 18.0762 1.71616 18.0762 0.781294C18.0762 0.650322 18.1846 0.541931 18.3156 0.541931ZM8.99975 10C9.12449 10 9.22012 10.0998 9.22012 10.2204C9.22012 11.0811 9.91451 11.7755 10.7752 11.7755C10.8958 11.7755 10.9956 11.8753 10.9956 11.9958C10.9956 12.1164 10.8958 12.2162 10.7752 12.2162C9.91451 12.2162 9.22012 12.9106 9.22012 13.7713C9.22012 13.8919 9.12033 13.9917 8.99975 13.9917C8.87917 13.9917 8.77937 13.8919 8.77937 13.7713C8.77937 12.9106 8.08499 12.2162 7.22428 12.2162C7.1037 12.2162 7.00391 12.1164 7.00391 11.9958C7.00391 11.8753 7.1037 11.7755 7.22428 11.7755C8.08499 11.7755 8.77937 11.0811 8.77937 10.2204C8.77937 10.0998 8.87917 10 8.99975 10Z" fill="currentColor" stroke="none"></path><path d="M14.9836 15.9982L20.9754 21.99M16.9809 11.003C16.9809 14.8641 13.8494 17.9955 9.98835 17.9955C6.12724 17.9955 3 14.8641 3 11.003C3 7.14189 6.12724 4.01465 9.98835 4.01465" fill="none" stroke="currentColor"></path></svg>Zeptat se asistenta</button>
             </form>
             <p class="why"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor"></path></svg>Rozumí i překlepům a celým větám.</p>
           </section>
@@ -176,39 +189,34 @@ body{margin:0}
         <sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}"><img class="lp-av" src="{{av.src}}" alt=""></sc-if>
         
         <h1 id="lp-t">Nákupní asistent bscom</h1>
-        <p class="lead">Poradí s výběrem notebooku, tiskárny nebo telefonu podle toho, k čemu ho potřebujete. Ceny a dostupnost bere přímo z e-shopu.</p>
-        <fieldset class="exp">
-          <legend>Vyber si odborníka na:</legend>
-          <div class="exp-list">
-            <sc-for list="{{experts}}" as="x" hint-placeholder-count="4"><label class="{{x.cls}}"><input type="radio" name="expert" checked="{{x.on}}" onChange="{{x.pick}}"><span class="ic"><img src="{{x.img}}" alt=""></span>{{x.label}}</label></sc-for>
-          </div>
-        </fieldset>
+        <p class="lead">Vyzkoušejte našeho nového nákupního asistenta! Stále ho ladíme, ale už teď vám může pomoci najít vhodné produkty, odpovědět na otázky a zjednodušit výběr.</p>
+        
         
       </section>
     </sc-if>
 
     <!-- Panel asistenta: plovoucí, na LP vložený do stránky -->
-    <div class="lp-slot">
+    <div class="lp-slot" style="padding-bottom: 96px">
       <!-- ===== Panel asistenta ===== -->
       <sc-if value="{{open}}" hint-placeholder-val="{{false}}">
       <section class="{{panelCls}}" role="dialog" aria-modal="false" aria-labelledby="ap-t" onKeyDown="{{onPanelKey}}">
         <header class="ap-head">
-          <span class="av" style="width: 44px; height: 44px; background: none; box-shadow: none; border: none"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}" style="background: none; box-shadow: none"><img class="avp" src="{{av.src}}" alt="" style="background: none; box-shadow: none"></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}" style="background: none; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="background: none; box-shadow: none; width: 30px; height: 30px"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none" style="background: none; box-shadow: none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor" style="background: none; box-shadow: none"></path></svg></sc-if></span>
-          <div class="ap-title"><b id="ap-t">Nákupní asistent</b><small style="color: inherit; opacity: 0.9">{{expertName}}<sc-if value="{{notLp}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{goLp}}" style="margin-left: 8px; padding: 0; background: none; border: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer" style-hover="opacity: 0.8">Změnit</button></sc-if></small></div>
-          <button type="button" class="ibtn" onClick="{{continueChat}}" aria-label="Pokračovat v chatu" data-tip="Pokračovat v chatu"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2" fill="none" stroke="currentColor"></path></svg></button><button type="button" class="ibtn" onClick="{{newChat}}" aria-label="Nový chat" data-tip="Nový chat"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></button>
+          <span class="av" style="width: 34px; height: 44px; background: none; box-shadow: none; border: none"><sc-if value="{{av.photo}}" hint-placeholder-val="{{false}}" style="background: none; box-shadow: none"><img class="avp" src="{{av.src}}" alt="" style="background: none; box-shadow: none"></sc-if><sc-if value="{{av.icon}}" hint-placeholder-val="{{true}}" style="background: none; box-shadow: none"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="background: none; box-shadow: none; width: 30px; height: 30px"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none" style="background: none; box-shadow: none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor" style="background: none; box-shadow: none"></path></svg></sc-if></span>
+          <div class="ap-title"><b id="ap-t">Nákupní asistent</b></div>
+          
           <sc-if value="{{isLp}}" hint-placeholder-val="{{false}}"><button type="button" class="ibtn" onClick="{{minimize}}" aria-label="Zmenšit do plovoucího okna" data-tip="Zmenšit do plovoucího okna"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="transform: none"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" fill="none" stroke="currentColor"></path></svg></button></sc-if><button type="button" class="ibtn lp-btn" onClick="{{goLp}}" aria-label="Otevřít chat na velké samostatné stránce" data-tip="Otevřít na samostatné stránce"><svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10V3M9 6l3-3 3 3M12 14v7M9 18l3 3 3-3M10 12H3M6 9l-3 3 3 3M14 12h7M18 9l3 3-3 3" fill="none" stroke="currentColor"></path></svg></button>
       <button type="button" class="ibtn ap-x" onClick="{{closePanel}}" aria-label="Zavřít asistenta" data-tip="Zavřít" style="background: rgba(255,255,255,0.18)" style-hover="background: rgba(255,255,255,0.3)"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor"></path></svg></button>
         </header>
 
-        <div class="ap-log" ref="{{setLog}}" aria-live="polite">
+        <div class="ap-log" ref="{{setLog}}" aria-live="polite" style="overflow-y: scroll; min-height: 0; flex-grow: 1; flex-shrink: 1; flex-basis: auto; scrollbar-width: thin; scrollbar-color: #9aa7b3 #eceff1; display: flex; flex-direction: column">
           <sc-for list="{{entries}}" as="e" hint-placeholder-count="1">
-            <div class="entry-w">
+            <div class="entry-w" style="margin-top: auto">
 
               <!-- Úvod: výběr chatu -->
               <sc-if value="{{e.isStart}}" hint-placeholder-val="{{true}}">
-                <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body">
-                  <div class="welcome txt"><h2>S čím vám mám pomoct?</h2><p>Napište, co hledáte a k čemu to potřebujete. Doporučím konkrétní produkty z nabídky bscom a odpovím na otázky k nim.</p></div>
-                  <div class="tiles">
+                <div class="m m-ai" style="justify-content: flex-start; margin-right: 0; width: 100%; max-width: none"><div class="body" style="width: 100%; max-width: none">
+                  
+                  <p style="margin: 0; padding: 0px 0px 12px; font-size: 14px; line-height: 1.5; color: #1f2933; flex-shrink: 1">Vyzkoušejte našeho nového nákupního asistenta! Stále ho ladíme, ale už teď vám může pomoci najít vhodné produkty, odpovědět na otázky a zjednodušit výběr.</p><div class="tiles" style="width: 100%; max-width: none">
                     <button type="button" class="tile" onClick="{{e.newChat}}" style="display: grid; grid-template-columns: 1fr; column-gap: 8px; row-gap: 4px; align-items: center; text-align: left; justify-items: start"><span class="ic" style="grid-row: 1; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; grid-column: 1; margin-bottom: 4px; border-radius: 999px"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M12 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H8v3l4-3h5.5a2.5 2.5 0 0 0 2.5-2.5V12M18 3v6M15 6h6" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 1; align-self: start; grid-row: 2">Nový chat</b><small style="grid-column: 1; align-self: start; grid-row: 3">Založíte nové vlákno vyhledávání. Předchozí konverzace bude ukončena.</small></button>
                     <button type="button" class="tile" onClick="{{e.continueChat}}" style="display: grid; grid-template-columns: 1fr; column-gap: 8px; row-gap: 4px; align-items: center; text-align: left; justify-items: start"><span class="ic" style="grid-row: 1; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; grid-column: 1; margin-bottom: 4px; border-radius: 999px"><svg class="i" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" style="width: 30px; height: 30px"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5M3.5 4v4.5H8M12 7.5V12l3 2" fill="none" stroke="currentColor"></path></svg></span><b style="grid-column: 1; align-self: start; grid-row: 2">Pokračovat v chatu</b><small style="grid-column: 1; align-self: start; grid-row: 3">Chat máte otevřený v jiném okně nebo jste obnovili stránku.</small></button>
                   </div>
@@ -233,7 +241,7 @@ body{margin:0}
               <!-- Odpověď s produkty -->
               <sc-if value="{{e.isAnswer}}" hint-placeholder-val="{{false}}">
                 <div class="m m-ai" style="justify-content: flex-start; margin-right: auto"><div class="body">
-                  <div class="txt"><p><sc-for list="{{e.intro}}" as="s" hint-placeholder-count="1"><sc-if value="{{s.b}}" hint-placeholder-val="{{false}}"><b>{{s.t}}</b></sc-if><sc-if value="{{s.n}}" hint-placeholder-val="{{true}}"><span>{{s.t}}</span></sc-if></sc-for></p></div>
+                  <div class="txt"><p>Vyzkoušejte našeho nového nákupního asistenta! Stále ho ladíme, ale už teď vám může pomoci najít vhodné produkty, odpovědět na otázky a zjednodušit výběr.</p></div>
                   <div class="carousel" role="list">
                     <sc-for list="{{e.cards}}" as="c" hint-placeholder-count="2">
                       <article class="pcard" role="listitem" aria-label="{{c.name}}">
@@ -266,7 +274,7 @@ body{margin:0}
           <form class="composer" onSubmit="{{submitQ}}" style="border-radius: 999px">
             <label class="sr-only" for="q">Napište dotaz</label>
             <textarea id="q" rows="1" placeholder="Hledám notebook do školy…" ref="{{setQ}}" value="{{q}}" onChange="{{onQ}}" onKeyDown="{{onQKey}}" style="border-radius: 999px"></textarea>
-            <button class="send" type="submit" aria-label="Odeslat" disabled="{{sendDisabled}}" style="border-radius: 999px"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></button>
+            <button class="send" type="button" onClick="{{submitQ}}" aria-label="Odeslat" disabled="{{sendDisabled}}" style="border-radius: 999px"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2,3.5c.3,0,.5.2.5.5,0,2.1,1.7,3.8,3.8,3.8s.5.2.5.5-.2.5-.5.5c-2.1,0-3.8,1.7-3.8,3.8s-.2.5-.5.5-.5-.2-.5-.5c0-2.1-1.7-3.8-3.8-3.8s-.5-.2-.5-.5.2-.5.5-.5c2.1,0,3.8-1.7,3.8-3.8s.2-.5.5-.5ZM20.1,1.3c.1,0,.2.1.2.2,0,.9.8,1.7,1.7,1.7s.2.1.2.2-.1.2-.2.2c-.9,0-1.7.8-1.7,1.7s-.1.2-.2.2-.2-.1-.2-.2c0-.9-.8-1.7-1.7-1.7s-.2-.1-.2-.2.1-.2.2-.2c.9,0,1.7-.8,1.7-1.7s.1-.2.2-.2ZM10.8,10.7c.1,0,.2,0,.2.2,0,.9.7,1.6,1.6,1.6s.2,0,.2.2,0,.2-.2.2c-.9,0-1.6.7-1.6,1.6s0,.2-.2.2-.2,0-.2-.2c0-.9-.7-1.6-1.6-1.6s-.2,0-.2-.2,0-.2.2-.2c.9,0,1.6-.7,1.6-1.6s0-.2.2-.2Z" fill="currentColor" stroke="none"></path><path d="M12.2,4.2h-7.3c-1.8,0-3.3,1.5-3.3,3.3v8.3c0,1.9,1.5,3.4,3.4,3.4h0v3.5l5-3.5h6.1c1.9,0,3.4-1.5,3.4-3.4v-4.5" fill="none" stroke="currentColor"></path></svg></button>
           </form>
           
         </footer>
@@ -275,24 +283,9 @@ body{margin:0}
     </div>
 
     <sc-if value="{{isLp}}" hint-placeholder-val="{{false}}">
-      <section class="lp-sec" aria-labelledby="lp-can">
-        <h2 id="lp-can">Co asistent umí</h2>
-        <div class="lp-cards"><div class="lp-card"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0ZM15.5 15.5l5 5" fill="none" stroke="currentColor"></path></svg></span><b>Najde vhodné produkty</b><p>Popište, co hledáte, a asistent vybere zboží z nabídky bscom.</p></div><div class="lp-card"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12.5a7.5 7.5 0 0 1-11.1 6.6L4 20l1-4.3A7.5 7.5 0 1 1 20 12.5Z" fill="none" stroke="currentColor"></path></svg></span><b>Odpoví na otázky</b><p>Zeptejte se na parametry, rozdíly nebo na co se při výběru zaměřit.</p></div><div class="lp-card"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor"></path></svg></span><b>Zjednoduší výběr</b><p>Doporučí několik konkrétních produktů s odkazem a cenou.</p></div></div>
-      </section>
-      <section class="lp-sec" aria-labelledby="lp-how">
-        <h2 id="lp-how">Jak se ptát</h2>
-        <p class="lp-p">Pište celými větami, jako byste se ptali prodavače. Čím víc řeknete o účelu a rozpočtu, tím přesnější bude odpověď.</p>
-        <ul class="lp-tips"><li>„Hledám notebook do školy do 15 000 Kč“</li><li>„Jaký vysavač je vhodný do bytu se zvířaty?“</li><li>„Potřebuji sklo na Samsung Galaxy S25 Ultra“</li></ul>
-      </section>
-      <section class="lp-sec" aria-labelledby="lp-faq">
-        <h2 id="lp-faq">Dobré vědět</h2>
-        <div class="lp-faq">
-          <details><summary>Může se asistent splést?<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"></path></svg></summary><p>Ano. Asistent je umělá inteligence a může chybovat. Ceny a dostupnost bere přímo z e-shopu, důležité údaje si ale ověřte na detailu produktu.</p></details>
-          <details><summary>Co se děje s tím, co napíšu?<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"></path></svg></summary><p>[Text o zpracování údajů doplní bscom.]</p></details>
-          <details><summary>Stojí používání asistenta něco?<svg class="i" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor"></path></svg></summary><p>Ne, asistent je zdarma a nemusíte se registrovat.</p></details>
-        </div>
-        <div class="lp-help"><span class="ic"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4.5 13h1A1.5 1.5 0 0 1 7 14.5v3A1.5 1.5 0 0 1 5.5 19h-1A1.5 1.5 0 0 1 3 17.5v-3A1.5 1.5 0 0 1 4.5 13ZM18.5 13h1a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-3a1.5 1.5 0 0 1 1.5-1.5ZM19 19c0 1.5-1.5 2.5-4 2.5h-2" fill="none" stroke="currentColor"></path></svg></span><div><b>Raději s člověkem?</b><p>Zákaznická linka <b>499 944 944</b>, Po–Pá 9:00–17:00</p></div></div>
-      </section>
+      
+      
+      
     </sc-if>
     <div class="wf-foot" aria-hidden="true"></div>
   </div>
@@ -318,10 +311,6 @@ body{margin:0}
         <sc-if value="{{thm.lowContrast}}" hint-placeholder-val="{{false}}"><p class="thm-warn">Text na této barvě má kontrast jen {{thm.contrastStr}} : 1 (potřeba aspoň 4,5). Zvolte tmavší odstín.</p></sc-if>
       </fieldset>
       <div class="thm-f"><label class="lbl" for="thm-r">Zaoblení vnějších rohů<span>{{thm.radiusStr}}</span></label><input id="thm-r" type="range" min="0" max="32" step="1" value="{{thm.radius}}" onChange="{{thm.onRadius}}"></div>
-      <fieldset>
-        <legend>Výška okna chatu (desktop)</legend>
-        <div class="thm-seg"><button type="button" aria-pressed="{{thm.hHalf}}" onClick="{{thm.setHalf}}">1/2</button><button type="button" aria-pressed="{{thm.hTwo}}" onClick="{{thm.setTwo}}">2/3</button><button type="button" aria-pressed="{{thm.hFull}}" onClick="{{thm.setFull}}">Celá</button></div>
-      </fieldset>
       <p class="thm-note">Písmo Open Sans, spouštěč jen s ikonou. Nastavení se uloží v tomto prohlížeči; pro nasazení zkopírujte CSS proměnné.</p>
       <div class="thm-ft"><button type="button" class="rs" onClick="{{thm.reset}}">Výchozí</button><button type="button" class="cp" onClick="{{thm.copy}}"><svg class="i" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2ZM16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor"></path></svg>{{thm.copyLabel}}</button></div>
     </section>
@@ -329,7 +318,7 @@ body{margin:0}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0073cc","options":["#0073cc","#1a7f37","#6b4fb8","#c2410c"],"section":"Vzhled"},"radius":{"editor":"range","default":16,"min":0,"max":32,"step":1,"unit":"px","section":"Vzhled"},"height":{"editor":"enum","default":"1/2 výšky","options":["1/2 výšky","2/3 výšky","Celá výška"],"section":"Vzhled"},"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty","Hledání bez výsledků","Samostatná stránka (LP)"]},"$preview":{"width":1440,"height":900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0073cc","options":["#0073cc","#1a7f37","#6b4fb8","#c2410c"],"section":"Vzhled"},"radius":{"editor":"range","default":16,"min":0,"max":32,"step":1,"unit":"px","section":"Vzhled"},"state":{"editor":"enum","default":"Zavřeno – web se vstupy","options":["Zavřeno – web se vstupy","Výběr chatu","Nový chat","Průběh odpovědi","Odpověď s produkty","Hledání bez výsledků","Samostatná stránka (LP)"]},"$preview":{"width":1440,"height":900}}'>
 var PD = {
   intro: 'Do školy bych doporučil především modely s **minimálně 8 GB RAM, SSD 512 GB a Full HD displejem**. Do rozpočtu 15 000 Kč mám tyto volby, všechny s doručením cca do 1 dne:',
   closing: '**Za nejlepší poměr výkonu a ceny bych pro studium volil HP 250R G9.** Pokud chcete ušetřit, velmi dobře poslouží Lenovo V15.',
@@ -351,8 +340,8 @@ function hasUser(list) { return list.some(function (e) { return e.t === 'user'; 
 /* ---------- Vzhled: barva, zaoblení, písmo, spouštěč (Tweaky + panel Vzhled) ---------- */
 /* Finální návrh: nastavitelná jen barva a zaoblení; písmo, spouštěč, umístění a avatar jsou pevné. */
 var THEME_KEY = 'bscom-ai-nastaveni-final';
-var THEME_DEF = { primary: '#0073cc', radius: 16, height: '1/2 výšky', font: 'Open Sans', launcher: 'Jen ikona', side: 'Vpravo', avatar: 'Ikona', avatarUrl: '' };
-var THEME_PROPS = ['primary', 'radius', 'height'];
+var THEME_DEF = { primary: '#0073cc', radius: 16, height: '2/3 výšky', font: 'Open Sans', launcher: 'Jen ikona', side: 'Vpravo', avatar: 'Ikona', avatarUrl: '' };
+var THEME_PROPS = ['primary', 'radius']; /* výška plovoucího okna je pevně 2/3 obrazovky */
 var FONTS = {
   'Open Sans': '"Open Sans", Arial, sans-serif',
   'Source Sans 3': '"Source Sans 3", Arial, sans-serif',
@@ -503,25 +492,21 @@ class Component extends DCLogic {
     if (prev.state !== this.props.state) { this.clearTimers(); this.m = this.build(STATE_KEYS[this.props.state] || 'closed'); this.scroll = this.m.page === 'lp' ? 'top' : 'auto'; this.forceUpdate(); return; }
     this.afterRender();
   }
-  componentDidMount() { this.scroll = this.m.page === 'lp' ? 'top' : 'auto'; this.afterRender(); }
-  componentWillUnmount() { this.clearTimers(); }
+  componentDidMount() { var self = this; this.onResize = function () { self.forceUpdate(); }; window.addEventListener('resize', this.onResize); this.scroll = this.m.page === 'lp' ? 'top' : 'auto'; this.afterRender(); }
+  componentWillUnmount() { this.clearTimers(); window.removeEventListener('resize', this.onResize); }
 
   afterRender() {
-    var pe = this.pageEl; if (pe) { var sbw = Math.max(15, pe.offsetWidth - pe.clientWidth); /* bez viditelného scrollbaru (overlay) se počítá s rezervou 15 px */ if (sbw !== this.sbw) { this.sbw = sbw; this.forceUpdate(); } }
+    /* samostatná stránka: okno chatu dostane přesně zbytek výšky obrazovky pod nadpisem (min. 320 px), pole pro psaní je tak vždy vidět */
+    var pe = this.pageEl;
+    if (pe && this.m.page === 'lp' && this.logEl && this.logEl.parentNode) {
+      var apT = this.logEl.parentNode.getBoundingClientRect().top - pe.getBoundingClientRect().top + pe.scrollTop;
+      var aph = Math.max(320, Math.round(pe.clientHeight - apT - 16));
+      if (aph !== this.aph) { this.aph = aph; this.forceUpdate(); }
+    }
+    if (pe) { var sbw = Math.max(15, pe.offsetWidth - pe.clientWidth); /* bez viditelného scrollbaru (overlay) se počítá s rezervou 15 px */ if (sbw !== this.sbw) { this.sbw = sbw; this.forceUpdate(); } }
     var log = this.logEl, mode = this.scroll; this.scroll = null;
     if (this.focusQ && this.qEl) { this.focusQ = false; this.qEl.focus(); }
     if (!log || !mode) return;
-    if (this.m.page === 'lp' && pe) {
-      if (mode === 'top') return;
-      var pTop = pe.getBoundingClientRect().top, lastE = this.m.entries[this.m.entries.length - 1];
-      if ((mode === 'answer' || mode === 'auto') && lastE && lastE.t === 'answer') {
-        var aw = log.querySelectorAll('.entry-w'); var ae = aw[aw.length - 1];
-        if (ae) { pe.scrollTop += ae.getBoundingClientRect().top - pTop - 16; return; }
-      }
-      var lc = log.lastElementChild, foot = log.parentNode && log.parentNode.querySelector('.ap-foot');
-      if (lc) { var d = lc.getBoundingClientRect().bottom - (pTop + pe.clientHeight - (foot ? foot.offsetHeight : 0) - 16); if (d > 0) pe.scrollTop += d; }
-      return;
-    }
     if (mode === 'top') { log.scrollTop = 0; return; }
     var last = this.m.entries[this.m.entries.length - 1];
     if ((mode === 'answer' || mode === 'auto') && last && last.t === 'answer') {
@@ -623,7 +608,8 @@ class Component extends DCLogic {
   renderVals() {
     var self = this, m = this.m, th = themeOf(this);
     return {
-      thm: themeVm(this), av: avatarVm(this, th), siteCls: themeCls(th) + ' final' + (m.page === 'lp' ? ' is-lp' : ''), siteStyle: themeCss(th) + '; --sbw: ' + (this.sbw || 0) + 'px', setPage: this.setPage,
+      thm: themeVm(this), av: avatarVm(this, th), onPageScroll: function (ev) { var y = ev.target.scrollTop, d = y - (self.lastY || 0); if (Math.abs(d) < 6) return; self.lastY = y; var hide = d > 0 && y > 80; if (hide !== !!self.hdrHidden) { self.hdrHidden = hide; self.forceUpdate(); } },
+      siteCls: themeCls(th) + ' final' + (this.hdrHidden ? ' hdr-hidden' : '') + (m.page === 'lp' ? ' is-lp' : '') + (m.page === 'lp' && !(m.entries.length === 1 && m.entries[0].t === 'start') ? ' has-chat' : ''), siteStyle: themeCss(th) + '; --sbw: ' + (this.sbw || 0) + 'px' + (this.aph ? '; --aph: ' + this.aph + 'px' : ''), setPage: this.setPage,
       wq: m.wq, onWq: function (ev) { m.wq = ev.target.value; self.forceUpdate(); },
       onWqKey: function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); self.search(m.wq); } },
       doSearch: function () { self.search(m.wq); },
