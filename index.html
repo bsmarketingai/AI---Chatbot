@@ -47,6 +47,18 @@ body{margin:0}
 .site.final.is-lp .ap-log{padding-top:60px}
 /* Popis pod nadpisem je vidět jen před začátkem konverzace (úvodní výběr); s novým chatem i během chatování se skryje */
 .site.final.has-chat .lp-hero .lead{display:none}
+/* Samostatná stránka: bez viditelného scrollbaru stránky (rolovat jde dál) */
+.site.final.is-lp .scroll{scrollbar-width:none}
+.site.final.is-lp .scroll::-webkit-scrollbar{display:none}
+/* Samostatná stránka před začátkem konverzace: žádné okno chatu, jen dvě velká tlačítka Nový chat / Pokračovat v chatu; po kliknutí se okno otevře */
+.site.final.lp-start .ap{height:auto;min-height:0;background:none;border:0;box-shadow:none;overflow:visible}
+.site.final.lp-start .ap-head,.site.final.lp-start .ap-foot{display:none}
+.site.final.lp-start .ap-log{flex:none;padding:0;overflow:visible}
+.site.final.lp-start .ap-log .body > p{display:none}
+.site.final.lp-start .tiles{gap:16px}
+.site.final.lp-start .tile{padding:24px;gap:8px}
+.site.final.lp-start .tile b{font-size:18px}
+.site.final.lp-start .tile small{font-size:14px}
 /* Samostatná stránka: odpovědi asistenta vlevo jen na šířku 4 karet produktů, zákazník zůstává vpravo */
 .site.final.is-lp .m-ai{max-width:960px}
 .site.final.is-lp .ap .carousel{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -609,7 +621,7 @@ class Component extends DCLogic {
     var self = this, m = this.m, th = themeOf(this);
     return {
       thm: themeVm(this), av: avatarVm(this, th), onPageScroll: function (ev) { var y = ev.target.scrollTop, d = y - (self.lastY || 0); if (Math.abs(d) < 6) return; self.lastY = y; var hide = d > 0 && y > 80; if (hide !== !!self.hdrHidden) { self.hdrHidden = hide; self.forceUpdate(); } },
-      siteCls: themeCls(th) + ' final' + (this.hdrHidden ? ' hdr-hidden' : '') + (m.page === 'lp' ? ' is-lp' : '') + (m.page === 'lp' && !(m.entries.length === 1 && m.entries[0].t === 'start') ? ' has-chat' : ''), siteStyle: themeCss(th) + '; --sbw: ' + (this.sbw || 0) + 'px' + (this.aph ? '; --aph: ' + this.aph + 'px' : ''), setPage: this.setPage,
+      siteCls: themeCls(th) + ' final' + (this.hdrHidden ? ' hdr-hidden' : '') + (m.page === 'lp' ? ' is-lp' : '') + (m.page === 'lp' ? (m.entries.length === 1 && m.entries[0].t === 'start' ? ' lp-start' : ' has-chat') : ''), siteStyle: themeCss(th) + '; --sbw: ' + (this.sbw || 0) + 'px' + (this.aph ? '; --aph: ' + this.aph + 'px' : ''), setPage: this.setPage,
       wq: m.wq, onWq: function (ev) { m.wq = ev.target.value; self.forceUpdate(); },
       onWqKey: function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); self.search(m.wq); } },
       doSearch: function () { self.search(m.wq); },
