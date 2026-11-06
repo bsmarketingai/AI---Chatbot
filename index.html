@@ -15,8 +15,11 @@
 body{margin:0}
 /* Plovoucí okno má vždy zvolenou výšku (i prázdný chat); vlastní scrollbar okna se nezobrazuje */
 @container site (min-width:550px){.site.final:not(.is-lp) .ap{top:auto;bottom:16px;width:420px;max-width:calc(100% - 32px);border-radius:var(--r-out12);height:calc(100% - 32px);max-height:none}.site.final.ap-half:not(.is-lp) .ap{height:50%;min-height:380px}.site.final.ap-twothirds:not(.is-lp) .ap{height:66.667%;min-height:380px}.site.final:not(.is-lp) .ap-log{flex:1 1 0}}
-.site.final .ap-log{scrollbar-width:none}
-.site.final .ap-log::-webkit-scrollbar{display:none}
+/* Scrollbar okna chatu: jen když je co rolovat (dlouhá konverzace), tenký a decentní */
+.site.final .ap-log{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#9aa7b3 transparent}
+.site.final .ap-log::-webkit-scrollbar{width:8px}
+.site.final .ap-log::-webkit-scrollbar-track{background:transparent}
+.site.final .ap-log::-webkit-scrollbar-thumb{background:#9aa7b3;border-radius:8px}
 /* unslop (Damir Sokolovsky, @heydamir, CC BY 4.0) – leštění: váhy písma, popisky, stíny, pohyb, mřížka 4 px */
 .site.final .lp-hero h1{font-weight:600;letter-spacing:0}
 .site.final .welcome h2,.site.final .ap b,.site.final .ap strong,.site.final .ai-tag,.site.final .pcard .tag,.site.final .pcard .nm,.site.final .pcard .price,.site.final .sr-h h1,.site.final .sr-ai .lbl,.site.final .wf-cart b{font-weight:600}
