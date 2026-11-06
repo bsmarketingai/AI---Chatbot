@@ -220,7 +220,7 @@ body{margin:0}
       <button type="button" class="ibtn ap-x" onClick="{{closePanel}}" aria-label="Zavřít asistenta" data-tip="Zavřít" style="background: rgba(255,255,255,0.18)" style-hover="background: rgba(255,255,255,0.3)"><svg class="i" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor"></path></svg></button>
         </header>
 
-        <div class="ap-log" ref="{{setLog}}" aria-live="polite" style="overflow-y: scroll; min-height: 0; flex-grow: 1; flex-shrink: 1; flex-basis: auto; scrollbar-width: thin; scrollbar-color: #9aa7b3 #eceff1; display: flex; flex-direction: column">
+        <div class="ap-log" ref="{{setLog}}" aria-live="polite" style="min-height: 0; flex-grow: 1; flex-shrink: 1; flex-basis: auto; display: flex; flex-direction: column">
           <sc-for list="{{entries}}" as="e" hint-placeholder-count="1">
             <div class="entry-w" style="margin-top: auto">
 
